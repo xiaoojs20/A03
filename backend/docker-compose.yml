@@ -1,0 +1,56 @@
+# TODO: 补充docker compose配置文件
+
+version: "3"
+services:
+  app:
+    restart: always
+    container_name: app
+    build: .
+    command: >
+      bash -c
+      "python manage.py migrate --settings=YY.settings &&
+      DJANGO_SETTINGS_MODULE=YY.settings gunicorn -w4 -b 0.0.0.0:8000 --log-level=debug YY.wsgi"
+    expose:
+      - "8000"
+    depends_on:
+      - mysql
+    networks:
+      - web_network
+      - db_network
+  mysql:
+    container_name: mysql
+    image: mysql:8.1
+    volumes:
+      - /home/ubuntu/mysql:/var/lib/mysql
+    expose:
+      - "3306"
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=yuiko1350
+      - MYSQL_DATABASE=django
+      - TZ=Asia/Shanghai
+    command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+    networks:
+      - db_network
+  nginx:
+    container_name: nginx
+    restart: always
+    image: nginx:latest
+    ports:
+      - "8000:8000"
+    volumes:
+      - static-volume:/code/static
+      - ./nginx:/etc/nginx/conf.d
+    depends_on:
+      - app
+    networks:
+      - web_network
+
+networks:
+  web_network:
+    driver: bridge
+  db_network:
+    driver: bridge
+    
+volumes:
+  static-volume:
