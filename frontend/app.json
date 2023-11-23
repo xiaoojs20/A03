@@ -5,7 +5,9 @@
     "pages/correction/correction",
     "pages/info/info",
     "pages/message/message",
-    "pages/forum/forum",
+    "pages/forum/index/index",
+    "pages/forum/post-detail/post-detail",
+    "pages/forum/create-post/create-post",
     "pages/userprotocol/userprotocol",
     "pages/edituserinfo/edituserinfo"
   ],
@@ -47,7 +49,7 @@
         "selectedIconPath": "images/tabbars/index_focus.png"
       },
       {
-        "pagePath": "pages/forum/forum",
+        "pagePath": "pages/forum/index/index",
         "text": "论坛",
         "iconPath": "images/tabbars/discovery.png",
         "selectedIconPath": "images/tabbars/discovery_focus.png"
