@@ -1,0 +1,69 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/login/login",
+    "pages/correction/correction",
+    "pages/info/info",
+    "pages/message/message",
+    "pages/forum/forum",
+    "pages/userprotocol/userprotocol",
+    "pages/edituserinfo/edituserinfo"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "牙牙回家",
+    "navigationBarTextStyle": "black"
+  },
+  "sitemapLocation": "sitemap.json",
+  "usingComponents": {
+    "van-button": "@vant/weapp/button/index",
+    "van-field": "@vant/weapp/field/index",
+    "van-cell": "@vant/weapp/cell/index",
+    "van-cell-group": "@vant/weapp/cell-group/index",
+    "van-tabbar": "@vant/weapp/tabbar/index",
+    "van-tabbar-item": "@vant/weapp/tabbar-item/index",
+    "van-grid": "@vant/weapp/grid/index",
+    "van-grid-item": "@vant/weapp/grid-item/index",
+    "van-circle": "@vant/weapp/circle/index",
+    "van-tab": "@vant/weapp/tab/index",
+    "van-tabs": "@vant/weapp/tabs/index",
+    "van-slider": "@vant/weapp/slider/index",
+    "van-datetime-picker": "@vant/weapp/datetime-picker/index",
+    "van-popup": "@vant/weapp/popup/index",
+    "van-radio": "@vant/weapp/radio/index",
+    "van-radio-group": "@vant/weapp/radio-group/index"
+  },
+  "tabBar": {
+    "color": "#626567",
+    "selectedColor": "#2A8CE5",
+    "backgroundColor": "#FBFBFB",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/correction/correction",
+        "text": "矫正",
+        "iconPath": "images/tabbars/index.png",
+        "selectedIconPath": "images/tabbars/index_focus.png"
+      },
+      {
+        "pagePath": "pages/forum/forum",
+        "text": "论坛",
+        "iconPath": "images/tabbars/discovery.png",
+        "selectedIconPath": "images/tabbars/discovery_focus.png"
+      },
+      {
+        "pagePath": "pages/message/message",
+        "text": "消息",
+        "iconPath": "images/tabbars/chat.png",
+        "selectedIconPath": "images/tabbars/chat_focus.png"
+      },
+      {
+        "pagePath": "pages/info/info",
+        "text": "我的",
+        "iconPath": "images/tabbars/burger.png",
+        "selectedIconPath": "images/tabbars/burger_focus.png"
+      }
+    ]
+  }
+}

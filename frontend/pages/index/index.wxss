@@ -1,0 +1,33 @@
+/**index.wxss**/
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.background {
+  width: 140%;
+  height: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+}
+
+.button-container {
+  margin-top: 20px;
+}
+
+.login-button {
+  width: 200px;
+  height: 40px;
+  background-color: #3f88c5;
+  color: #fff;
+  border-radius: 20px;
+  font-size: 16px;
+  line-height: 40px;
+  text-align: center;
+}

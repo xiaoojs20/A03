@@ -1,38 +1,62 @@
 {
   "description": "项目配置文件",
-  "miniprogramRoot": "miniprogram/",
-  "compileType": "miniprogram",
+  "packOptions": {
+    "ignore": [],
+    "include": []
+  },
   "setting": {
-    "useCompilerPlugins": [
-      "typescript"
+    "bundle": false,
+    "userConfirmedBundleSwitch": false,
+    "urlCheck": true,
+    "scopeDataCheck": false,
+    "coverView": true,
+    "es6": true,
+    "postcss": true,
+    "compileHotReLoad": false,
+    "lazyloadPlaceholderEnable": false,
+    "preloadBackgroundData": false,
+    "minified": true,
+    "autoAudits": false,
+    "newFeature": false,
+    "uglifyFileName": false,
+    "uploadWithSourceMap": true,
+    "useIsolateContext": true,
+    "nodeModules": false,
+    "enhance": true,
+    "useMultiFrameRuntime": true,
+    "useApiHook": true,
+    "useApiHostProcess": true,
+    "showShadowRootInWxmlPanel": true,
+    "packNpmManually": true,
+    "enableEngineNative": false,
+    "packNpmRelationList": [
+      {
+        "packageJsonPath": "/resources/package.json",
+        "miniprogramNpmDistDir": ""
+      }
     ],
+    "minifyWXSS": true,
+    "showES6CompileOption": false,
+    "minifyWXML": true,
     "babelSetting": {
       "ignore": [],
       "disablePlugins": [],
       "outputPath": ""
     },
-    "coverView": false,
-    "postcss": false,
-    "minified": false,
-    "enhance": false,
-    "showShadowRootInWxmlPanel": false,
-    "packNpmRelationList": [],
-    "ignoreUploadUnusedFiles": true,
-    "compileHotReLoad": false,
-    "skylineRenderEnable": true
+    "ignoreUploadUnusedFiles": true
   },
-  "simulatorType": "wechat",
-  "simulatorPluginLibVersion": {},
+  "compileType": "miniprogram",
+  "libVersion": "2.19.4",
+  "projectname": "miniprogram-92",
   "condition": {},
-  "srcMiniprogramRoot": "miniprogram/",
   "editorSetting": {
     "tabIndent": "insertSpaces",
     "tabSize": 2
   },
-  "libVersion": "2.32.3",
-  "packOptions": {
-    "ignore": [],
-    "include": []
+  "miniprogramRoot": "",
+  "npm": {
+    "devDependencies": {},
+    "dependencies": {}
   },
-  "appid": "wx288fac3028620560"
+  "appid": "wx3923928599ae095d"
 }

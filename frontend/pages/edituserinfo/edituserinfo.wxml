@@ -1,0 +1,33 @@
+<!--pages/edituserinfo/edituserinfo.wxml-->
+<view class="container">
+  <van-cell-group>
+    <van-field
+      value= "{{ nickname }}"
+      label="用户名"
+      placeholder="{{nickname}}"
+      bindblur="handleInputNickname"
+    />
+
+  <van-radio-group value="{{gender}}" 
+  bind:change="handleChooseGender">
+    <van-cell title="性别">
+      <van-radio slot="right-icon" name="1">男</van-radio>
+      <van-radio slot="right-icon" name="2">女</van-radio>
+    </van-cell>
+</van-radio-group>
+
+    <van-field
+      value="{{email}}"
+      type="email"
+      label="邮箱"
+      placeholder="{{email}}"
+      bindblur="handleInputEmail"
+    />
+
+  </van-cell-group>
+
+  <van-button 
+    type="info"
+    bind:click="handleChangeInfo"
+  >确认</van-button>
+</view>
