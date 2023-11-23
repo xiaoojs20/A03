@@ -1,0 +1,23 @@
+<!-- index.wxml 示例 -->
+<view class="custom-navigation-bar">
+  <view class="navigation-title">首页</view>
+</view>
+<!-- 页面的其他内容 -->
+
+<view class="page-container">
+  <scroll-view class="post-list" scroll-y="true">
+    <block wx:for="{{ posts }}" wx:key="id">
+      <view class="post-card" bindtap="navigateToPostDetail" data-id="{{item.id}}">
+        <van-card
+          title="{{ item.title }}"
+          thumb="{{ item.image }}"
+          lazy-load>
+          <view slot="footer">
+            <text>{{ item.description }}</text>
+          </view>
+        </van-card>
+      </view>
+    </block>
+  </scroll-view>
+</view>
+

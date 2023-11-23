@@ -1,0 +1,9 @@
+<view class="page-container">
+  <view class="post-header">
+    <text class="post-title">{{post.title}}</text>
+  </view>
+  <image class="post-image" src="{{post.image}}" mode="aspectFit"></image>
+  <view class="post-content">
+    <text>{{post.content}}</text>
+  </view>
+</view>

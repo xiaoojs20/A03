@@ -1,0 +1,1 @@
+{"version":3,"sources":["index.js"],"names":[],"mappings":";;;;;;;AAAA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA","file":"index.js","sourcesContent":["\n\nvar test = {\n\tfoo: {}\n};\n\nvar $Object = Object;\n\nmodule.exports = function hasProto() {\n\treturn { __proto__: test }.foo === test.foo && !({ __proto__: null } instanceof $Object);\n};\n"]}

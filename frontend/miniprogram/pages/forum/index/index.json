@@ -1,0 +1,9 @@
+{
+  "usingComponents": {
+    "van-button": "/miniprogram_npm/@vant/weapp/button/index",
+    "van-card": "/miniprogram_npm/@vant/weapp/card/index",
+    "van-icon": "/miniprogram_npm/@vant/weapp/icon/index"
+  },
+  "navigationBarTitleText": "论坛首页"
+}
+
