@@ -1,0 +1,12 @@
+/* pages/edituserinfo/edituserinfo.wxss */
+.van-field {
+  display: flex;
+}
+
+van-radio-group{
+  font-size: 20rpx;
+}
+
+.van-button {
+  margin-top: 20px;
+}

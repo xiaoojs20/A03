@@ -1,0 +1,82 @@
+<!--pages/correction/correction.wxml-->
+<view class="container">
+  <van-tabs class="tabs"
+  active="{{ active }}"
+  color="#1B23FF">
+  <van-tab title="矫正进度">
+    <view class="circle-container">
+      <van-circle value="{{ circleProgress }}"
+      text="已完成{{circleProgress}}%"
+      stroke-width="10"
+      size="150"/>
+    </view>
+  
+    <view class="button-container">
+      <van-button 
+        type="info" 
+        custom-class="primary-button"
+        bind:tap="handleButtonClick1">
+        设置微信提醒
+      </van-button>
+    </view>
+    <view class="button-container">
+      <van-button
+      type="info"
+      bind:tap="handleButtonClick2"
+      >查看统计信息</van-button>
+    </view>
+    <view class="wear-tips" bind:tap="handleWearTipsClick">
+      <text class="wear-tips-text">佩戴提示</text>
+    </view>
+  </van-tab>
+
+  <van-tab title="牙套数量">
+    <view class="progress-container">
+      <text class="progress-text">剩余牙套数量：</text>
+      <text class="count-text-large">{{braceAmount}}/{{allBraceAmount}}</text>
+    </view>
+    <view class="progress-bar-container">
+      <text class="progress-text">总牙套数量：</text>
+    </view>
+    <view class="progress-slider-container">
+      <van-slider 
+      min="0" max="500"
+      step="1" 
+      value="{{ braceAmount }}" 
+      bind:change="onChangeBrace" />
+    </view>
+  </van-tab>
+  
+  <van-tab title="复诊日期">
+    <view class="date-container">
+      <text class="date-text">复诊日期：{{followupDate}}</text>
+    </view>
+    <view class="date-container2">
+      <text class="date-text2" wx:if="{{daysLeft === 0}}">已到期</text>
+      <text class="date-text2" wx:else>距今还有{{daysLeft}}天</text>
+    </view>
+    <view class="databutton-container">
+      <van-button 
+          type="info" 
+          custom-class="setdatabutton"
+          bind:tap="showDatePicker">
+          设置复诊日期
+      </van-button>
+    </view>
+    <van-popup 
+    style="width: 90%; max-width: 600rpx;" 
+    position="bottom"
+    show="{{showPopup}}">
+      <van-datetime-picker
+        type="date"
+        value="{{popupDate}}"
+        min-date="{{ currentDate }}"
+        end="2100-12-31"
+        bind:confirm="onConfirmDate"
+        bind:cancel="onCancelDate"
+      />
+    </van-popup>
+  </van-tab>
+  </van-tabs>
+
+</view>

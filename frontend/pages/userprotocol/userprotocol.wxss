@@ -1,0 +1,28 @@
+/* pages/userprotocol/userprotocol.wxss */
+.container {
+  display: flex;
+  flex-direction: column;  /* 将容器设置为垂直方向排列 */
+  margin: 20px;
+}
+
+.title {
+  text-align: center;  /* 标题文字居中 */
+  font-weight: bold;  /* 标题文字加粗 */
+  font-size: 20px;  /* 设置标题文字大小为原来的大小加大一号 */
+  margin-bottom: 20px;
+}
+
+.section {
+  margin-bottom: 10px;
+}
+
+.subsection {
+  font-weight: bold;  /* 节标题文字加粗 */
+  font-size: 16px;  /* 设置标题文字大小为原来的大小加大一号 */
+  text-align: left;  /* 正文左对齐 */
+  margin-bottom: 10px;
+}
+
+.main {
+  font-size: 16px;  /* 设置正文字体大小为原来的大小加大一号 */
+}
