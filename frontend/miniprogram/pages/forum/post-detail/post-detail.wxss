@@ -1,0 +1,22 @@
+/* pages/forum/post-detail/post-detail.wxss */
+.page-container {
+  padding: 10px;
+}
+
+.post-header {
+  margin-bottom: 10px;
+}
+
+.post-title {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.post-image {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.post-content {
+  font-size: 14px;
+}
