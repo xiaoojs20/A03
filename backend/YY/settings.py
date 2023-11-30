@@ -92,10 +92,10 @@ DATABASES = {
       'default': {
           'ENGINE': 'django.db.backends.mysql', # 数据库引擎
           'NAME': 'yydb', # 数据库名称
-          'HOST': '127.0.0.1', # 数据库主机(建议使用主机真实IP)
+          'HOST': 'mysql', # 数据库主机(建议使用主机真实IP)
           'PORT': '3306', # 数据库端口
           'USER': 'root', # 数据库用户名
-          'PASSWORD': 'yuiko1350', # 数据库密码
+          'PASSWORD': 'root', # 数据库密码
       }
   }
 
