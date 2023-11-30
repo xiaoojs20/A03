@@ -14,7 +14,7 @@ class User(models.Model):
     mobile = models.CharField(max_length=20, null=True, verbose_name='电话')
     email = models.CharField(max_length=30, null=True, blank=True, default='',verbose_name='电子邮箱')
     birthday = models.DateField(null=True, blank=True, verbose_name='生日')
-    user_image = models.ImageField(null=True, verbose_name='用户头像')
+    user_image = models.ImageField(upload_to='media/user_images/', blank=True, null=True, verbose_name='用户头像')
     introduce = models.CharField(max_length=100, default='', null=True, blank=True, verbose_name='个人简介')
     
 	# 牙套相关
@@ -23,13 +23,17 @@ class User(models.Model):
     brace_used = models.IntegerField(null=True, default=0, verbose_name='已佩戴牙套数量')
     followup_date = models.DateField(null=True, blank=True, verbose_name='下次复诊日期')
 
+    # 论坛相关
+    post_count = models.IntegerField(default=0, verbose_name='发帖总数')
 
     def __str__(self):
         """将模型类以字符串的方式输出"""
         """user.admin里面重定义了"""
         return f"{self.user_id} {'-'*2} {self.nickname} {'-'*2} {self.gender}"
-    def get_dict(self):
+    
+    def get_info(self):
         return {'user_id':self.user_id,
+                
 				'nickname':self.nickname,
 				'gender':self.gender,
 				'mobile':self.mobile,
@@ -37,12 +41,17 @@ class User(models.Model):
 				'birthday':self.birthday,
 				# 'user_image':self.user_image,
 				'introduce':self.introduce,
-                
                 'is_doctor':self.is_doctor,
+                }
+    
+    def get_brace(self):
+        return {'user_id':self.user_id,
+                
                 'brace_total':self.brace_total,
                 'brace_used':self.brace_used,
                 'followup_date':self.followup_date,
                 }
+
     #元类信息 : 修改表名
     class Meta:
         db_table = 'user'
