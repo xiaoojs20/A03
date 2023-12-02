@@ -5,3 +5,5 @@ class Reminder(models.Model):
     user_id = models.CharField(max_length=100)  
     reminder_time = models.DateTimeField()      
     message = models.TextField()                
+    def __str__(self):
+        return self.message
