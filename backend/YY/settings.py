@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'user',
     'post',
     'reminder',
+    'clockin',
 ]
 
 MIDDLEWARE = [
