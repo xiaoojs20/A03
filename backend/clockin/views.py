@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.dateparse import parse_time
 from django.contrib.auth.models import User
 import json
-from datetime import datetime
+from datetime import datetime,timedelta
 
 @csrf_exempt
 @login_required  #need to login before clockin
@@ -26,7 +26,7 @@ def orthodontic_check_in(request):
         OrthodonticCheckIn.objects.create(
             user=user,
             wear_time=parsed_time,
-            date=datetime.today()
+            date=(datetime.today()-timedelta(days=1)).strftime('%Y-%m-%d')
         )
         return JsonResponse({'success': 'Check-in recorded'}, status=201)
 
