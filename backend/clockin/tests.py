@@ -111,8 +111,8 @@ class OrthodonticCheckInViewTests(TestCase):
 
 
     def test_check_in_timezone_handling(self):
-        local_tz = get_current_timezone()
-        local_time = make_aware(timezone.now(), local_tz)
+        #local_tz = get_current_timezone()
+        local_time = timezone.localtime(timezone.now())
         check_in = OrthodonticCheckIn.objects.create(
             user=self.user,
             wear_time=time(2, 30),
