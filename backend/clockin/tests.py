@@ -16,12 +16,12 @@ class OrthodonticCheckInModelTests(TestCase):
         # 测试创建打卡记录
         check_in = OrthodonticCheckIn.objects.create(
             user=self.user,
-            wear_time=time(2, 30),  # 假设用户佩戴了2小时30分钟
+            wear_time="20:00:00",#time(2, 30),  # 假设用户佩戴了2小时30分钟
             date=timezone.now().date()
         )
         
         self.assertEqual(check_in.user, self.user)
-        self.assertEqual(check_in.wear_time, time(2, 30))
+        self.assertEqual(check_in.wear_time, time(20,0))
         self.assertEqual(check_in.date, timezone.now().date())
 
 class OrthodonticCheckInViewTests(TestCase):
