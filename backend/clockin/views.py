@@ -15,7 +15,8 @@ def orthodontic_check_in(request):
         data = json.loads(request.body)
         user = request.user
         wear_time = data.get('wear_time')
-        
+        if wear_time is None:
+            return JsonResponse({'error': 'Missing wear_time'}, status=400)
         # 解析时间字符串为 Time 对象
         parsed_time = parse_time(wear_time)
         if parsed_time is None:

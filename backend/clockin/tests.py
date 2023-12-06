@@ -3,8 +3,10 @@ from django.contrib.auth.models import User
 from .models import OrthodonticCheckIn
 from django.utils import timezone
 from django.urls import reverse
-from datetime import time
-
+from datetime import time, timedelta,datetime
+import json
+from django.utils.timezone import make_aware, get_current_timezone
+import pytz
 class OrthodonticCheckInModelTests(TestCase):
     def setUp(self):
         # 创建一个用户进行测试
@@ -61,3 +63,60 @@ class OrthodonticCheckInViewTests(TestCase):
         #print(response)
         # 检查是否因为错误的数据格式而返回了400状态码
         self.assertEqual(response.status_code, 400)
+    def test_check_in_user_association(self):
+        # Create a second user
+        second_user = User.objects.create_user(username='seconduser', password='67890')
+        # Create a check-in for the second user
+        check_in = OrthodonticCheckIn.objects.create(
+            user=second_user,
+            wear_time=time(1, 0),  # 1 hour
+            date=timezone.now().date()
+        )
+        # Assert that the check-in is associated with the second user
+        self.assertEqual(check_in.user, second_user)
+    def test_check_in_creation_current_date(self):
+        url = reverse('clockin')  # Adjust with the correct URL name
+        response = self.client.post(url, json.dumps({'wear_time': '02:30:00'}), content_type='application/json')
+        self.assertEqual(response.status_code, 201)
+        check_in = OrthodonticCheckIn.objects.get(user=self.user)
+        self.assertEqual(check_in.date, datetime.today().date())
+    def test_check_in_update(self):
+        check_in = OrthodonticCheckIn.objects.create(
+            user=self.user,
+            wear_time=time(2, 30),
+            date=timezone.now().date()
+        )
+        check_in.wear_time = time(3, 0)  # Update to 3 hours
+        check_in.save()
+        updated_check_in = OrthodonticCheckIn.objects.get(id=check_in.id)
+        self.assertEqual(updated_check_in.wear_time, time(3, 0))
+    def test_check_in_deletion(self):
+        check_in = OrthodonticCheckIn.objects.create(
+            user=self.user,
+            wear_time=time(2, 30),
+            date=timezone.now().date()
+        )
+        check_in_id = check_in.id
+        check_in.delete()
+        with self.assertRaises(OrthodonticCheckIn.DoesNotExist):
+            OrthodonticCheckIn.objects.get(id=check_in_id)
+    def test_check_in_view_invalid_data(self):
+        url = reverse('clockin')
+        response = self.client.post(url, {}, content_type='application/json')
+        self.assertEqual(response.status_code, 400)  # Bad request due to missing data
+    def test_check_in_view_response_format(self):
+        url = reverse('clockin')
+        response = self.client.post(url, {'wear_time': '02:30:00'}, content_type='application/json')
+        self.assertEqual(response['Content-Type'], 'application/json')
+
+
+    def test_check_in_timezone_handling(self):
+        local_tz = get_current_timezone()
+        local_time = make_aware(timezone.now(), local_tz)
+        check_in = OrthodonticCheckIn.objects.create(
+            user=self.user,
+            wear_time=time(2, 30),
+            date=local_time.date()
+        )
+        self.assertEqual(check_in.date, local_time.date())
+    
