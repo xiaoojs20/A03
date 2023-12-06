@@ -28,7 +28,7 @@ class ReminderViewTest(TestCase):
         self.url = reverse('reminder')
         self.reminder_data = {
             'user_id': '123456',
-            'reminder_time': (timezone.now() + timedelta(days=1)).isoformat(),
+            'reminder_time': "2023-12-06T15:30:00",#(timezone.now() + timedelta(days=1)).isoformat(),
             'message': 'Dont forget to subscribe!'
         }
         self.client = Client()
@@ -44,6 +44,55 @@ class ReminderViewTest(TestCase):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), {"message": "This endpoint requires a POST request."})
+    def test_set_reminder_with_invalid_data(self):
+    # 测试缺少用户ID的情况
+        invalid_data = self.reminder_data.copy()
+        del invalid_data['user_id']
+        response = self.client.post(self.url, json.dumps(invalid_data), content_type="application/json")
+        self.assertNotEqual(response.status_code, 200)
+    def test_reminder_creation_at_current_time(self):
+        # 创建提醒，时间设置为当前时间
+        reminder = Reminder.objects.create(
+            user_id="123456",
+            reminder_time=timezone.now(),
+            message="Reminder at current time!"
+        )
+        self.assertTrue(isinstance(reminder, Reminder))
+    def test_reminder_creation_at_current_time(self):
+        # 创建提醒，时间设置为当前时间
+        reminder = Reminder.objects.create(
+            user_id="123456",
+            reminder_time=timezone.now(),
+            message="Reminder at current time!"
+        )
+        self.assertTrue(isinstance(reminder, Reminder))
+    @patch('reminder.tasks.send_service_notification')
+    def test_send_reminders_task_with_exception(self, mock_send_notification):
+        mock_send_notification.side_effect = Exception("Service unavailable")
+        reminder = Reminder.objects.create(
+            user_id="123456",
+            reminder_time=timezone.now() - timedelta(minutes=10),
+            message="This is a test reminder"
+        )
+        send_reminders()
+        # 确认即使出现异常，提醒也不会从数据库中删除
+        self.assertEqual(Reminder.objects.count(), 1)
+
+    def test_no_reminder_sent_for_future_time(self):
+        reminder = Reminder.objects.create(
+            user_id="123456",
+            reminder_time=timezone.now() + timedelta(minutes=1000000),
+            message="Future test reminder"
+        )
+        send_reminders()
+        self.assertEqual(Reminder.objects.count(), 1)
+    def test_detailed_error_message_on_invalid_input(self):
+        invalid_data = {"user_id": "123456"}  # 缺少其他必要字段
+        response = self.client.post(self.url, json.dumps(invalid_data), content_type="application/json")
+        self.assertNotEqual(response.status_code, 200)
+        self.assertIn("error", response.json())
+
+
 
 # 测试Celery任务
 class ReminderTasksTest(TestCase):
