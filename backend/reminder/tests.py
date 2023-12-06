@@ -15,7 +15,7 @@ class ReminderModelTest(TestCase):
         # 创建提醒
         reminder = Reminder.objects.create(
             user_id="123456",
-            reminder_time=timezone.now() + timedelta(days=1),
+            reminder_time=timezone.now() + timedelta(seconds=10),
             message="Don't forget to subscribe!"
         )
         self.assertTrue(isinstance(reminder, Reminder))
