@@ -1,11 +1,11 @@
 from django.http import JsonResponse
-from .models import OrthodonticCheckIn
+from clockin.models import OrthodonticCheckIn
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.utils.dateparse import parse_time
 from django.contrib.auth.models import User
 import json
-from datetime import datetime
+from datetime import datetime,timedelta
 
 @csrf_exempt
 @login_required  #need to login before clockin
@@ -15,7 +15,8 @@ def orthodontic_check_in(request):
         data = json.loads(request.body)
         user = request.user
         wear_time = data.get('wear_time')
-        
+        if wear_time is None:
+            return JsonResponse({'error': 'Missing wear_time'}, status=400)
         # 解析时间字符串为 Time 对象
         parsed_time = parse_time(wear_time)
         if parsed_time is None:
@@ -25,7 +26,7 @@ def orthodontic_check_in(request):
         OrthodonticCheckIn.objects.create(
             user=user,
             wear_time=parsed_time,
-            date=datetime.today()
+            date=(datetime.today()-timedelta(days=1)).strftime('%Y-%m-%d')
         )
         return JsonResponse({'success': 'Check-in recorded'}, status=201)
 
