@@ -62,5 +62,24 @@ Page({
    */
   onShareAppMessage() {
 
-  }
+  },
+  data: {
+    imageList: []  // 用于存储选择的图片路径
+  },
+
+  chooseImage() {
+    let that = this;
+    wx.chooseImage({
+      count: 3,  // 允许选择的图片数量
+      sizeType: ['compressed'],  // 可以指定是原图还是压缩图，默认二者都有
+      sourceType: ['album', 'camera'],  // 可以指定来源是相册还是相机，默认二者都有
+      success(res) {
+        // 返回选定照片的本地文件路径列表
+        const images = res.tempFilePaths;
+        that.setData({
+          imageList: that.data.imageList.concat(images)
+        });
+      }
+    })
+  },
 })

@@ -1,1 +1,49 @@
 /* pages/forum/create-post/create-post.wxss */
+.upload-container {
+  margin-bottom: 15px;
+}
+
+.upload-button {
+  background-color: #f8f8f8;
+  border: 1px solid #dcdcdc;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.image-preview-container {
+  display: flex;
+  margin-top: 10px;
+}
+
+.image-preview {
+  width: 60px;
+  height: 60px;
+  margin-right: 10px;
+}
+.create-post-container {
+  padding: 20px;
+}
+
+.title-input, .content-textarea {
+  width: 100%;
+  margin-bottom: 15px;
+  border: 1px solid #dcdcdc;
+  padding: 10px;
+}
+
+.title-input {
+  height: 40px;
+}
+
+.content-textarea {
+  height: 150px;
+}
+
+.submit-button {
+  background-color: #007AFF;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  text-align: center;
+}
