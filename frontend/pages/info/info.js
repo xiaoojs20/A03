@@ -3,22 +3,6 @@ Page({
   data: {
     nickname: '',
   },
-  
-  // 标签栏跳转函数
-  onChange(event) {
-    const index = event.detail;
-    const pages = ['correction', 'forum', 'message', 'info'];
-    const url = `../${pages[index]}/${pages[index]}`;
-    wx.switchTab({
-      url,
-      success: () => {
-        console.log('成功跳转到', url);
-      },
-      fail: (error) => {
-        console.error('跳转失败', error);
-      }
-    });
-  },
 
   // 进入编辑个人信息主页
   handleEditInfo(){

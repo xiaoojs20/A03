@@ -3,13 +3,6 @@
   <view class="welcome_text_container">
     <text class="welcome_text">欢迎来到牙牙回家！</text>
   </view>
-  <van-cell-group inset>
-    <van-field value="{{ username }}" required clearable label="帐号" placeholder="请输入账号" bindblur="handleUsernameBlur">
-    </van-field>
-
-    <van-field value="{{ password }}" type="password" label="密码" placeholder="请输入密码" bindblur="handlePasswordBlur" required border="{{ false }}">
-    </van-field>
-  </van-cell-group>
 
   <van-button 
     type="info"
