@@ -10,9 +10,13 @@ def set_reminder(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
+            if 'user_id' not in data or 'reminder_time' not in data:
+                return JsonResponse({'error': 'Missing required fields'}, status=400)
+            
             user_id = data['user_id']
             reminder_time = datetime.fromisoformat(data['reminder_time'])
-            message = data['message']
+            
+            message = data['message'] if  'message' in data else 'wear braces'
 
             reminder = Reminder(user_id=user_id, reminder_time=reminder_time, message=message)
             reminder.save()

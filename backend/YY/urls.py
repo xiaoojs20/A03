@@ -23,5 +23,6 @@ urlpatterns = [
     path("user/", include('user.urls')),
     path("post/", include('post.urls')),
     path('reminder/', include('reminder.urls')),
-    path('clockin/',include('clockin.urls'))
+    path('clockin/',include('clockin.urls')),
+    path('report/', include('report.urls')),
 ]
