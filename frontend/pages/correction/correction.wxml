@@ -25,6 +25,12 @@
       bind:tap="handleButtonClick2"
       >查看统计信息</van-button>
     </view>
+    <view class="button-container">
+      <van-button
+      type="info"
+      bind:tap="handleClockIn"
+      >点击此处打卡</van-button>
+    </view>
     <view class="wear-tips" bind:tap="handleWearTipsClick">
       <text class="wear-tips-text">佩戴提示</text>
     </view>

@@ -46,11 +46,10 @@ Page({
                   // 在请求成功时执行的操作
                   console.log(res.data); // 这里是获取到的返回数据
                   getApp().globalData.userid = res.data.user_id
-                
+                  getApp().handleGetInfoGlobal()
                   wx.switchTab({
                     url: '/pages/correction/correction'
                   });
-                  
                   console.log('跳转至正畸主界面');
                 },
                 fail: function (error) {
