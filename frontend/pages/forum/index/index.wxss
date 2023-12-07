@@ -8,7 +8,7 @@
 }
 
 .navigation-title {
-  font-size: 18px; /* 标题字体大小 */
+  font-size: 40px; /* 标题字体大小 */
   font-weight: bold; /* 字体加粗 */
 }
 
@@ -33,4 +33,56 @@
   transform: translateX(-50%);
   width: 90%;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 添加底部按钮样式 */
+.create-post-button {
+  position: fixed;
+  left: 50%;
+  bottom: 20px;
+  transform: translateX(-50%);
+  width: 90%; 
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+.create-post-fab {
+  position: fixed;
+  right: 20px; /* 距离右边界20像素 */
+  bottom: 20px; /* 距离底边界20像素 */
+  width: 50px; /* 按钮宽度 */
+  height: 50px; /* 按钮高度 */
+  line-height: 50px; /* 使图标垂直居中 */
+  padding: 0; /* 移除内边距 */
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3); /* 可选：添加阴影效果 */
+}
+.post-description {
+  margin-bottom: 5px;
+}
+
+.post-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+}
+
+.post-author, .post-likes, .post-shares {
+  margin-right: 10px;
+}
+/* 调整帖子卡片样式 */
+.post-card {
+  margin-bottom: 10px;
+}
+
+/* 如果标题在 van-card 内部，可能需要如下方式定义样式 */
+/* 请根据实际情况调整选择器 */
+.van-card__title {
+  text-align: center; /* 标题居中 */
+  font-size: 20px; /* 调整字体大小 */
+  font-weight: bold; /* 字体加粗 */
+}
+
+/* 如果标题是单独的元素，则可以定义一个类似的样式 */
+.post-title {
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
 }

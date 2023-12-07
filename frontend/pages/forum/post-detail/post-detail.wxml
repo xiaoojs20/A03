@@ -6,4 +6,26 @@
   <view class="post-content">
     <text>{{post.content}}</text>
   </view>
+
+  <!-- 点赞和分享按钮 -->
+  <view class="interaction-bar">
+    <button bindtap="toggleLike" class="like-button">点赞</button>
+    <button bindtap="onShareAppMessage" class="share-button">分享</button>
+  </view>
+
+  <!-- 评论区 -->
+  <view class="comments-section">
+    <block wx:for="{{comments}}" wx:key="id">
+      <view class="comment">
+        <text class="comment-author">{{item.author}}：</text>
+        <text class="comment-content">{{item.content}}</text>
+      </view>
+    </block>
+  </view>
+
+  <!-- 评论输入区域 -->
+  <view class="comment-input-area">
+    <input class="comment-input" placeholder="写评论..." />
+    <button bindtap="submitComment">发送</button>
+  </view>
 </view>

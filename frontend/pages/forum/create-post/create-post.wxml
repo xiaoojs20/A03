@@ -1,2 +1,14 @@
-<!--pages/forum/create-post/create-post.wxml-->
-<text>pages/forum/create-post/create-post.wxml</text>
+<view class="create-post-container">
+  <input class="title-input" placeholder="请输入帖子标题" />
+  <textarea class="content-textarea" placeholder="请输入帖子内容" />
+  <view class="upload-container">
+    <button class="upload-button" bindtap="chooseImage">上传图片</button>
+    <view class="image-preview-container">
+      <block wx:for="{{imageList}}" wx:key="index">
+        <image class="image-preview" src="{{item}}"></image>
+      </block>
+    </view>
+  </view>
+  <button class="submit-button">发布帖子</button>
+</view>
+

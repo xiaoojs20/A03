@@ -1,9 +1,4 @@
-<!-- index.wxml 示例 -->
-<view class="custom-navigation-bar">
-  <view class="navigation-title">首页</view>
-</view>
-<!-- 页面的其他内容 -->
-
+<view>
 <view class="page-container">
   <scroll-view class="post-list" scroll-y="true">
     <block wx:for="{{ posts }}" wx:key="id">
@@ -13,11 +8,26 @@
           thumb="{{ item.image }}"
           lazy-load>
           <view slot="footer">
-            <text>{{ item.description }}</text>
+            <text class="post-description">{{ item.description }}</text>
+            <view class="post-info">
+              <text class="post-author">作者: {{ item.author }}</text>
+              <text class="post-likes">点赞: {{ item.likes }}</text>
+              <text class="post-shares">分享: {{ item.shares }}</text>
+            </view>
           </view>
         </van-card>
       </view>
     </block>
   </scroll-view>
+</view>
+
+  <!-- 添加底部发布按钮 -->
+  <van-button 
+    class="create-post-fab"
+    bind:click="navigateToCreatePost"
+    icon="edit"
+    round
+    type="info"
+  ></van-button>
 </view>
 
