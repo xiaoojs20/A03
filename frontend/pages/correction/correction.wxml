@@ -46,10 +46,20 @@
     </view>
     <view class="progress-slider-container">
       <van-slider 
-      min="0" max="500"
+      min="0" max="50"
+      step="1" 
+      value="{{ allBraceAmount }}" 
+      bind:change="onChangeBrace" />
+    </view>
+    <view class="progress-bar-container">
+      <text class="progress-text">剩余牙套数量：</text>
+    </view>
+    <view class="progress-slider-container">
+      <van-slider 
+      min="0" max="{{allBraceAmount}}"
       step="1" 
       value="{{ braceAmount }}" 
-      bind:change="onChangeBrace" />
+      bind:change="onChangeBraceUsed" />
     </view>
   </van-tab>
   
