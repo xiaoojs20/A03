@@ -61,6 +61,13 @@
       placeholder="{{introduce}}"
       bind:blur="handleInputIntroduce"
     />
+    <van-uploader
+    bind:after-read="handleAfterRead"
+    file-list="{{ fileList }}"
+    max-count="1"
+    accept="image">
+      <van-button icon="photo" type="info">上传头像</van-button>
+    </van-uploader>
   </van-cell-group>
 
   <van-button 

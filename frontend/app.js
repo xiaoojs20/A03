@@ -39,9 +39,6 @@ App({
             this.globalData.introduce = res.data.introduce;
             //this.globalData.avatarUrl = res.data.avatarUrl;
             this.globalData.is_doctor = res.data.is_doctor;
-            //this.globalData.braceAmount = res.data.brace_total;
-            //this.globalData.braceAmountUsed = res.data.brace_used;
-            //this.globalData.followupDate = res.data.followup_date;
           },
           fail: (err) => {
             // 请求失败时的回调
@@ -62,8 +59,6 @@ App({
           birthday: this.globalData.birthday,
           introduce: this.globalData.introduce,
           is_doctor: this.globalData.is_doctor,
-          //brace_total: this.globalData.braceAmount,
-          //brace_used: this.globalData.braceAmountUsed,
           // avatarUrl: this.globalData.avatarUrl,
         },
         success: (res) => {

@@ -11,6 +11,8 @@ Page({
     email: getApp().globalData.email,    // 邮箱
     birthday: getApp().globalData.birthday,    // 生日
     introduce: getApp().globalData.introduce,   // 自我介绍
+
+    fileList: [],
   },
 
   onLoad: function () {
@@ -115,5 +117,23 @@ Page({
     let day = date.getDate();
     day = day < 10 ? '0' + day : day;
     return `${year}-${month}-${day}`;
+  },
+
+  // 上传头像
+  handleAfterRead(event) {
+    const { file } = event.detail;
+    // 当设置 mutiple 为 true 时, file 为数组格式，否则为对象格式
+    wx.uploadFile({
+      url: 'https://example.weixin.qq.com/upload',
+      filePath: file.url,
+      name: 'file',
+      formData: { user: 'test' },
+      success(res) {
+        // 上传完成需要更新 fileList
+        const { fileList = [] } = this.data;
+        fileList.push({ ...file, url: res.data });
+        this.setData({ fileList });
+      },
+    });
   },
 });
