@@ -16,7 +16,7 @@ def property(request):
     context = {'path':request.path,'method':request.method,'GET':request.GET}
     return render(request, 'property.html', context)
 
-
+@csrf_exempt
 def create_post(request):
     try:
         # 创建新帖子对象并设置post_id
