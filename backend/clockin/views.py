@@ -8,11 +8,18 @@ import json
 from datetime import datetime,timedelta
 
 @csrf_exempt
-@login_required  #need to login before clockin
+#@login_required  #need to login before clockin
 def orthodontic_check_in(request):
+    print("Received request body:", request.body)  # Debug print
     if request.method == 'POST':
         # 假设前端发送的是JSON数据
-        data = json.loads(request.body)
+        if not request.body:
+            return JsonResponse({'error': 'Empty request body'}, status=400)
+        try:
+            data = json.loads(request.body)
+        except json.JSONDecodeError as e:
+            return JsonResponse({'error': str(e)}, status=400)
+        #data = json.loads(request.body)
         user_id = data.get('user_id')
         if user_id is None:
             return JsonResponse({'error': 'Missing user_id'}, status=400)
