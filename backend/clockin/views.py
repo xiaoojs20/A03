@@ -13,7 +13,15 @@ def orthodontic_check_in(request):
     if request.method == 'POST':
         # 假设前端发送的是JSON数据
         data = json.loads(request.body)
-        user = request.user
+        user_id = data.get('user_id')
+        if user_id is None:
+            return JsonResponse({'error': 'Missing user_id'}, status=400)
+        
+        # 使用 user_id 查找用户实例
+        try:
+            user = User.objects.get(id=user_id)
+        except User.DoesNotExist:
+            return JsonResponse({'error': 'User not found'}, status=404)
         wear_time = data.get('wear_time')
         if wear_time is None:
             return JsonResponse({'error': 'Missing wear_time'}, status=400)
