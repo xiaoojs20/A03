@@ -5,6 +5,7 @@ from rest_framework.decorators import api_view
 from .models import Post
 from user.models import User
 from django.db.models import Max
+from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 
 

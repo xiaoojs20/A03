@@ -32,14 +32,24 @@ class OrthodonticCheckInViewTests(TestCase):
         self.client.login(username='testuser', password='12345')
 
     def test_check_in_view(self):
-        # 使用 'reverse' 函数获取 URL
         url = reverse('clockin')  # 使用 urlpatterns 中定义的 name
+        user_id = self.user.id
 
-        # 发送 POST 请求
-        response = self.client.post(url, {'wear_time': '02:30:00'}, content_type='application/json')
+        # 发送 POST 请求，包含 user_id 和 wear_time
+        response = self.client.post(url, json.dumps({'user_id': user_id, 'wear_time': '02:30:00'}), content_type='application/json')
 
         # 检查是否成功并返回了201状态码
         self.assertEqual(response.status_code, 201)
+    def test_check_in_view_with_invalid_user_id(self):
+        # 测试无效的 user_id
+        url = reverse('clockin')
+        invalid_user_id = 99999  # 假设的无效用户 ID
+
+        # 发送 POST 请求
+        response = self.client.post(url, json.dumps({'user_id': invalid_user_id, 'wear_time': '02:30:00'}), content_type='application/json')
+
+        # 检查是否因为无效的用户而返回了404状态码
+        self.assertEqual(response.status_code, 404)
 
     def test_check_in_view_without_login(self):
         # 使用 'reverse' 函数获取 URL
@@ -76,7 +86,9 @@ class OrthodonticCheckInViewTests(TestCase):
         self.assertEqual(check_in.user, second_user)
     def test_check_in_creation_current_date(self):
         url = reverse('clockin')  # Adjust with the correct URL name
-        response = self.client.post(url, json.dumps({'wear_time': '02:30:00'}), content_type='application/json')
+        user_id = self.user.id
+        # 发送包含 user_id 和 wear_time 的 POST 请求
+        response = self.client.post(url, json.dumps({'user_id': user_id, 'wear_time': '02:30:00'}), content_type='application/json')
         self.assertEqual(response.status_code, 201)
         check_in = OrthodonticCheckIn.objects.get(user=self.user)
         self.assertEqual(check_in.date, datetime.today().date())
