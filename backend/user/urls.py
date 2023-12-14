@@ -13,6 +13,8 @@ urlpatterns = [
 	path('import_doctor/', import_doctor),
 	path('get_doctor/', get_doctor),
 	path('get_ratio/', get_ratio),
-	# path('register_name/', register_name),
-	# path('test/', cache_page(60*60)(test)),
+	path('get_following/', get_following),
+    path('get_fans/', get_fans),
+    path('add_following/', add_following),
+    path('remove_following/', remove_following),
 ]
