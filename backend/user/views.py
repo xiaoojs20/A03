@@ -11,12 +11,14 @@ from django.db.models import Q
 from django.db.models import Max
 from selenium import webdriver
 import time
-from datetime import datetime
+from datetime import datetime,date
+import re
 # from qcloud_cos import CosConfig
 # from qcloud_cos import CosS3Client
 import sys
 import logging
 import random
+import csv
 
 # Create your views here.
 
@@ -91,12 +93,17 @@ def change_info(request):
 
 			# 修改对象属性
 			if _nickname is not None:
+				if User.objects.filter(nickname=_nickname).exclude(user_id=_id).exists():
+					return JsonResponse({'msg': 'Nickname already exists'}, status=400)
 				_user.nickname = _nickname
-			if _nickname is not None:
+			if _gender is not None:
 				_user.gender = _gender
 			if _mobile is not None:
 				_user.mobile = _mobile
 			if _email is not None:
+				email_regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+				if not re.match(email_regex, _email):
+					return JsonResponse({'msg': 'Invalid email format'}, status=400)
 				_user.email = _email
 			if _birthday is not None:
 				_user.birthday = datetime.strptime(_birthday, '%Y-%m-%d').date()
@@ -123,6 +130,27 @@ def get_brace(request):
 	print(_user)
 	return JsonResponse(_user.get_brace())
 
+
+def get_ratio(request):
+	_id = request.GET.get('user_id')
+	_user = User.objects.get(user_id=_id)
+	if _user.start_date is None or _user.end_date is None:
+		return JsonResponse({'msg': 'get_ratio error', 'ratio':0, 'status': 404})
+
+	if _user.start_date is not None and _user.end_date is not None:
+		total_day = (_user.end_date - _user.start_date).days
+		print(f"总正畸日：{total_day} 天")
+
+	# 计算当前日期 - start_date 的天数
+	current_date = date.today()
+	if _user.start_date is not None:
+		days_from_start = (current_date - _user.start_date).days
+		print(f"已经正畸： {days_from_start} 天")
+
+	return JsonResponse({'msg': 'get_ratio ok', 'ratio':days_from_start/total_day, 'status': 500})
+
+		
+
 @csrf_exempt
 def change_brace(request):
 	try:
@@ -131,6 +159,8 @@ def change_brace(request):
 			_brace_total = request.GET.get('brace_total')
 			_brace_used = request.GET.get('brace_used')
 			_followup_date = request.GET.get('followup_date')
+			_start_date = request.GET.get('start_date')
+			_end_date = request.GET.get('end_date')
 			_user = User.objects.filter(user_id=_id).first()
 
 			if _brace_total is not None:
@@ -138,7 +168,11 @@ def change_brace(request):
 			if _brace_used is not None:
 				_user.brace_used = _brace_used
 			if _followup_date is not None:
-				_user.followup_date = _followup_date
+				_user.followup_date = datetime.strptime(_followup_date, '%Y-%m-%d').date()
+			if _start_date is not None:
+				_user.start_date = datetime.strptime(_start_date, '%Y-%m-%d').date()
+			if _end_date is not None:
+				_user.end_date = datetime.strptime(_end_date, '%Y-%m-%d').date()
 
 				_user.save()
 			print('牙套数据更新成功')
@@ -149,3 +183,44 @@ def change_brace(request):
 	except Exception as e:
 		print(f'牙套数据更新失败: {str(e)}')
 		return JsonResponse({'msg':'change_brace error'}, status=500)
+	
+
+@csrf_exempt
+def import_doctor():
+	try:
+		print("import doctors....")
+		path = "media/doctor.csv"
+		with open(path, encoding='utf-8') as f:
+			print("get csv...")
+			reader = csv.reader(f)
+			for row in reader:
+				obj, created = User.objects.get_or_create(
+					is_doctor = 1,
+					real_name=row[0],
+					title=row[1],
+					school=row[2],
+					degree=row[3],
+					)
+		return JsonResponse({'msg':'import_doctor ok'})
+	except Exception as e:
+		print(e)
+		return JsonResponse({'msg':'import_doctor error'}, status=500)	
+
+
+def get_doctor(request):
+	try:
+		if request.method == 'GET':
+			doctors = User.objects.filter(is_doctor=1)
+			doctor_list = []
+			for doctor in doctors:
+				doctor_dict = {
+					'real_name': doctor.real_name,
+					'title': doctor.title,
+					'school': doctor.school,
+					'degree': doctor.degree,
+					}
+				doctor_list.append(doctor_dict)
+		return JsonResponse({'doctors': doctor_list})
+	except Exception as e:
+		return JsonResponse({'msg': 'get_doctors error'}, status=500)
+	
