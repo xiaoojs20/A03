@@ -18,13 +18,23 @@ class User(models.Model):
     introduce = models.CharField(max_length=100, default='', null=True, blank=True, verbose_name='个人简介')
     
 	# 牙套相关
-    is_doctor = models.BooleanField(default=False, verbose_name='是否为医生用户')
     brace_total = models.IntegerField(null=True, default=0, verbose_name='牙套总数量')
     brace_used = models.IntegerField(null=True, default=0, verbose_name='已佩戴牙套数量')
     followup_date = models.DateField(null=True, blank=True, verbose_name='下次复诊日期')
+    start_date = models.DateField(null=True, blank=True, verbose_name='正畸起始日期')
+    end_date = models.DateField(null=True, blank=True, verbose_name='正畸预计结束日期')
 
     # 论坛相关
     post_count = models.IntegerField(default=0, verbose_name='发帖总数')
+
+    # 医生用户额外信息，医生信息不可空白
+    is_doctor = models.BooleanField(default=False, verbose_name='是否为医生用户')
+    real_name =  models.CharField(max_length=50, default='牙医生', null=True, blank=True, verbose_name='医生实名')
+    title = models.CharField(max_length=100, default='牙医', null=True, blank=True, verbose_name='医生职称')
+    # hospital = models.CharField(max_length=50, default='北京协和医学院', null=True, verbose_name='就职医院')
+    school = models.CharField(max_length=50, default='北京大学', null=True, blank=True, verbose_name='毕业院校')
+    degree = models.CharField(max_length=50, default='学硕博士', null=True, blank=True, verbose_name='学位')
+
 
     def __str__(self):
         """将模型类以字符串的方式输出"""
@@ -42,6 +52,8 @@ class User(models.Model):
 				# 'user_image':self.user_image,
 				'introduce':self.introduce,
                 'is_doctor':self.is_doctor,
+                'start_date':self.start_date,
+                'end_date':self.end_date,
                 }
     
     def get_brace(self):
@@ -50,6 +62,8 @@ class User(models.Model):
                 'brace_total':self.brace_total,
                 'brace_used':self.brace_used,
                 'followup_date':self.followup_date,
+                'start_date':self.start_date,
+                'end_date':self.end_date,
                 }
 
     #元类信息 : 修改表名
