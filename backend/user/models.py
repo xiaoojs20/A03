@@ -26,6 +26,8 @@ class User(models.Model):
 
     # 论坛相关
     post_count = models.IntegerField(default=0, verbose_name='发帖总数')
+    follow_list = models.ManyToManyField('self', symmetrical=False, related_name='关注列表')
+    fans_list = models.ManyToManyField('self', symmetrical=False, related_name='粉丝列表')
 
     # 医生用户额外信息，医生信息不可空白
     is_doctor = models.BooleanField(default=False, verbose_name='是否为医生用户')
