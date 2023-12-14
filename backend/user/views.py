@@ -146,8 +146,9 @@ def get_ratio(request):
 	if _user.start_date is not None:
 		days_from_start = (current_date - _user.start_date).days
 		print(f"已经正畸： {days_from_start} 天")
-
-	return JsonResponse({'msg': 'get_ratio ok', 'ratio':days_from_start/total_day, 'status': 500})
+	ratio = days_from_start/total_day
+	print(f"正畸进度：{ratio}")
+	return JsonResponse({'msg': 'get_ratio ok', 'ratio':ratio, 'status': 500})
 
 		
 
@@ -183,7 +184,57 @@ def change_brace(request):
 	except Exception as e:
 		print(f'牙套数据更新失败: {str(e)}')
 		return JsonResponse({'msg':'change_brace error'}, status=500)
-	
+
+@csrf_exempt
+def add_following(request):
+	_id = request.GET.get('user_id')
+	_follow_name = request.GET.get('follow_name')
+	if _id is None or _follow_name is None:
+		return JsonResponse({'msg': 'add_following error', 'status': 404})
+	_user = User.objects.get(user_id=_id)
+	_follow_user = User.objects.get(nickname=_follow_name)
+
+	_user.follow_list.add(_follow_user)
+	_follow_user.fans_list.add(_user)
+	return JsonResponse({'msg': 'add_following ok', 'status': 500})
+
+@csrf_exempt
+def remove_following(request):
+	_id = request.GET.get('user_id')
+	_unfollow_name = request.GET.get('unfollow_name')
+	if _id is None or _unfollow_name is None:
+		return JsonResponse({'msg': 'remove_following error', 'status': 404})
+		
+	_user = User.objects.get(user_id=_id)
+	_unfollow_user = User.objects.get(nickname=_unfollow_name)
+
+	_user.follow_list.remove(_unfollow_user)
+	_unfollow_user.fans_list.remove(_user)
+	return JsonResponse({'msg': 'remove_following ok', 'status': 500})
+
+def get_following(request):
+	try:
+		if request.method == 'GET':
+			_id = request.GET.get('user_id')
+			_user = User.objects.get(user_id=_id)
+			fo_username_list = []
+			for fo_user in _user.follow_list:
+				fo_username_list.append(fo_user.nickname)
+		return JsonResponse({'following': fo_username_list})
+	except Exception as e:
+		return JsonResponse({'msg': 'get_following error'}, status=500)
+
+def get_fans(request):
+	try:
+		if request.method == 'GET':
+			_id = request.GET.get('user_id')
+			_user = User.objects.get(user_id=_id)
+			fans_username_list = []
+			for fans_user in _user.follow_list:
+				fans_username_list.append(fans_user.nickname)
+		return JsonResponse({'fans': fans_username_list})
+	except Exception as e:
+		return JsonResponse({'msg': 'get_fans error'}, status=500)
 
 @csrf_exempt
 def import_doctor():
