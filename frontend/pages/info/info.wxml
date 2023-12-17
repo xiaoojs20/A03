@@ -2,7 +2,7 @@
 <view class="container more">
   <view class="user flex-wrp">
     <view class="avatar flex-item">
-      <image class="userinfo-avatar" src= "{{getApp().globalData.avatarUrl}}" background-size="cover"></image>
+      <image class="userinfo-avatar" src= "{{avatarUrl}}" background-size="cover"></image>
     </view>
     <view class="user-info flex-item">
       <text class="userinfo-nickname">{{nickname}}</text>
@@ -29,14 +29,16 @@
         <text>我的收藏</text>
       </view>
     </view>
-    <view class="my-item flex-wrp">
-      <view class="myitem-icon flex-item" >
-        <image src="/images/info/draft.png"></image>
+    <navigator url="/pages/showdoctors/showdoctors">
+      <view class="my-item flex-wrp">
+        <view class="myitem-icon flex-item" >
+          <image src="/images/info/mappin.png"></image>
+        </view>
+        <view class="myitem-name flex-item">
+          <text>同城医生</text>
+        </view>
       </view>
-      <view class="myitem-name flex-item">
-        <text>我的草稿</text>
-      </view>
-    </view>
+    </navigator>
     <view class="my-item flex-wrp">
       <view class="myitem-icon flex-item" >
         <image src="/images/info/recent.png"></image>

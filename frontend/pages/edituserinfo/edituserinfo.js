@@ -70,7 +70,7 @@ Page({
           gender: this.data.gender,
           email: this.data.email,
           mobile: this.data.mobile,
-          //birthday: this.data.birthday,
+          birthday: this.data.birthday,
           introduce: this.data.introduce
         },
         success: (res) => {
@@ -108,6 +108,7 @@ Page({
       showPopup: false,
       birthday: formattedDate,
     });
+    getApp().globalData.birthday = this.data.birthday;
   },
 
   formatDateString(date) {
@@ -130,6 +131,7 @@ Page({
       formData: { user: 'test' },
       success(res) {
         // 上传完成需要更新 fileList
+        console.log(file.url);
         const { fileList = [] } = this.data;
         fileList.push({ ...file, url: res.data });
         this.setData({ fileList });
