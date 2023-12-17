@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "医生资格认证",
+  "usingComponents": {
+    "van-uploader": "@vant/weapp/uploader/index",
+    "van-button": "@vant/weapp/button/index"
+  }
+}
