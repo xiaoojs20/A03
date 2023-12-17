@@ -218,6 +218,8 @@ def get_following(request):
 			_id = request.GET.get('user_id')
 			_user = User.objects.get(user_id=_id)
 			fo_username_list = []
+			if _user.follow_list == None:
+				return JsonResponse({'following': None})
 			for fo_user in _user.follow_list:
 				fo_username_list.append(fo_user.nickname)
 		return JsonResponse({'following': fo_username_list})
@@ -230,9 +232,11 @@ def get_fans(request):
 			_id = request.GET.get('user_id')
 			_user = User.objects.get(user_id=_id)
 			fans_username_list = []
-			for fans_user in _user.follow_list:
+			if _user.fans_list == None:
+				return JsonResponse({'fans': None, 'fans number': 0})
+			for fans_user in _user.fans_list:
 				fans_username_list.append(fans_user.nickname)
-		return JsonResponse({'fans': fans_username_list})
+		return JsonResponse({'fans': fans_username_list, 'fans number': len(fans_username_list)})
 	except Exception as e:
 		return JsonResponse({'msg': 'get_fans error'}, status=500)
 
