@@ -11,7 +11,8 @@
     "pages/userprotocol/userprotocol",
     "pages/edituserinfo/edituserinfo",
     "pages/setreminders/setreminders",
-    "pages/myfollowing/myfollowing"
+    "pages/myfollowing/myfollowing",
+    "pages/showdoctors/showdoctors"
   ],
   "window": {
     "backgroundTextStyle": "light",

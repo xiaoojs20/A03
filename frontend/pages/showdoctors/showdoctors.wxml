@@ -1,0 +1,22 @@
+<!--pages/showdoctors/showdoctors.wxml-->
+<van-cell-group>
+  <van-cell 
+    wx:for="{{doctors}}" 
+    wx:key="index"
+    data-index="{{index}}"
+    size="large"
+    title="{{item.real_name}}"
+    value="{{item.title}}"
+    bind:click="showDoctorDetails"
+  />
+</van-cell-group>
+<van-popup
+  show="{{ showDoctorData }}"
+  position="bottom"
+  custom-style="height: 40%;"
+  bind:close="onCloseDoctor">
+    <van-cell title="姓名" value="{{doctorName}}" />
+    <van-cell title="职称" value="{{doctorTitle}}" />
+    <van-cell title="毕业院校" value="{{doctorSchool}}" />
+    <van-cell title="学位" value="{{doctorDegree}}" />
+</van-popup>

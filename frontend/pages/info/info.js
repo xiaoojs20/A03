@@ -2,6 +2,7 @@
 Page({
   data: {
     nickname: '',
+    avatarUrl: '',
   },
 
   // 进入编辑个人信息主页
@@ -15,27 +16,9 @@ Page({
   onLoad: function () {
     console.log('onLoad');
     //调用应用实例的方法获取全局数据
-    this.handleGetInfo();
+    this.setData({
+      nickname: getApp().globalData.nickname,
+      avatarUrl: getApp().globalData.avatarUrl,
+    })
   },
-
-  handleGetInfo() {
-        wx.request({
-          url: 'http://43.143.205.76:8000/user/get_info',
-          data: {
-            user_id: getApp().globalData.userid
-          },
-          success: (res) => {
-            // 请求成功时的回调
-            console.log(res.data); // 输出返回的数据
-            // 在这里你可以对返回的数据进行处理
-            this.setData({
-              nickname: res.data.nickname, // 更新nickname的值
-            });
-          },
-          fail: (err) => {
-            // 请求失败时的回调
-            console.error('请求失败', err);
-          }
-        });
-    },
 })
