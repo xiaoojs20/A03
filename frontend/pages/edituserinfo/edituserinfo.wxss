@@ -10,3 +10,8 @@ van-radio-group{
 .van-button {
   margin-top: 20px;
 }
+
+.photo{
+  height: 50%;
+  width: 90%;
+}

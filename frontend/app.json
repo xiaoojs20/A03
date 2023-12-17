@@ -9,7 +9,9 @@
     "pages/forum/post-detail/post-detail",
     "pages/forum/create-post/create-post",
     "pages/userprotocol/userprotocol",
-    "pages/edituserinfo/edituserinfo"
+    "pages/edituserinfo/edituserinfo",
+    "pages/setreminders/setreminders",
+    "pages/myfollowing/myfollowing"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -18,25 +20,7 @@
     "navigationBarTextStyle": "black"
   },
   "sitemapLocation": "sitemap.json",
-  "usingComponents": {
-    "van-button": "@vant/weapp/button/index",
-    "van-field": "@vant/weapp/field/index",
-    "van-cell": "@vant/weapp/cell/index",
-    "van-cell-group": "@vant/weapp/cell-group/index",
-    "van-tabbar": "@vant/weapp/tabbar/index",
-    "van-tabbar-item": "@vant/weapp/tabbar-item/index",
-    "van-grid": "@vant/weapp/grid/index",
-    "van-grid-item": "@vant/weapp/grid-item/index",
-    "van-circle": "@vant/weapp/circle/index",
-    "van-tab": "@vant/weapp/tab/index",
-    "van-tabs": "@vant/weapp/tabs/index",
-    "van-slider": "@vant/weapp/slider/index",
-    "van-datetime-picker": "@vant/weapp/datetime-picker/index",
-    "van-popup": "@vant/weapp/popup/index",
-    "van-radio": "@vant/weapp/radio/index",
-    "van-radio-group": "@vant/weapp/radio-group/index",
-    "van-uploader": "@vant/weapp/uploader/index"
-  },
+  "usingComponents": {},
   "tabBar": {
     "color": "#626567",
     "selectedColor": "#2A8CE5",

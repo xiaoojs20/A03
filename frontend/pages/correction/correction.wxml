@@ -15,15 +15,9 @@
       <van-button 
         type="info" 
         custom-class="primary-button"
-        bind:tap="handleButtonClick1">
+        bind:tap="handleSetReminder">
         设置微信提醒
       </van-button>
-    </view>
-    <view class="button-container">
-      <van-button
-      type="info"
-      bind:tap="handleButtonClick2"
-      >查看统计信息</van-button>
     </view>
     <view class="button-container">
       <van-button
@@ -31,6 +25,48 @@
       bind:tap="handleClockIn"
       >点击此处打卡</van-button>
     </view>
+    <view class="button-container">
+      <van-button
+      type="info"
+      bind:tap="handleSetDate"
+      >设置正畸日期</van-button>
+    </view>
+    <van-popup
+      show="{{ showSetDate }}"
+      position="bottom"
+      custom-style="height: 20%;"
+      bind:close="onCloseSetDate">
+      <van-cell-group>
+        <van-cell title="开始日期" value="{{start_date}}" bind:click="handleSetStartDate"/>
+        <van-cell title="结束日期" value="{{end_date}}" bind:click="handleSetEndDate"/>
+      </van-cell-group>
+    </van-popup>
+    <van-popup 
+      position="bottom"
+      custom-style="height: 40%;"
+      show="{{showSetStartDate}}">
+      <van-datetime-picker
+        type="date"
+        value="{{startSetDate}}"
+        max-date="{{ currentDate }}"
+        begin="2020-01-01"
+        bind:confirm="onConfirmStartDate"
+        bind:cancel="onCancelStartDate"
+      />
+    </van-popup>
+    <van-popup 
+      position="bottom"
+      custom-style="height: 40%;"
+      show="{{showSetEndDate}}">
+      <van-datetime-picker
+        type="date"
+        value="{{endSetDate}}"
+        min-date="{{ currentDate }}"
+        end="2030-01-01"
+        bind:confirm="onConfirmEndDate"
+        bind:cancel="onCancelEndDate"
+      />
+    </van-popup>
     <view class="wear-tips" bind:tap="handleWearTipsClick">
       <text class="wear-tips-text">佩戴提示</text>
     </view>

@@ -1,10 +1,7 @@
 // app.js
 App({
   onLaunch: function () {
-    //调用API从本地缓存中获取数据
-    var logs = wx.getStorageSync('logs') || []
-    logs.unshift(Date.now())
-    wx.setStorageSync('logs', logs)
+    wx.clearStorageSync();
   },
 
   // 用户信息全局数据
@@ -16,11 +13,13 @@ App({
     email: '',
     birthday: '',
     introduce: '',
-    avatarUrl: '',
+    avatarUrl: '/images/info/defaultavatar.png',
     is_doctor: false,
     braceAmount: '',
     braceAmountUsed: '',
     followupDate: '',
+    start_date: '',
+    end_date: '',
   },
 
   handleGetInfoGlobal() {
