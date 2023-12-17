@@ -1,7 +1,7 @@
 // pages/correction/correction.js
 Page({
   data: {
-    circleProgress: 70,   // 环形进度条进度
+    circleProgress: 0,   // 环形进度条进度
     allBraceAmount: 100,  // 总牙套数量
     braceAmount: 0,      // 剩余牙套数量
     followupDate: "2023-12-31",     // 复诊日期
@@ -13,6 +13,13 @@ Page({
     },
     showPopup: false,
     popupDate: new Date().getTime(),
+    showSetDate: false,
+    showSetStartDate: false,
+    showSetEndDate: false,
+    start_date: "2021-12-31",
+    end_date: "2025-12-31",
+    startSetDate: new Date(2021, 0, 1).getTime(),
+    endSetDate: new Date(2025, 0, 1).getTime(),
   },
 
   handleGetBrace() {
@@ -27,18 +34,33 @@ Page({
           getApp().globalData.braceAmount = res.data.brace_total;
           getApp().globalData.braceAmountUsed = res.data.brace_used;
           getApp().globalData.followupDate = res.data.followup_date;
+          getApp().globalData.start_date = res.data.start_date;
+          getApp().globalData.end_date = res.data.end_date;
           
           // 给复诊日期进行初始化
-          if (getApp().globalData.followupDate == null) {
+          if (getApp().globalData.followupDate == "") {
             const currentDate = new Date().toISOString().split('T')[0];
             getApp().globalData.followupDate = currentDate;
             console.log(getApp().globalData.followupDate);
           }
-
+          // 给起始日期进行初始化
+          if (getApp().globalData.start_date == "") {
+            const currentDate = new Date().toISOString().split('T')[0];
+            getApp().globalData.start_date = currentDate;
+            console.log(getApp().globalData.start_date);
+          }
+          // 给终止日期进行初始化
+          if (getApp().globalData.end_date == "") {
+            const currentDate = new Date().toISOString().split('T')[0];
+            getApp().globalData.end_date = currentDate;
+            console.log(getApp().globalData.end_date);
+          }
           this.setData({
             allBraceAmount: getApp().globalData.braceAmount,
             braceAmount: getApp().globalData.braceAmount - getApp().globalData.braceAmountUsed,
             followupDate: getApp().globalData.followupDate,
+            start_date:  getApp().globalData.start_date,
+            end_date:  getApp().globalData.end_date,
           });
           resolve(); // 数据获取成功，调用 resolve
         },
@@ -58,7 +80,9 @@ Page({
         user_id: getApp().globalData.userid,
         brace_total: getApp().globalData.braceAmount,
         brace_used: getApp().globalData.braceAmountUsed,
-        followup_date: getApp().globalData.followupDate
+        followup_date: getApp().globalData.followupDate,
+        start_date: getApp().globalData.start_date,
+        end_date: getApp().globalData.end_date,
       },
       success: (res) => {
         console.log(res.data);
@@ -69,10 +93,34 @@ Page({
     });
   },
 
+  // 获取进度信息
+  handleGetRatio() {
+    wx.request({
+      url: 'http://43.143.205.76:8000/user/get_ratio/',
+      method: 'GET',
+      data: {
+        user_id: getApp().globalData.userid
+      },
+      success: (res) => {
+        // 请求成功时的回调
+        console.log(res.data); // 输出返回的数据
+        // 在这里你可以对返回的数据进行处理
+        this.setData({
+          circleProgress: parseInt(res.data.ratio*100),
+        });
+      },
+      fail: (err) => {
+        // 请求失败时的回调
+        console.error('请求失败', err);
+      }
+    });
+  },
+
   async onLoad() {
     try {
       // 初始化页面数据
       await this.handleGetBrace();
+      this.handleGetRatio();
   
       // 获取时间
       const followupTimestamp = new Date(getApp().globalData.followupDate).getTime(); // 获取复诊日期的时间戳
@@ -156,6 +204,7 @@ Page({
     this.handleChangeBrace();
   },
 
+  // 处理打卡
   handleClockIn() {
     // 获取当前时间
     let now = new Date();
@@ -174,7 +223,7 @@ Page({
       method: 'POST',
       data: {
         "user_id": getApp().globalData.userid,
-        "wear_time": "02:30:00"
+        "wear_time": "02:30:00",
       },
       success: (res) => {
         // 请求成功时的回调
@@ -190,5 +239,61 @@ Page({
         console.error('请求失败', err);
       }
     });
+  },
+
+  // 处理微信提醒设置
+  handleSetReminder() {
+    wx.navigateTo({
+      url: '/pages/setreminders/setreminders'
+    });
+    console.log("跳转至设置微信提醒界面");
+  },
+
+  // 处理正畸日期设置
+  handleSetDate() {
+    this.setData({ showSetDate: true });
+  },
+
+  onCloseSetDate() {
+    this.handleGetRatio();
+    this.setData({ showSetDate: false });
+  },
+
+  handleSetStartDate() {
+    this.setData({ showSetStartDate: true });
+  },
+
+  onCancelStartDate() {
+    this.setData({ showSetStartDate: false });
+  },
+
+  onConfirmStartDate(event) {
+    const selectedDate = new Date(event.detail);
+    const formattedDate = this.formatDateString(selectedDate);
+    this.setData({
+      start_date: formattedDate,
+      showSetStartDate: false
+    });
+    getApp().globalData.start_date = formattedDate;
+    this.handleChangeBrace();
+  },
+
+  handleSetEndDate() {
+    this.setData({ showSetEndDate: true });
+  },
+
+  onCancelEndDate() {
+    this.setData({ showSetEndDate: false });
+  },
+
+  onConfirmEndDate(event) {
+    const selectedDate = new Date(event.detail);
+    const formattedDate = this.formatDateString(selectedDate);
+    this.setData({
+      end_date: formattedDate,
+      showSetEndDate: false
+    });
+    getApp().globalData.end_date = formattedDate;
+    this.handleChangeBrace();
   },
 });

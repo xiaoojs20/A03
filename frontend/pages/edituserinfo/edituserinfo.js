@@ -2,7 +2,7 @@
 Page({
   data: {
     showPopup: false,    // 生日输入框控制
-    minDate: new Date(1900, 1, 1).getTime(),
+    minDate: new Date(1970, 1, 1).getTime(),
     maxDate: new Date().getTime(),
     avatarUrl: '',  // 头像地址
     nickname: getApp().globalData.nickname,   // 昵称

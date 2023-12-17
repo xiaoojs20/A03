@@ -1,5 +1,7 @@
 {
   "enablePullDownRefresh": false,
   "backgroundTextStyle": "light",
-  "usingComponents": {}
+  "usingComponents": {
+    "van-button": "@vant/weapp/button/index"
+  }
 }
