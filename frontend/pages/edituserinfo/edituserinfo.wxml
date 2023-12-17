@@ -1,6 +1,11 @@
 <!--pages/edituserinfo/edituserinfo.wxml-->
 <view class="container">
-  <van-cell-group>
+  <image 
+    src="/images/mains/background_mains.jpeg"
+    class="background">
+  </image>
+
+  <van-cell-group class="info">
     <van-field
       value= "{{ nickname }}"
       label="用户名"
@@ -8,13 +13,13 @@
       bindblur="handleInputNickname"
     />
 
-  <van-radio-group value="{{gender}}" 
-  bind:change="handleChooseGender">
-    <van-cell title="性别">
-      <van-radio slot="right-icon" name="1">男</van-radio>
-      <van-radio slot="right-icon" name="2">女</van-radio>
-    </van-cell>
-  </van-radio-group>
+    <van-radio-group value="{{gender}}" 
+    bind:change="handleChooseGender">
+      <van-cell title="性别">
+        <van-radio slot="right-icon" name="1">男</van-radio>
+        <van-radio slot="right-icon" name="2">女</van-radio>
+      </van-cell>
+    </van-radio-group>
 
     <van-field
       value="{{email}}"
@@ -67,11 +72,23 @@
     file-list="{{ fileList }}"
     max-count="1"
     accept="image">
-      <van-button icon="photo" type="info" id="photo">上传头像</van-button>
+      <van-field
+        label="头像"
+        center
+        use-button-slot>
+        <van-button 
+          size="small"
+          slot="button"
+          icon="photo"
+          type="info"
+          id="photo">
+          上传头像</van-button>
+      </van-field>
     </van-uploader>
   </van-cell-group>
 
   <van-button 
+    class="confirm"
     type="info"
     bind:click="handleChangeInfo"
   >确认</van-button>

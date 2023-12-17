@@ -1,5 +1,10 @@
 <!--login.wxml-->
 <view class="container">
+  <image 
+    src="/images/mains/background_mains.jpeg"
+    class="background">
+  </image>
+
   <view class="welcome_text_container">
     <text class="welcome_text">欢迎来到牙牙回家！</text>
   </view>
