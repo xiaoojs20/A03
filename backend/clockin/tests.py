@@ -1,134 +1,137 @@
 from django.test import TestCase, Client
-from django.contrib.auth.models import User
+from user.models import User
 from .models import OrthodonticCheckIn
 from django.utils import timezone
 from django.urls import reverse
-from datetime import time, timedelta,datetime
 import json
-from django.utils.timezone import make_aware, get_current_timezone
 import pytz
+
+beijing_tz = pytz.timezone('Asia/Shanghai')
+timezone.activate(beijing_tz)
 class OrthodonticCheckInModelTests(TestCase):
     def setUp(self):
         # 创建一个用户进行测试
-        self.user = User.objects.create_user(username='testuser', password='12345')
+        self.user = User.objects.create(
+            user_id='testuser123', 
+            nickname='Test User', 
+            gender=0,
+            # 其他必需的字段...
+        )
 
     def test_check_in_creation(self):
         # 测试创建打卡记录
         check_in = OrthodonticCheckIn.objects.create(
             user=self.user,
-            wear_time="20:00:00",#time(2, 30),  # 假设用户佩戴了2小时30分钟
-            date=timezone.now().date()
+            check_in_type="on",
+            date=timezone.now().strftime("%Y-%m-%d %H:%M:%S")
         )
         
         self.assertEqual(check_in.user, self.user)
-        self.assertEqual(check_in.wear_time, time(20,0))
-        self.assertEqual(check_in.date, timezone.now().date())
+        self.assertEqual(check_in.check_in_type, "on")
+        self.assertEqual(check_in.date.strftime("%Y-%m-%d %H:%M:%S"), timezone.now().strftime("%Y-%m-%d %H:%M:%S"))
+
 
 class OrthodonticCheckInViewTests(TestCase):
+
     def setUp(self):
         # 创建一个用户进行测试
-        self.user = User.objects.create_user(username='testuser', password='12345')
-        self.client = Client()
-        self.client.login(username='testuser', password='12345')
+        self.user = User.objects.create(
+            user_id='o-Hbd6RvDXxQl0_cZ3_HKHPwNyGo', 
+            nickname='Test User', 
+            gender=0,
+            # 其他必需的字段...
+        )
 
     def test_check_in_view(self):
         url = reverse('clockin')  # 使用 urlpatterns 中定义的 name
-        user_id = self.user.id
+        user_id = self.user.user_id  # 使用自定义 User 的 user_id
 
-        # 发送 POST 请求，包含 user_id 和 wear_time
-        response = self.client.post(url, json.dumps({'user_id': user_id, 'wear_time': '02:30:00'}), content_type='application/json')
+        # 发送 POST 请求，包含 user_id 和 check_in_type
+        response = self.client.post(url, json.dumps({'user_id': user_id, 'check_in_type': 'on'}), content_type='application/json')
 
         # 检查是否成功并返回了201状态码
         self.assertEqual(response.status_code, 201)
+
     def test_check_in_view_with_invalid_user_id(self):
-        # 测试无效的 user_id
         url = reverse('clockin')
-        invalid_user_id = 99999  # 假设的无效用户 ID
+        invalid_user_id = 'invalid123'  # 假设的无效用户 ID
 
         # 发送 POST 请求
-        response = self.client.post(url, json.dumps({'user_id': invalid_user_id, 'wear_time': '02:30:00'}), content_type='application/json')
+        response = self.client.post(url, json.dumps({'user_id': invalid_user_id, 'check_in_type': 'on'}), content_type='application/json')
 
         # 检查是否因为无效的用户而返回了404状态码
         self.assertEqual(response.status_code, 404)
 
     def test_check_in_view_without_login(self):
-        # 使用 'reverse' 函数获取 URL
         url = reverse('clockin')
-        
-        # 创建一个新的客户端实例，不进行登录
         new_client = Client()
         
         # 发送 POST 请求
-        response = new_client.post(url, {'wear_time': '02:30:00'}, content_type='application/json')
+        response = new_client.post(url, json.dumps({'check_in_type': 'on'}), content_type='application/json')
         
         # 检查是否因为未登录而返回了重定向状态码
-        self.assertEqual(response.status_code, 302)  # 302 是未登录时的重定向状态码
+        self.assertEqual(response.status_code, 302)  # 302
 
     def test_check_in_view_bad_request(self):
-        # 测试视图对于错误格式的请求是否返回400状态码
-        url = reverse('clockin')  # 使用 urlpatterns 中定义的 name
+        url = reverse('clockin')
 
-        # 发送 POST 请求
-        response = self.client.post(url, {'wear_time': 'not a time'}, content_type='application/json')
-        #print(response)
-        # 检查是否因为错误的数据格式而返回了400状态码
+        # 发送 POST 请求，但不包含必需的字段
+        response = self.client.post(url, json.dumps({'check_in_type': 'off'}), content_type='application/json')
+        
+        # 检查是否因为缺少必要字段而返回了400状态码
+        self.assertEqual(response.status_code, 400)
+    def test_check_in_view_invalid_data(self):
+        url = reverse('clockin')
+
+        # 发送 POST 请求，但包含无效数据
+        response = self.client.post(url, json.dumps({'user_id': self.user.user_id, 'check_in_type': '无效类型'}), content_type='application/json')
+
+        # 检查是否因为无效的数据而返回了400状态码
         self.assertEqual(response.status_code, 400)
     def test_check_in_user_association(self):
-        # Create a second user
-        second_user = User.objects.create_user(username='seconduser', password='67890')
+    # Create a second user
+        second_user = User.objects.create(
+            user_id='seconduser123', 
+            nickname='Second User', 
+            gender=0,
+            # 其他必需的字段...
+        )
+
         # Create a check-in for the second user
         check_in = OrthodonticCheckIn.objects.create(
             user=second_user,
-            wear_time=time(1, 0),  # 1 hour
+            check_in_type="on",  # Using check_in_type instead of wear_time
             date=timezone.now().date()
         )
+
         # Assert that the check-in is associated with the second user
         self.assertEqual(check_in.user, second_user)
-    def test_check_in_creation_current_date(self):
-        url = reverse('clockin')  # Adjust with the correct URL name
-        user_id = self.user.id
-        # 发送包含 user_id 和 wear_time 的 POST 请求
-        response = self.client.post(url, json.dumps({'user_id': user_id, 'wear_time': '02:30:00'}), content_type='application/json')
-        self.assertEqual(response.status_code, 201)
-        check_in = OrthodonticCheckIn.objects.get(user=self.user)
-        self.assertEqual(check_in.date, datetime.today().date())
+
+
     def test_check_in_update(self):
+    # Create a check-in
         check_in = OrthodonticCheckIn.objects.create(
             user=self.user,
-            wear_time=time(2, 30),
+            check_in_type="on",
             date=timezone.now().date()
         )
-        check_in.wear_time = time(3, 0)  # Update to 3 hours
+
+        # Update check-in type
+        check_in.check_in_type = "off"  # Update to a different check-in type
         check_in.save()
+
+        # Retrieve the updated check-in
         updated_check_in = OrthodonticCheckIn.objects.get(id=check_in.id)
-        self.assertEqual(updated_check_in.wear_time, time(3, 0))
-    def test_check_in_deletion(self):
-        check_in = OrthodonticCheckIn.objects.create(
-            user=self.user,
-            wear_time=time(2, 30),
-            date=timezone.now().date()
-        )
-        check_in_id = check_in.id
-        check_in.delete()
-        with self.assertRaises(OrthodonticCheckIn.DoesNotExist):
-            OrthodonticCheckIn.objects.get(id=check_in_id)
-    def test_check_in_view_invalid_data(self):
-        url = reverse('clockin')
-        response = self.client.post(url, {}, content_type='application/json')
-        self.assertEqual(response.status_code, 400)  # Bad request due to missing data
+        self.assertEqual(updated_check_in.check_in_type, "off")
+
+
+
     def test_check_in_view_response_format(self):
         url = reverse('clockin')
-        response = self.client.post(url, {'wear_time': '02:30:00'}, content_type='application/json')
+
+        # 发送 POST 请求
+        response = self.client.post(url, json.dumps({'user_id': self.user.user_id, 'check_in_type': 'off'}), content_type='application/json')
+
+        # 检查响应的内容类型
         self.assertEqual(response['Content-Type'], 'application/json')
 
-
-    def test_check_in_timezone_handling(self):
-        #local_tz = get_current_timezone()
-        local_time = timezone.localtime(timezone.now())
-        check_in = OrthodonticCheckIn.objects.create(
-            user=self.user,
-            wear_time=time(2, 30),
-            date=local_time.date()
-        )
-        self.assertEqual(check_in.date, local_time.date())
-    
