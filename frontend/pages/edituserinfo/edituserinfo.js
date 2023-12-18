@@ -123,19 +123,8 @@ Page({
   // 上传头像
   handleAfterRead(event) {
     const { file } = event.detail;
+    getApp().globalData.avatarUrl = file.url;
     // 当设置 mutiple 为 true 时, file 为数组格式，否则为对象格式
-    wx.uploadFile({
-      url: 'https://example.weixin.qq.com/upload',
-      filePath: file.url,
-      name: 'file',
-      formData: { user: 'test' },
-      success(res) {
-        // 上传完成需要更新 fileList
-        console.log(file.url);
-        const { fileList = [] } = this.data;
-        fileList.push({ ...file, url: res.data });
-        this.setData({ fileList });
-      },
-    });
+    console.log(file.url);
   },
 });
