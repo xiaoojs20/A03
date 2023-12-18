@@ -12,7 +12,9 @@
     "pages/edituserinfo/edituserinfo",
     "pages/setreminders/setreminders",
     "pages/myfollowing/myfollowing",
-    "pages/showdoctors/showdoctors"
+    "pages/showdoctors/showdoctors",
+    "pages/doctorcertificate/doctorcertificate",
+    "pages/myfans/myfans"
   ],
   "window": {
     "backgroundTextStyle": "light",
