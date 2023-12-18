@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, Http404, JsonResponse, response
 from django.core import serializers
+from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.decorators import api_view
 from django.views.decorators.csrf import csrf_exempt
 from .models import User
@@ -194,28 +195,43 @@ def change_brace(request):
 def add_following(request):
 	_id = request.GET.get('user_id')
 	_follow_name = request.GET.get('follow_name')
-	if _id is None or _follow_name is None:
-		return JsonResponse({'msg': 'add_following error', 'status': 404})
-	_user = User.objects.get(user_id=_id)
-	_follow_user = User.objects.get(nickname=_follow_name)
+	try:
+		if _id is None or _follow_name is None:
+			return JsonResponse({'msg': 'add_following error', 'status': 404})
+		_user = User.objects.get(user_id=_id)
+		_follow_user = User.objects.get(nickname=_follow_name)
+		# 检查是否已经关注该用户
+		if _user.follow_list.filter(pk=_follow_user.pk).exists():
+			return JsonResponse({'msg': 'Already following this user', 'status': 200})
 
-	_user.follow_list.add(_follow_user)
-	_follow_user.fans_list.add(_user)
-	return JsonResponse({'msg': 'add_following ok', 'status': 500})
+		_user.follow_list.add(_follow_user)
+		_follow_user.fans_list.add(_user)
+		return JsonResponse({'msg': 'add_following ok', 'status': 200})
+	except ObjectDoesNotExist:
+		return JsonResponse({'msg': 'User not found', 'status': 404})
+	except Exception as e:
+		return JsonResponse({'msg': f'add_following error: {e}', 'status': 500})
 
 @csrf_exempt
 def remove_following(request):
 	_id = request.GET.get('user_id')
 	_unfollow_name = request.GET.get('unfollow_name')
-	if _id is None or _unfollow_name is None:
-		return JsonResponse({'msg': 'remove_following error', 'status': 404})
+	try:
+		if _id is None or _unfollow_name is None:
+			return JsonResponse({'msg': 'remove_following error', 'status': 404})
 		
-	_user = User.objects.get(user_id=_id)
-	_unfollow_user = User.objects.get(nickname=_unfollow_name)
-
-	_user.follow_list.remove(_unfollow_user)
-	_unfollow_user.fans_list.remove(_user)
-	return JsonResponse({'msg': 'remove_following ok', 'status': 500})
+		_user = User.objects.get(user_id=_id)
+		_unfollow_user = User.objects.get(nickname=_unfollow_name)
+		# 检查是否已经移除关注该用户
+		if not _user.follow_list.filter(pk=_unfollow_user.pk).exists():
+			return JsonResponse({'msg': 'Already removed following this user', 'status': 200})	
+		_user.follow_list.remove(_unfollow_user)
+		_unfollow_user.fans_list.remove(_user)
+		return JsonResponse({'msg': 'remove_following ok', 'status': 200})
+	except ObjectDoesNotExist:
+		return JsonResponse({'msg': 'User not found', 'status': 404})
+	except Exception as e:
+		return JsonResponse({'msg': f'add_following error: {e}', 'status': 500})
 
 def get_following(request):
 	try:
