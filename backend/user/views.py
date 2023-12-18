@@ -53,7 +53,7 @@ def wxlogin(request):
 		raise Http404
 	else:
 		unionid = msg['unionid']
-
+		print(unionid)
 		temp = User.objects.filter(user_id=unionid)
 		# 如果查找为空，则注册，否则登录
 		if temp.count() == 0:
@@ -132,23 +132,28 @@ def get_brace(request):
 
 
 def get_ratio(request):
-	_id = request.GET.get('user_id')
-	_user = User.objects.get(user_id=_id)
-	if _user.start_date is None or _user.end_date is None:
-		return JsonResponse({'msg': 'get_ratio error', 'ratio':0, 'status': 404})
+	try:
+		_id = request.GET.get('user_id')
+		print(_id)
+		_user = User.objects.get(user_id=_id)
+		if _user.start_date is None or _user.end_date is None:
+			return JsonResponse({'msg': 'get_ratio error', 'ratio':0, 'status': 404})
 
-	if _user.start_date is not None and _user.end_date is not None:
-		total_day = (_user.end_date - _user.start_date).days
-		print(f"总正畸日：{total_day} 天")
+		if _user.start_date is not None and _user.end_date is not None:
+			total_day = (_user.end_date - _user.start_date).days
+			print(f"总正畸日：{total_day} 天")
 
-	# 计算当前日期 - start_date 的天数
-	current_date = date.today()
-	if _user.start_date is not None:
-		days_from_start = (current_date - _user.start_date).days
-		print(f"已经正畸： {days_from_start} 天")
-	ratio = days_from_start/total_day
-	print(f"正畸进度：{ratio}")
-	return JsonResponse({'msg': 'get_ratio ok', 'ratio':ratio, 'status': 500})
+		# 计算当前日期 - start_date 的天数
+		current_date = date.today()
+		if _user.start_date is not None:
+			days_from_start = (current_date - _user.start_date).days
+			print(f"已经正畸： {days_from_start} 天")
+		ratio = days_from_start/total_day
+		print(f"正畸进度：{ratio}")
+		return JsonResponse({'msg': 'get_ratio ok', 'ratio':ratio, 'status': 200})
+	except Exception as e:
+		print(e)
+		return JsonResponse({'msg': 'get_ratio error '}, status=500)
 
 		
 
@@ -216,15 +221,18 @@ def get_following(request):
 	try:
 		if request.method == 'GET':
 			_id = request.GET.get('user_id')
+			print(_id)
 			_user = User.objects.get(user_id=_id)
+			print(_user)
 			fo_username_list = []
-			if _user.follow_list == None:
-				return JsonResponse({'following': None})
-			for fo_user in _user.follow_list:
+			# if _user.follow_list == None:
+			# 	return JsonResponse({'following': None})
+			for fo_user in _user.follow_list.all():
 				fo_username_list.append(fo_user.nickname)
-		return JsonResponse({'following': fo_username_list})
+			return JsonResponse({'following': fo_username_list, 'fo number': len(fo_username_list)})
 	except Exception as e:
-		return JsonResponse({'msg': 'get_following error'}, status=500)
+		print(e)
+		return JsonResponse({'msg': 'get_following error '}, status=500)
 
 def get_fans(request):
 	try:
@@ -232,12 +240,13 @@ def get_fans(request):
 			_id = request.GET.get('user_id')
 			_user = User.objects.get(user_id=_id)
 			fans_username_list = []
-			if _user.fans_list == None:
-				return JsonResponse({'fans': None, 'fans number': 0})
-			for fans_user in _user.fans_list:
+			# if _user.fans_list == None:
+			# 	return JsonResponse({'fans': None, 'fans number': 0})
+			for fans_user in _user.fans_list.all():
 				fans_username_list.append(fans_user.nickname)
-		return JsonResponse({'fans': fans_username_list, 'fans number': len(fans_username_list)})
+			return JsonResponse({'fans': fans_username_list, 'fans number': len(fans_username_list)})
 	except Exception as e:
+		print(e)
 		return JsonResponse({'msg': 'get_fans error'}, status=500)
 
 @csrf_exempt
