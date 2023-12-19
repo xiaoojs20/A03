@@ -20,6 +20,7 @@ Page({
     end_date: "2025-12-31",
     startSetDate: new Date(2021, 0, 1).getTime(),
     endSetDate: new Date(2025, 0, 1).getTime(),
+    showClockIn: false,
   },
 
   handleGetBrace() {
@@ -206,24 +207,46 @@ Page({
 
   // 处理打卡
   handleClockIn() {
-    // 获取当前时间
-    let now = new Date();
+    this.setData({ showClockIn: true });
+  },
 
-    // 获取时、分、秒
-    let hours = now.getHours();
-    let minutes = now.getMinutes();
-    let seconds = now.getSeconds();
+  onCloseClockIn() {
+    this.setData({ showClockIn: false });
+  },
 
-    // 格式化显示
-    let timeStr = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-
+  handleClockInOn() {
     // 传递信息
     wx.request({
       url: 'http://43.143.205.76:8000/clockin/set_time/',
       method: 'POST',
       data: {
         "user_id": getApp().globalData.userid,
-        "wear_time": "02:30:00",
+        "check_in_type": 'on',
+      },
+      success: (res) => {
+        // 请求成功时的回调
+        console.log(res.data); // 输出返回的数据
+        wx.showToast({
+          title: '打卡成功',
+          icon: 'success',
+          duration: 2000,
+        });
+      },
+      fail: (err) => {
+        // 请求失败时的回调
+        console.error('请求失败', err);
+      }
+    });
+  },
+
+  handleClockInOff() {
+    // 传递信息
+    wx.request({
+      url: 'http://43.143.205.76:8000/clockin/set_time/',
+      method: 'POST',
+      data: {
+        "user_id": getApp().globalData.userid,
+        "check_in_type": 'off',
       },
       success: (res) => {
         // 请求成功时的回调

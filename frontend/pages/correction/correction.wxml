@@ -30,6 +30,24 @@
       bind:tap="handleClockIn"
       >点击此处打卡</van-button>
     </view>
+    <van-popup 
+      position="bottom"
+      custom-style="height: 20%;"
+      show="{{showClockIn}}"
+      bind:close="onCloseClockIn">
+      <div class="clockin-container">
+        <van-button
+          class="ClockIn"
+          type="info"
+          bind:tap="handleClockInOn"
+          >戴上牙套</van-button>
+        <van-button
+          class="ClockIn"
+          type="info"
+          bind:tap="handleClockInOff"
+          >摘下牙套</van-button>
+        </div>
+    </van-popup>
     <view class="button-container">
       <van-button
       type="info"
