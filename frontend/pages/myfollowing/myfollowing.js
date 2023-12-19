@@ -68,6 +68,7 @@ Page({
   handleGetFollowing() {
     wx.request({
       url: 'http://43.143.205.76:8000/user/get_following',
+      method: 'GET',
       data: {
         user_id: getApp().globalData.userid
       },
