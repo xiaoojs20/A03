@@ -1,11 +1,13 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 from .models import Reminder
+from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 import json
 from datetime import datetime
 
 #@require_http_methods(["POST"])
+@csrf_exempt
 def set_reminder(request):
     if request.method == 'POST':
         try:
@@ -14,8 +16,15 @@ def set_reminder(request):
                 return JsonResponse({'error': 'Missing required fields'}, status=400)
             
             user_id = data['user_id']
-            reminder_time = datetime.fromisoformat(data['reminder_time'])
-            
+            try:
+                reminder_time = datetime.fromisoformat(data['reminder_time'])
+            except:
+                parsed_time = datetime.strptime(data['reminder_time'], '%H:%M').time()
+                # 获取当前日期
+                current_date = datetime.now().date()
+
+                # 结合日期和时间创建 datetime 对象
+                reminder_time = datetime.combine(current_date, parsed_time)
             message = data['message'] if  'message' in data else 'wear braces'
 
             reminder = Reminder(user_id=user_id, reminder_time=reminder_time, message=message)
