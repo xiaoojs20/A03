@@ -123,8 +123,7 @@ Page({
   // 上传头像
   handleAfterRead(event) {
     const { file } = event.detail;
-    getApp().globalData.avatarUrl = file.url;
+    // getApp().globalData.avatarUrl = file.url;
     // 当设置 mutiple 为 true 时, file 为数组格式，否则为对象格式
-    console.log(file.url);
   },
 });
