@@ -12,3 +12,5 @@ pymysql
 cryptography
 pillow
 celery
+numpy 
+matplotlib
