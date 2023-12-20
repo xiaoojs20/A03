@@ -67,7 +67,7 @@ Page({
   // 获取关注用户列表
   handleGetFollowing() {
     wx.request({
-      url: 'http://43.143.205.76:8000/user/get_following',
+      url: 'http://localhost:8000/user/get_following',
       method: 'GET',
       data: {
         user_id: getApp().globalData.userid
