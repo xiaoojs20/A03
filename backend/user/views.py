@@ -20,7 +20,7 @@ import sys
 import logging
 import random
 import csv
-
+import mimetypes
 # Create your views here.
 
 APPID = 'wx3923928599ae095d'
@@ -72,6 +72,9 @@ def get_info(request):
 	print(_user)
 	return JsonResponse(_user.get_info())
 
+def get_image(request):
+	pass
+
 @csrf_exempt
 def change_info(request):
 	# 获取前端传入数据
@@ -113,16 +116,70 @@ def change_info(request):
 			if _is_doctor is not None:
 				_user.is_doctor = _is_doctor
 
-			if _user_image is not None:
-				_user.user_image.save(_user_image.name, _user_image)
+			# if _user_image is not None:
+			# 	_user.user_image.save(_user_image.name, _user_image)
 
 			_user.save()
 			print('用户信息更新成功')
 			return JsonResponse({'msg':'change_info ok', 'user_info': _user.get_info()})
-	except:
-		print('用户信息更新失败')
+	except Exception as e:
+		print('用户信息更新失败:' + e)
 		return JsonResponse({'msg':'change_info error'}, status=500)
 	
+
+@csrf_exempt
+def upload_image(request):
+	# 获取前端传入数据
+	try:
+		print(request.method)
+		if request.method == 'POST':
+			_id = request.POST.get('user_id')
+			print(_id)
+			_user = User.objects.get(user_id=_id)
+			_user_image = request.FILES.get('user_image', None)
+			if _user_image is not None:
+				_user.user_image.save(_user_image.name, _user_image)
+
+			_user.save()
+			print('头像上传成功')
+			return JsonResponse({'msg':'upload_image ok'}, status=200)
+	except ObjectDoesNotExist:
+		# 处理用户不存在的情况
+		print('用户不存在')
+		return JsonResponse({'msg': 'User does not exist'}, status=404)
+	except Exception as e:
+		print('头像上传失败')
+		print(e)
+		return JsonResponse({'msg':'upload_image error'}, status=500)
+	
+
+def get_image(request):
+	try:
+		_id = request.GET.get('user_id')
+		print(_id)
+		_user = User.objects.get(user_id=_id)
+		print(_user)
+		image_path = _user.user_image.path
+		print(image_path)
+		with open(image_path, "rb") as f:
+			# print(f.read())
+			# # return HttpResponse(f.read())
+			# return JsonResponse({'image':f.read()}, status=200)
+			content_type, encoding = mimetypes.guess_type(image_path)
+			response = HttpResponse(f.read(), content_type=content_type)
+			if encoding:
+				response['Content-Encoding'] = encoding
+
+			return response
+
+	except User.DoesNotExist:
+		# 处理用户不存在的情况
+		return JsonResponse({'msg': 'User does not exist'}, status=404)
+
+	except Exception as e:
+		# 处理其他异常
+		print(e)
+		return JsonResponse({'msg':'get_image error'}, status=500)
 
 def get_brace(request):
 	_id = request.GET.get('user_id')

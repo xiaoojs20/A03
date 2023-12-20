@@ -38,7 +38,7 @@ Page({
             if (res.code) {
               // 发送code临时登录凭证到后端，发起网络请求
               wx.request({
-                url: 'http://43.143.205.76:8000/user/login',
+                url: 'http://localhost:8000/user/login',
                 data: {
                   code: res.code
                 },
