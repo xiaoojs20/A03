@@ -20,60 +20,46 @@ Page({
    * 在实际应用中,您可能需要从服务器获取数据
   */
  fetchPosts() {
-  // 假设的帖子文本数据，以JSON格式直接定义
-  const postData = [
-    {
-      id: "00000001",
-      title: "帖子标题1",
-      content: "这里是帖子内容1...",
-      likes: 10, // 点赞数
-      author: "用户A", // 发帖用户
-      shares: 5, // 分享数
-      // 其他所需字段...
-    },
-    {
-      id: "00000002",
-      title: "帖子标题2",
-      content: "这里是帖子内容2...",
-      likes: 20,
-      author: "用户B",
-      shares: 3,
-      // 其他所需字段...
-    },
-    // 更多帖子...
-  ];
+  // 声明并初始化帖子ID列表
+  const postIds = ['1', '2']; // 示例ID列表，根据需要修改
 
-  // 保存帖子列表
-  let posts = [];
+  // 创建一个promise数组，用于并行获取所有帖子数据
+  const postPromises = postIds.map(postId => 
+    new Promise((resolve, reject) => {
+      wx.request({
+        url: 'http://43.143.205.76:8000/post/get_post_by_postid',
+        data: { post_id: postId },
+        success: (res) => {
+          if (res.statusCode === 200 && res.data && res.data.post_info) {
+            const postInfo = res.data.post_info;
+            const post = {
+              ...postInfo,
+              image: `/images/forum_data/${postId}/resource.png`
+            };
+            resolve(post);
+          } else {
+            console.error(`Error fetching post ${postId}`, res);
+            resolve(null); // 解析为 null，而不是拒绝 Promise
+          }
+        },
+        fail: (err) => {
+          console.error(`Request failed for post ${postId}`, err);
+          resolve(null); // 同样解析为 null
+        }
+      });
+    })
+  );
 
-  // 获取 forum_data 目录下的帖子文件夹
-  const folders = wx.getFileSystemManager().readdirSync('/images/froum_data');
-
-  // 按 id 排序文件夹，并取前 5 个（或postData的长度，取较小值）
-  folders.sort((a, b) => parseInt(b) - parseInt(a));
-  const topFolders = folders.slice(0, Math.min(5, postData.length));
-
-  // 遍历文件夹和postData
-  topFolders.forEach((folderId, index) => {
-    // 找到匹配的帖子数据
-    const postInfo = postData.find(post => post.id === folderId);
-
-    // 如果找到匹配的帖子数据
-    if (postInfo) {
-      // 构造帖子完整信息
-      const post = {
-        ...postInfo,
-        image: `/images/froum_data/${folderId}/resource.png` // 图像路径
-      };
-
-      // 添加到帖子列表
-      posts.push(post);
-    }
-  });
-
-  // 更新帖子数据
-  this.setData({ posts });
+  Promise.all(postPromises)
+    .then(fetchedPosts => {
+      const validPosts = fetchedPosts.filter(post => post != null);
+      this.setData({ posts: validPosts });
+    });
 },
+
+
+
+
 
   /**
    * 点击帖子卡片时触发的函数
