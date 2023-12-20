@@ -45,6 +45,7 @@ Page({
                 success: function (res) {
                   // 在请求成功时执行的操作
                   console.log(res.data); // 这里是获取到的返回数据
+                  //console.log('UserID:', res.data.user_id);
                   getApp().globalData.userid = res.data.user_id
                   getApp().handleGetInfoGlobal()
                   wx.switchTab({

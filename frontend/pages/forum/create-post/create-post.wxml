@@ -1,6 +1,6 @@
 <view class="create-post-container">
-  <input class="title-input" placeholder="请输入帖子标题" />
-  <textarea class="content-textarea" placeholder="请输入帖子内容" />
+  <input class="title-input" placeholder="请输入帖子标题" value="{{title}}" bindinput="inputTitle" />
+<textarea class="content-textarea" placeholder="请输入帖子内容" value="{{content}}" bindinput="inputContent"></textarea>
   <view class="upload-container">
     <button class="upload-button" bindtap="chooseImage">上传图片</button>
     <view class="image-preview-container">
@@ -9,6 +9,6 @@
       </block>
     </view>
   </view>
-  <button class="submit-button">发布帖子</button>
+  <button class="submit-button" bindtap="submitPost">发布帖子</button>
 </view>
 
