@@ -158,7 +158,6 @@ Page({
   handleAfterRead(event) {
     const { file } = event.detail;
     wx.uploadFile({
-<<<<<<< HEAD
           url: 'http://43.143.205.76:8000/user/upload_image/',
           data: {
             user_image: file.url,
@@ -175,24 +174,6 @@ Page({
             // 请求失败时的回调
             console.error('请求失败', err);
           },
-=======
-      url: 'http://localhost:8000/user/upload_image/',
-      data: {
-        
-        // user_id: 'o-Hbd6RvDXxQl0_cZ3_HKHPwNyGo',
-        user_image: file.url,
-      },
-      filePath: file.url,
-      name: 'user_image',
-      formData: {user_id: getApp().globalData.userid, },
-      success(res) {
-        console.log(file);
-      },
-      fail: (err) => {
-        // 请求失败时的回调
-        console.error('请求失败', err);
-      },
->>>>>>> 0a6ac365190bebe73b4408d7d86c2ee229d48543
     });
   },
 });
