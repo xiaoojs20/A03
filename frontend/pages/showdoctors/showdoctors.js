@@ -23,7 +23,7 @@ Page({
   // 获取北京市医生列表
   handleGetDoctors() {
     wx.request({
-      url: 'http://localhost:8000/user/get_doctor',
+      url: 'http://43.143.205.76:8000/user/get_doctor',
       success: (res) => {
         // 请求成功时的回调
         console.log(res.data); // 输出返回的数据

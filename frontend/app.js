@@ -24,7 +24,7 @@ App({
 
   handleGetInfoGlobal() {
    wx.request({
-          url: 'http://localhost:8000/user/get_info',
+          url: 'http://43.143.205.76:8000/user/get_info',
           data: {
             user_id: getApp().globalData.userid
           },
