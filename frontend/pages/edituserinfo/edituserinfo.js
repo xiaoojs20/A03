@@ -101,7 +101,7 @@ Page({
 
   handleChangeInfo() {
       wx.request({
-        url: 'http://localhost:8000/user/change_info',
+        url: 'http://43.143.205.76:8000/user/change_info',
         data: {
           user_id: getApp().globalData.userid,
           nickname: this.data.nickname,
