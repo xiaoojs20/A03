@@ -1,31 +1,33 @@
 // pages/forum/post-detail/post-detail.js
-// pages/forum/post-detail/post-detail.js
 Page({
   data: {
     post: {}, // 帖子数据
     isLiked: false, // 初始未点赞状态
-    comments: [ // 模拟评论数据
-      { "id": "1", "author": "用户A", "content": "非常有趣的帖子！"},
-      { "id": "2", "author": "用户B", "content": "同意楼上的观点。"},
-      { "id": "3", "author": "用户C", "content": "很有启发性，谢谢分享。"}
-    ] 
+    comments: [] // 评论数据，可根据需要从后端获取
   },
 
   onLoad(options) {
-    if(options.id) {
+    if (options.id) {
       this.loadPostDetail(options.id);
     }
   },
 
   loadPostDetail(postId) {
-    // 模拟从后端获取数据
-    const postDetail = {
-      id: parseInt(postId, 10),
-      title: "示例帖子标题",
-      description: "这里是帖子的详细描述...",
-      image: "/images/froum_data/" + postId + "/resource.png" // 确保图片路径正确
-    };
-    this.setData({ post: postDetail });
+    const that = this;
+    wx.request({
+      url: 'http://localhost:8000/post/get_post_by_postid/', // 后端接口地址
+      data: { post_id: postId },
+      success: (res) => {
+        if (res.statusCode === 200 && res.data && res.data.msg === 'get_post_by_postid ok') {
+          that.setData({ post: res.data.post_info });
+        } else {
+          console.error('获取帖子详情失败:', res);
+        }
+      },
+      fail: (err) => {
+        console.error('请求帖子详情失败', err);
+      }
+    });
   },
 
   toggleLike() {
@@ -39,11 +41,9 @@ Page({
     const post = this.data.post;
     return {
       title: post.title, 
-      path: `/pages/forum/post-detail/post-detail?id=${post.id}`
+      path: `/pages/forum/post-detail/post-detail?id=${post.post_id}`
     };
   },
 
-  submitComment() {
-    // 提交评论逻辑
-  }
+  // 其他函数...
 });
