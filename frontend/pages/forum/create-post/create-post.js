@@ -96,7 +96,7 @@ Page({
 
   createPost(title, content, imageList) {
     wx.request({
-    url: 'http://localhost:8000/post/create_post/',
+    url: 'http://43.143.205.76:8000/post/create_post/',
     method: 'POST',
     data: {
       user_id: "o-Hbd6RvDXxQl0_cZ3_HKHPwNyGo",//getApp().globalData.userid,

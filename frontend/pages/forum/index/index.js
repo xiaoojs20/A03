@@ -27,7 +27,7 @@ Page({
   const postPromises = postIds.map(postId => 
     new Promise((resolve, reject) => {
       wx.request({
-        url: 'http://localhost:8000/post/get_post_by_postid',
+        url: 'http://43.143.205.76:8000/post/get_post_by_postid',
         data: { post_id: postId },
         success: (res) => {
           if (res.statusCode === 200 && res.data && res.data.post_info) {

@@ -26,7 +26,7 @@ Page({
   handleGetBrace() {
     return new Promise((resolve, reject) => {
       wx.request({
-        url: 'http://localhost:8000/user/get_brace/',
+        url: 'http://43.143.205.76:8000/user/get_brace/',
         
         data: {
           user_id: getApp().globalData.userid
@@ -76,7 +76,7 @@ Page({
   
   handleChangeBrace() {
     wx.request({
-      url: 'http://localhost:8000/user/change_brace/',
+      url: 'http://43.143.205.76:8000/user/change_brace/',
       method: 'GET',
       data: {
         user_id: getApp().globalData.userid,
@@ -98,7 +98,7 @@ Page({
   // 获取进度信息
   handleGetRatio() {
     wx.request({
-      url: 'http://localhost:8000/user/get_ratio/',
+      url: 'http://43.143.205.76:8000/user/get_ratio/',
       method: 'GET',
       data: {
         user_id: getApp().globalData.userid
@@ -218,7 +218,7 @@ Page({
   handleClockInOn() {
     // 传递信息
     wx.request({
-      url: 'http://localhost:8000/clockin/set_time/',
+      url: 'http://43.143.205.76:8000/clockin/set_time/',
       method: 'POST',
       data: {
         "user_id": getApp().globalData.userid,
@@ -243,7 +243,7 @@ Page({
   handleClockInOff() {
     // 传递信息
     wx.request({
-      url: 'http://localhost:8000/clockin/set_time/',
+      url: 'http://43.143.205.76:8000/clockin/set_time/',
       method: 'POST',
       data: {
         "user_id": getApp().globalData.userid,
