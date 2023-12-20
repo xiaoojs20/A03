@@ -117,3 +117,46 @@ class ReminderTasksTest(TestCase):
 
         # 确认提醒已经发送并从数据库中删除
         self.assertEqual(Reminder.objects.count(), 0)
+
+from django.test import TestCase, Client
+from django.urls import reverse
+from .models import Reminder
+from datetime import datetime
+
+class ReminderTestCase(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.reminder = Reminder.objects.create(
+            user_id="test_user",
+            reminder_time=datetime.now(),
+            message="Test Reminder"
+        )
+
+    def test_update_reminder(self):
+        url = reverse('modify')  # 确保在您的 urls.py 中设置了名为 'update_reminder' 的路由
+        data = {
+            'id': self.reminder.id,
+            'user_id': "test_user",
+            'reminder_time':"2023-12-20T17:00:00",
+            'message': 'Updated Reminder',
+
+        }
+        response = self.client.post(url, json.dumps(data), content_type='application/json')
+        import pdb;pdb.set_trace()
+        self.assertEqual(response.status_code, 200)
+        import pdb;pdb.set_trace()
+        print(Reminder.objects.all())
+        updated_reminder = Reminder.objects.get(id=self.reminder.id)
+        #self.assertEqual(updated_reminder.user_id, 'updated_user')
+        self.assertEqual(updated_reminder.message, 'Updated Reminder')
+
+    def test_delete_reminder(self):
+        url = reverse('delete')  # 确保在您的 urls.py 中设置了名为 'delete_reminder' 的路由
+        data = {'id': self.reminder.id}
+        response = self.client.delete(url, json.dumps(data), content_type='application/json')
+        self.assertEqual(response.status_code, 200)
+
+        with self.assertRaises(Reminder.DoesNotExist):
+            Reminder.objects.get(id=self.reminder.id)
+
+    # 您还可以添加更多测试用例，例如测试无效请求或错误处理
