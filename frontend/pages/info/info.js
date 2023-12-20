@@ -15,7 +15,7 @@ Page({
 
   get_image() {
         wx.request({
-          url: 'http://localhost:8000/user/get_image',
+          url: 'http://43.143.205.76:8000/user/get_image',
           data: {
             user_id: getApp().globalData.userid,
           },
