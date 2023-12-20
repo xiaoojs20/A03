@@ -2,6 +2,8 @@
 Page({
   data: {
     showPopup: false,    // 生日输入框控制
+    showGenderChoose: false,   //性别选择控制
+    gender_name: '',     // 性别文字
     minDate: new Date(1970, 1, 1).getTime(),
     maxDate: new Date().getTime(),
     avatarUrl: '',  // 头像地址
@@ -13,6 +15,7 @@ Page({
     introduce: getApp().globalData.introduce,   // 自我介绍
 
     fileList: [],
+    genders: ['男', '女', '其他'],
   },
 
   onLoad: function () {
@@ -25,6 +28,24 @@ Page({
       birthday: getApp().globalData.birthday,
       introduce: getApp().globalData.introduce,
     });
+    if (getApp().globalData.gender == 0)
+    {
+      this.setData({
+        gender_name: "男",
+      })
+    }
+    else if (getApp().globalData.gender == 1)
+    {
+      this.setData({
+        gender_name: "女",
+      })
+    }
+    else
+    {
+      this.setData({
+        gender_name: "其他",
+      })
+    }
   },
 
   handleInputNickname(e) {
@@ -34,10 +55,27 @@ Page({
     console.log(e);
   },
 
-  handleChooseGender(event) {
+  handleChooseGender() {
     this.setData({
-      gender: event.detail,
+      showGenderChoose: true
     });
+  },
+
+  onConfirmGender(event) {
+    const { value, index } = event.detail;
+    this.setData({
+      gender: index,
+      gender_name: value,
+      showGenderChoose: false,
+    });
+    console.log(event);
+  },
+  
+  onCancelGender(event) {
+    this.setData({
+      showGenderChoose: false,
+    });
+    console.log(event);
   },
 
   handleInputEmail(e) {
@@ -120,20 +158,22 @@ Page({
   handleAfterRead(event) {
     const { file } = event.detail;
     wx.uploadFile({
-      url: 'http://43.143.205.76:8000/user/change_info',
-      data: {
-        user_image: file.url,
-      },
-      filePath: file.url,
-      name: 'file',
-      formData: { user: 'test' },
-      success(res) {
-        console.log(file);
-      },
-      fail: (err) => {
-        // 请求失败时的回调
-        console.error('请求失败', err);
-      },
+          url: 'http://43.143.205.76:8000/user/upload_image/',
+          data: {
+            user_image: file.url,
+          },
+          filePath: file.url,
+          name: getApp().globalData.nickname,
+          formData: {
+            user_id: getApp().globalData.userid,
+          },
+          success(res) {
+            console.log(file);
+          },
+          fail: (err) => {
+            // 请求失败时的回调
+            console.error('请求失败', err);
+          },
     });
   },
 });
