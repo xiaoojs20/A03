@@ -16,7 +16,7 @@ class CreateSystemNotification(View):
     def post(self, request):
         # 假设POST数据是JSON格式，包含'user_id'和'message'
         try:
-            data = json.loads(request.body)
+            data = json.loads(request.body.decode('utf-8'))  # Ensure you decode the body
             user_id = data['user_id']
             message = data['message']
             SystemNotification.objects.create(user_id=user_id, message=message)
