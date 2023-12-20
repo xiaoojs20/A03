@@ -38,3 +38,54 @@ def set_reminder(request):
         return JsonResponse({"message": "This endpoint requires a POST request."})
     else:
         return JsonResponse({"message": "Invalid request method."})
+@csrf_exempt
+def update_reminder(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            reminder_id = data.get('id')
+
+            # 确保提供了 ID
+            if reminder_id is None:
+                return JsonResponse({'error': 'Missing reminder ID'}, status=400)
+
+            # 查找现有的提醒
+            try:
+                reminder = Reminder.objects.get(id=reminder_id)
+            except Reminder.DoesNotExist:
+                return JsonResponse({"status": "error", "message": "Reminder not found"}, status=404)
+
+            # 更新提醒
+            reminder.user_id = data.get('user_id', reminder.user_id)
+            reminder.message = data.get('message', reminder.message)
+            if 'reminder_time' in data:
+                try:
+                    reminder.reminder_time = datetime.fromisoformat(data['reminder_time'])
+                except ValueError:
+                    # 时间格式错误
+                    return JsonResponse({'error': 'Invalid date format'}, status=400)
+
+            reminder.save()
+            return JsonResponse({"status": "success"})
+        except Exception as e:
+            return JsonResponse({"status": "error", "message": str(e)})
+    else:
+        return JsonResponse({"message": "Invalid request method."})
+@csrf_exempt
+def delete_reminder(request):
+    if request.method == 'DELETE':
+        try:
+            data = json.loads(request.body)
+            reminder_id = data.get('id')
+            if reminder_id is None:
+                return JsonResponse({'error': 'Missing reminder ID'}, status=400)
+
+            reminder = Reminder.objects.get(id=reminder_id)
+            reminder.delete()
+            return JsonResponse({"status": "success"})
+        except Reminder.DoesNotExist:
+            return JsonResponse({"status": "error", "message": "Reminder not found"}, status=404)
+        except Exception as e:
+            return JsonResponse({"status": "error", "message": str(e)})
+    else:
+        return JsonResponse({"message": "Invalid request method."})

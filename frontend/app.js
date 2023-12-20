@@ -24,7 +24,7 @@ App({
 
   handleGetInfoGlobal() {
    wx.request({
-          url: 'http://43.143.205.76:8000/user/get_info',
+          url: 'http://43.143.205.76:8000/user/get_info',
           data: {
             user_id: getApp().globalData.userid
           },
@@ -46,28 +46,4 @@ App({
         });
   },
 
-  handleChangeInfoGlobal() {
-      wx.request({
-        url: 'http://43.143.205.76:8000/user/change_info',
-        data: {
-          user_id: this.globalData.userid,
-          nickname: this.globalData.nickname,
-          gender: this.globalData.gender,
-          mobile: this.globalData.mobile,
-          email: this.globalData.email,
-          birthday: this.globalData.birthday,
-          introduce: this.globalData.introduce,
-          is_doctor: this.globalData.is_doctor,
-          // avatarUrl: this.globalData.avatarUrl,
-        },
-        success: (res) => {
-          // 请求成功时的回调
-          console.log(res.data); // 输出返回的数据
-        },
-        fail: (err) => {
-          // 请求失败时的回调
-          console.error('请求失败', err);
-        }
-      });
-   }
 })

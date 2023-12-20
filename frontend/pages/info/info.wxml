@@ -40,20 +40,13 @@
       <view class="my-item flex-wrp">
         <view class="myitem-icon flex-item" >
           <image src="/images/info/mappin.png"></image>
+          <!-- <image src=get_image></image> -->
         </view>
         <view class="myitem-name flex-item">
           <text>同城医生</text>
         </view>
       </view>
     </navigator>
-    <view class="my-item flex-wrp">
-      <view class="myitem-icon flex-item" >
-        <image src="/images/info/recent.png"></image>
-      </view>
-      <view class="myitem-name flex-item">
-        <text>最近浏览</text>
-      </view>
-    </view>
     <block wx:if="{{!getApp().globalData.is_doctor}}">
       <navigator url="/pages/doctorcertificate/doctorcertificate">
         <view class="my-item flex-wrp">
