@@ -7,6 +7,8 @@ urlpatterns = [
 	path("login/", wxlogin),
 	# path("register/", register),
 	path('get_info/', get_info),
+    path('upload_image/', upload_image),
+    path('get_image/', get_image),
 	path('change_info/', change_info),
     path('get_brace/', get_brace),
 	path('change_brace/', change_brace),

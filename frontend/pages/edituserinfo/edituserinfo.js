@@ -63,7 +63,7 @@ Page({
 
   handleChangeInfo() {
       wx.request({
-        url: 'http://43.143.205.76:8000/user/change_info',
+        url: 'http://localhost:8000/user/change_info',
         data: {
           user_id: getApp().globalData.userid,
           nickname: this.data.nickname,
@@ -120,13 +120,15 @@ Page({
   handleAfterRead(event) {
     const { file } = event.detail;
     wx.uploadFile({
-      url: 'http://43.143.205.76:8000/user/change_info',
+      url: 'http://localhost:8000/user/upload_image/',
       data: {
+        
+        // user_id: 'o-Hbd6RvDXxQl0_cZ3_HKHPwNyGo',
         user_image: file.url,
       },
       filePath: file.url,
-      name: 'file',
-      formData: { user: 'test' },
+      name: 'user_image',
+      formData: {user_id: getApp().globalData.userid, },
       success(res) {
         console.log(file);
       },

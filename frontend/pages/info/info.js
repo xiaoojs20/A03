@@ -13,6 +13,23 @@ Page({
     console.log("跳转至个人信息编辑界面");
   },
 
+  get_image() {
+        wx.request({
+          url: 'http://localhost:8000/user/get_image',
+          data: {
+            user_id: getApp().globalData.userid,
+          },
+          success: (res) => {
+            // 请求成功时的回调
+            console.log(res.data); // 输出返回的数据
+          },
+          fail: (err) => {
+            // 请求失败时的回调
+            console.error('请求失败', err);
+          }
+        });
+     },
+
   onLoad: function () {
     console.log('onLoad');
     //调用应用实例的方法获取全局数据
