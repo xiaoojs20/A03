@@ -5,6 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 import json
 from datetime import datetime
+from django.core.exceptions import ObjectDoesNotExist
 
 #@require_http_methods(["POST"])
 @csrf_exempt
@@ -85,6 +86,28 @@ def delete_reminder(request):
             return JsonResponse({"status": "success"})
         except Reminder.DoesNotExist:
             return JsonResponse({"status": "error", "message": "Reminder not found"}, status=404)
+        except Exception as e:
+            return JsonResponse({"status": "error", "message": str(e)})
+    else:
+        return JsonResponse({"message": "Invalid request method."})
+@csrf_exempt
+def view_reminders(request):
+    if request.method == 'GET':
+        try:
+            user_id = request.GET.get('user_id')
+            if user_id:
+                # 如果提供了 user_id，则返回该用户的所有提醒
+                reminders = Reminder.objects.filter(user_id=user_id)
+            else:
+                # 如果没有提供 user_id，则返回所有提醒
+                reminders = Reminder.objects.all()
+
+            # 将提醒数据格式化为 JSON
+            reminders_data = list(reminders.values())
+            return JsonResponse({'reminders': reminders_data})
+
+        except ObjectDoesNotExist:
+            return JsonResponse({"status": "error", "message": "Reminders not found"}, status=404)
         except Exception as e:
             return JsonResponse({"status": "error", "message": str(e)})
     else:
