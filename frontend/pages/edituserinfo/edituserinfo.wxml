@@ -13,13 +13,24 @@
       bindblur="handleInputNickname"
     />
 
-    <van-radio-group value="{{gender}}" 
-    bind:change="handleChooseGender">
-      <van-cell title="性别">
-        <van-radio slot="right-icon" name="1">男</van-radio>
-        <van-radio slot="right-icon" name="2">女</van-radio>
-      </van-cell>
-    </van-radio-group>
+    <van-field
+      value="{{gender_name}}"
+      type="gender"
+      label="性别"
+      readonly
+      bind:click-input="handleChooseGender"
+    />
+    <van-popup 
+    style="width: 90%; max-width: 600rpx;" 
+    position="bottom"
+    show="{{showGenderChoose}}">
+      <van-picker 
+        columns="{{ genders }}" 
+        show-toolbar
+        title="性别"
+        bind:confirm="onConfirmGender"
+        bind:cancel="onCancelGender" />
+    </van-popup>
 
     <van-field
       value="{{email}}"

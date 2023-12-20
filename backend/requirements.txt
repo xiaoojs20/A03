@@ -14,3 +14,4 @@ pillow
 celery
 numpy 
 matplotlib
+uuid

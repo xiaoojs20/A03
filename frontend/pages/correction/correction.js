@@ -27,6 +27,7 @@ Page({
     return new Promise((resolve, reject) => {
       wx.request({
         url: 'http://43.143.205.76:8000/user/get_brace/',
+        
         data: {
           user_id: getApp().globalData.userid
         },
