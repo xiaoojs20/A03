@@ -55,7 +55,7 @@ def create_post(request):
     
     except Exception as e:
         print(f'帖子创建失败: {str(e)}')
-        return JsonResponse({'msg': 'create_post error'}, status=500)
+        return JsonResponse({'msg': 'create_post error:'+str(e)}, status=500)
     
 def get_post_by_postid(request):
     try:
@@ -67,7 +67,7 @@ def get_post_by_postid(request):
     except Post.DoesNotExist:
         return JsonResponse({'msg': 'get_post_by_postid error', 'error': 'Post not found'}, status=404)
     except Exception as e:
-        return JsonResponse({'msg': 'get_post_by_postid error', 'error': str(e)}, status=500)
+        return JsonResponse({'msg': 'get_posst_by_postid error', 'error': str(e)}, status=500)
     
 def get_post_by_userid(request):
     try:

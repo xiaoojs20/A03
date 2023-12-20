@@ -107,13 +107,13 @@ class ReminderTasksTest(TestCase):
         )
         # 执行Celery任务
         send_reminders()
-        
+        import pdb;pdb.set_trace()
         # 确认模拟的微信服务通知发送方法被调用
         mock_send_notification.assert_called_once_with(
             openid=reminder.user_id,
             template_id="2XZ1zgk0z54RJzorx0G-12uAtOAT8xKq4XaWLLUidsc",  # 这里应该是你微信模板的ID
             data={"message": reminder.message}
-        )
+        ) 
 
         # 确认提醒已经发送并从数据库中删除
         self.assertEqual(Reminder.objects.count(), 0)
@@ -142,9 +142,9 @@ class ReminderTestCase(TestCase):
 
         }
         response = self.client.post(url, json.dumps(data), content_type='application/json')
-        import pdb;pdb.set_trace()
+        #import pdb;pdb.set_trace()
         self.assertEqual(response.status_code, 200)
-        import pdb;pdb.set_trace()
+        #import pdb;pdb.set_trace()
         print(Reminder.objects.all())
         updated_reminder = Reminder.objects.get(id=self.reminder.id)
         #self.assertEqual(updated_reminder.user_id, 'updated_user')
@@ -160,3 +160,28 @@ class ReminderTestCase(TestCase):
             Reminder.objects.get(id=self.reminder.id)
 
     # 您还可以添加更多测试用例，例如测试无效请求或错误处理
+class ReminderTestCase1(TestCase):
+    def setUp(self):
+        # 设置测试客户端
+        self.client = Client()
+
+        # 创建一些测试数据
+        Reminder.objects.create(user_id="user1", reminder_time=datetime.now(), message="Test Reminder 1")
+        Reminder.objects.create(user_id="user2", reminder_time=datetime.now(), message="Test Reminder 2")
+
+    def test_view_all_reminders(self):
+        # 测试获取所有提醒
+        response = self.client.get(reverse('view_reminders'))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.json()['reminders']), 2)
+
+    def test_view_user_reminders(self):
+        # 测试获取特定用户的提醒
+        response = self.client.get(reverse('view_reminders') + '?user_id=user1')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.json()['reminders']), 1)
+
+    def test_no_reminders_found(self):
+        # 测试没有找到提醒的情况
+        response = self.client.get(reverse('view_reminders') + '?user_id=kkk')
+        self.assertEqual(json.loads(response.content.decode('utf-8'))["reminders"], [])
