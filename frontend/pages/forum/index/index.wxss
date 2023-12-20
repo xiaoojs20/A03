@@ -1,94 +1,81 @@
-/* index.wxss 示例 */
+/* 顶部导航栏样式 */
 .custom-navigation-bar {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 40px; /* 可以根据需要调整高度 */
-  background-color: #fff; /* 背景色 */
+  height: 60px;
+  background-color: #f8f8f8;
+  border-bottom: 1px solid #ebebeb;
 }
 
 .navigation-title {
-  font-size: 40px; /* 标题字体大小 */
-  font-weight: bold; /* 字体加粗 */
+  font-size: 18px;
+  color: #333;
 }
 
-
-/* 列表样式 */
+/* 帖子列表布局 */
 .post-list {
-  margin-top: 60px; /* 调整这个值以确保足够的空间 */
-  margin-bottom: 60px; /* 留出底部按钮的空间 */
+  display: flex;
+  flex-direction: row; /* 横向排列 */
+  flex-wrap: wrap; /* 允许换行 */
+  justify-content: space-around; /* 间距均匀排列 */
 }
 
-
-/* 每个帖子卡片的样式 */
+/* 帖子卡片样式 */
 .post-card {
-  margin-bottom: 10px;
+  width: 47%; /* 每个帖子卡片宽度 */
+  height: auto; /* 高度自动，根据内容调整 */
+  margin-bottom: 20px; /* 底部间距 */
 }
 
-/* 底部按钮样式 */
-.create-post-button {
-  position: fixed;
-  left: 50%;
-  bottom: 20px;
-  transform: translateX(-50%);
-  width: 90%;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+/* 调整卡片高度 */
+.van-card {
+  height: auto; /* 自动高度 */
+  min-height: 400px; /* 最小高度设置为400px */
 }
 
-/* 添加底部按钮样式 */
-.create-post-button {
-  position: fixed;
-  left: 50%;
-  bottom: 20px;
-  transform: translateX(-50%);
-  width: 90%; 
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-.create-post-fab {
-  position: fixed;
-  right: 20px; /* 距离右边界20像素 */
-  bottom: 20px; /* 距离底边界20像素 */
-  width: 50px; /* 按钮宽度 */
-  height: 50px; /* 按钮高度 */
-  line-height: 50px; /* 使图标垂直居中 */
-  padding: 0; /* 移除内边距 */
-  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3); /* 可选：添加阴影效果 */
-}
-.post-description {
-  margin-bottom: 5px;
+
+/* 标题样式 */
+.navigation-title {
+  font-size: 20px; /* 增加标题字号 */
 }
 
+/* 调整卡片内部元素的样式 */
+.van-card__title {
+  font-size: 16px; /* 增加卡片标题字号 */
+}
+
+
+
+.van-card__thumb {
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+/* 帖子信息样式 */
 .post-info {
   display: flex;
   justify-content: space-between;
-  font-size: 14px;
+  color: #666;
+  font-size: 13px;
 }
 
-.post-author, .post-likes, .post-shares {
-  margin-right: 10px;
-}
-/* 调整帖子卡片样式 */
-.post-card {
-  margin-bottom: 10px;
-}
-
-/* 如果标题在 van-card 内部，可能需要如下方式定义样式 */
-/* 请根据实际情况调整选择器 */
-.van-card__title {
-  text-align: center; /* 标题居中 */
-  font-size: 20px; /* 调整字体大小 */
-  font-weight: bold; /* 字体加粗 */
-}
-
-/* 如果标题是单独的元素，则可以定义一个类似的样式 */
-.post-title {
-  text-align: center;
-  font-size: 20px;
-  font-weight: bold;
-}
-.navigate-personal-info {
+/* 底部按钮样式 */
+.create-post-button, .navigate-personal-info {
   position: fixed;
   right: 20px;
-  bottom: 80px; /* 调整以避免遮挡其他元素 */
-  z-index: 10;
+  width: 48px;
+  height: 48px;
+  border-radius: 24px;
+  background-color: #1989fa;
+  color: white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.create-post-button {
+  bottom: 80px;
+}
+
+.navigate-personal-info {
+  bottom: 20px;
 }

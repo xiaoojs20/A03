@@ -20,7 +20,7 @@ Page({
   // 获取帖子列表
   fetchPosts() {
     const postIds = ['1', '2', '3', '4']; // 示例ID列表
-
+  
     const postPromises = postIds.map(postId => 
       new Promise((resolve, reject) => {
         wx.request({
@@ -30,21 +30,20 @@ Page({
           success: (postRes) => {
             if (postRes.statusCode === 200 && postRes.data && postRes.data.msg === 'get_post_by_postid ok') {
               const postInfo = postRes.data.post_info;
-              // 获取用户头像
+              // 获取作者昵称
               wx.request({
-                url: 'http://43.143.205.76:8000/user/get_image/',
+                url: 'http://43.143.205.76:8000/user/get_info',
                 data: { user_id: postInfo.user_id },
-                success: (imgRes) => {
-                  const avatarUrl = imgRes.data && imgRes.data.image ? imgRes.data.image : '/path/to/default/avatar.png'; // 提供默认头像URL
+                success: (userInfoRes) => {
+                  const nickname = userInfoRes.data && userInfoRes.data.nickname ? userInfoRes.data.nickname : '未知作者';
                   const post = {
                     ...postInfo,
-                    image: `/images/forum_data/${postId}/resource.png`,
-                    avatar: avatarUrl // 用户头像URL
+                    author: nickname // 添加作者昵称
                   };
                   resolve(post);
                 },
                 fail: (err) => {
-                  console.error(`Request failed for user image of post ${postId}`, err);
+                  console.error(`Request failed for user info of post ${postId}`, err);
                   resolve(null);
                 }
               });
@@ -60,12 +59,13 @@ Page({
         });
       })
     );
-
+  
     Promise.all(postPromises).then(fetchedPosts => {
       const validPosts = fetchedPosts.filter(post => post != null);
       this.setData({ posts: validPosts });
     });
   },
+  
 
   // 点击帖子卡片时触发的函数，导航到帖子详情页面
   navigateToPostDetail(event) {
