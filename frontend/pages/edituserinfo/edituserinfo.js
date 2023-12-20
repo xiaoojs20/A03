@@ -71,17 +71,13 @@ Page({
           email: this.data.email,
           mobile: this.data.mobile,
           birthday: this.data.birthday,
-          introduce: this.data.introduce
+          introduce: this.data.introduce,
+          user_image: this.data.avatarUrl
         },
         success: (res) => {
           // 请求成功时的回调
           console.log(res.data); // 输出返回的数据
-          getApp().globalData.nickname = this.data.nickname;
-          getApp().globalData.gender = this.data.gender;
-          getApp().globalData.mobile = this.data.mobile;
-          getApp().globalData.email = this.data.email;
-          getApp().globalData.birthday = this.data.birthday;
-          getApp().globalData.introduce = this.data.introduce;
+          getApp().handleGetInfoGlobal();
           wx.navigateBack({
             delta: 1
           });
@@ -123,7 +119,21 @@ Page({
   // 上传头像
   handleAfterRead(event) {
     const { file } = event.detail;
-    // getApp().globalData.avatarUrl = file.url;
-    // 当设置 mutiple 为 true 时, file 为数组格式，否则为对象格式
+    wx.uploadFile({
+      url: 'http://43.143.205.76:8000/user/change_info',
+      data: {
+        user_image: file.url,
+      },
+      filePath: file.url,
+      name: 'file',
+      formData: { user: 'test' },
+      success(res) {
+        console.log(file);
+      },
+      fail: (err) => {
+        // 请求失败时的回调
+        console.error('请求失败', err);
+      },
+    });
   },
 });
