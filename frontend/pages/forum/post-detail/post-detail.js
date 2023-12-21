@@ -15,7 +15,7 @@ Page({
   loadPostDetail(postId) {
     const that = this;
     wx.request({
-      url: 'http://localhost:8000/post/get_post_by_postid/', // 后端接口地址
+      url: 'http://43.143.205.76:8000/post/get_post_by_postid/', // 后端接口地址
       data: { post_id: postId },
       success: (res) => {
         if (res.statusCode === 200 && res.data && res.data.msg === 'get_post_by_postid ok') {
