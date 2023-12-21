@@ -5,10 +5,10 @@ services:
   app:
     restart: always
     container_name: app
-    build: .
+    build: . 
     command: >
       bash -c
-      "python manage.py migrate --settings=YY.settings &&
+      "python manage.py makemigrations && python manage.py migrate --settings=YY.settings &&
       DJANGO_SETTINGS_MODULE=YY.settings gunicorn -w4 -b 0.0.0.0:8000 --log-level=debug YY.wsgi"
     expose:
       - "8000"
