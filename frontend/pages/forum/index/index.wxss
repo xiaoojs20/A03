@@ -86,3 +86,9 @@
   font-size: 20px;
   font-weight: bold;
 }
+.navigate-personal-info {
+  position: fixed;
+  right: 20px;
+  bottom: 80px; /* 调整以避免遮挡其他元素 */
+  z-index: 10;
+}

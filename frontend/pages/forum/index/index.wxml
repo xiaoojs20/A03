@@ -1,21 +1,22 @@
-<view>
 <view class="page-container">
   <scroll-view class="post-list" scroll-y="true">
     <block wx:for="{{ posts }}" wx:key="id">
-      <view class="post-card" bindtap="navigateToPostDetail" data-id="{{item.id}}">
+      <view class="post-card" bindtap="navigateToPostDetail" data-id="{{item.post_id}}">
         <van-card
-          title="{{ item.title }}"
-          thumb="{{ item.image }}"
-          lazy-load>
-          <view slot="footer">
-            <text class="post-description">{{ item.description }}</text>
-            <view class="post-info">
-              <text class="post-author">作者: {{ item.author }}</text>
-              <text class="post-likes">点赞: {{ item.likes }}</text>
-              <text class="post-shares">分享: {{ item.shares }}</text>
-            </view>
-          </view>
-        </van-card>
+  title="{{ item.title }}"
+  thumb="{{ item.avatar }}"  
+  lazy-load>
+  <view slot="footer">
+    <text class="post-description">{{ item.content }}</text>
+    <view class="post-info">
+      <text class="post-author">作者: {{ item.author }}</text>  <!-- 显示用户昵称 -->
+      <text class="post-likes">点赞: {{ item.like_counts }}</text>
+      <text class="post-comments">评论: {{ item.comment_counts }}</text>
+    </view>
+  </view>
+</van-card>
+
+
       </view>
     </block>
   </scroll-view>
@@ -29,5 +30,13 @@
     round
     type="info"
   ></van-button>
-</view>
+
+  <van-button 
+  class="navigate-personal-info"
+  bind:click="navigateToPersonalInfo"
+  icon="user-o"
+  round
+  type="primary"
+>个人信息</van-button>
+
 
