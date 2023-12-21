@@ -13,7 +13,8 @@ Page({
     console.log("跳转至个人信息编辑界面");
   },
 
-  get_image() {
+  // 获取头像
+  getImage() {
         wx.request({
           url: 'http://43.143.205.76:8000/user/get_image',
           data: {
@@ -33,6 +34,7 @@ Page({
   onLoad: function () {
     console.log('onLoad');
     //调用应用实例的方法获取全局数据
+    this.getImage();
     this.setData({
       nickname: getApp().globalData.nickname,
       avatarUrl: getApp().globalData.avatarUrl,

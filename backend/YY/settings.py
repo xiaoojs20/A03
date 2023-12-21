@@ -48,18 +48,19 @@ INSTALLED_APPS = [
     'reminder',
     'clockin',
     'report',
+    'notifications',
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
+    #"django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
-
+APP_NOTIFICATION_URL = 'http://localhost:8000/notifications/create_notification/'
 ROOT_URLCONF = "YY.urls"
 
 TEMPLATES = [
