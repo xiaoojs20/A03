@@ -1,2 +1,22 @@
 <!--pages/forum/personal_info/personal_info.wxml-->
-<text>pages/forum/personal_info/personal_info.wxml</text>
+<view class="container">
+  <view class="user-info">
+    <view class="user-detail">
+      <image class="avatar" src="{{userInfo.user_image}}" mode="aspectFill"></image>
+      <view class="info">
+        <text class="nickname">{{userInfo.nickname}}</text>
+        <text class="details">性别: {{userInfo.gender}}</text>
+        <text class="details">生日: {{userInfo.birthday}}</text>
+        <text class="details">电话: {{userInfo.mobile}}</text>
+        <text class="details">邮箱: {{userInfo.email}}</text>
+        <text class="details">个人简介: {{userInfo.introduce}}</text>
+      </view>
+    </view>
+  </view>
+  <view class="posts">
+    <view wx:for="{{userPosts}}" wx:key="id" class="post-item">
+      <view class="post-title">{{item.title}}</view>
+      <view class="post-content">{{item.content}}</view>
+    </view>
+  </view>
+</view>
