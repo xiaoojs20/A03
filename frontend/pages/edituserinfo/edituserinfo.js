@@ -168,7 +168,7 @@ Page({
             user_id: getApp().globalData.userid,
           },
           success(res) {
-            console.log(file);
+            console.log(res);
           },
           fail: (err) => {
             // 请求失败时的回调
