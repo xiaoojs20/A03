@@ -5,5 +5,6 @@ from . import views
 urlpatterns = [
     path('set_reminder', views.set_reminder, name='reminder'),
     path('modify',views.update_reminder,name='modify'),
-    path('delete',views.delete_reminder,name='delete')
+    path('delete',views.delete_reminder,name='delete'),
+    path('view', views.view_reminders, name='view_reminders')
 ]

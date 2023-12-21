@@ -1,1 +1,21 @@
 /* pages/setreminders/setreminders.wxss */
+.rightchoice {
+  background-color: #FF0000;
+  color: #FFFFFF;
+  text-align: center;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width:50px;
+}
+.leftchoice {
+  background-color: #00CC99;
+  color: #FFFFFF;
+  text-align: center;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width:50px;
+}
