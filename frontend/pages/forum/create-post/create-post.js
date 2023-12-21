@@ -112,6 +112,9 @@ Page({
           title: '帖子发布成功',
           icon: 'success'
         });
+        wx.navigateTo({
+          url: '/pages/forum/index/index',
+        })
         // 需要重置表单或跳转到其他页面
       } else {
         console.error('帖子创建失败:', res.data);
