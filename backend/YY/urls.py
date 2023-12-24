@@ -29,6 +29,7 @@ urlpatterns = [
     path('reminder/', include('reminder.urls')),
     path('clockin/',include('clockin.urls')),
     path('report/', include('report.urls')),
+    path('notifications/', include('notifications.urls')),
 ]
 
 if settings.DEBUG:

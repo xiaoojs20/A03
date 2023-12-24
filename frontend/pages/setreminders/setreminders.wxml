@@ -1,2 +1,19 @@
 <!--pages/setreminders/setreminders.wxml-->
-<text>pages/setreminders/setreminders.wxml</text>
+<block wx:for="{{reminders}}" wx:key="id">
+  <van-swipe-cell id="wx{{item.index}}" left-width="{{50}}" right-width="{{50}}">
+    <view slot="left" class="leftchoice" data-item="{{item}}" catchtap="handleChangeReminder">修改</view>
+    <van-cell-group>
+      <van-cell 
+        size="large"
+        title="{{item.index}}"
+        value="{{item.time}}"
+      />
+    </van-cell-group>
+    <view slot="right" class="rightchoice" data-item="{{item}}" catchtap="handleDeleteReminder">删除</view>
+  </van-swipe-cell>
+  <van-cell
+    size="large"
+    title="+"
+    value="新增提醒"
+  />
+</block>
