@@ -8,4 +8,7 @@ urlpatterns = [
 	path("create_post/", create_post),
 	path("get_post_by_postid/", get_post_by_postid),
     path("get_post_by_userid/", get_post_by_userid),
+    path("get_n_latest_posts/", get_n_latest_posts),
+    path("create_comment/", create_comment),
+    path("get_n_latest_comments/", get_n_latest_comments),
 ]
