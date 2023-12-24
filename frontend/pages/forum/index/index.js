@@ -1,73 +1,148 @@
 Page({
 
-  /**
-   * 页面的初始数据
-   */
+  // 页面的初始数据
   data: {
     posts: [] // 初始化帖子列表为空数组
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
+  // 生命周期函数--监听页面加载
   onLoad() {
     this.fetchPosts();
   },
 
-  /** 
-   * 获取帖子列表
-   * 这里使用模拟数据来展示如何填充帖子列表
-   * 在实际应用中,您可能需要从服务器获取数据
-  */
- fetchPosts() {
-  // 声明并初始化帖子ID列表
-  const postIds = ['1', '2']; // 示例ID列表，根据需要修改
+  onShow() {
+    // 每次页面显示时都重新获取帖子
+    this.fetchPosts();
+  },
 
-  // 创建一个promise数组，用于并行获取所有帖子数据
+  navigateToPersonalInfo: function() {
+    const userId = "o-Hbd6bbDxfCqNpz5xsTgMLKDR3Q";
+    wx.navigateTo({
+      url: '/pages/forum/personal_info/personal_info?user_id=' + userId
+    });
+  },
+
+  // 获取帖子列表
+  /*
+  fetchPosts() {
+    wx.request({
+      url: 'http://43.143.205.76:8000/post/get_n_latest_posts/',
+      method: 'GET',
+      data: { n: 10 }, // 获取最新的10个帖子
+      success: (res) => {
+        if (res.statusCode === 200 && res.data && res.data.msg === 'get_latest_posts ok') {
+          // 提取帖子的ID
+          const postIds = res.data.posts.map(post => post.post_id);
+          this.getPostsDetail(postIds);
+        } else {
+          console.error('Error fetching latest posts', res);
+        }
+      },
+      fail: (err) => {
+        console.error('Request failed for fetching posts', err);
+      }
+    });
+  },
+  
+  
+
+ getPostsDetail(postIds) {
   const postPromises = postIds.map(postId => 
     new Promise((resolve, reject) => {
       wx.request({
         url: 'http://43.143.205.76:8000/post/get_post_by_postid',
+        method: 'GET',
         data: { post_id: postId },
-        success: (res) => {
-          if (res.statusCode === 200 && res.data && res.data.post_info) {
-            const postInfo = res.data.post_info;
-            const post = {
-              ...postInfo,
-              image: `/images/forum_data/${postId}/resource.png`
-            };
-            resolve(post);
+        success: (postRes) => {
+          if (postRes.statusCode === 200 && postRes.data && postRes.data.msg === 'get_post_by_postid ok') {
+            const postInfo = postRes.data.post_info;
+            // 获取作者昵称
+            wx.request({
+              url: 'http://43.143.205.76:8000/user/get_info',
+              data: { user_id: postInfo.user_id },
+              success: (userInfoRes) => {
+                const nickname = userInfoRes.data && userInfoRes.data.nickname ? userInfoRes.data.nickname : '未知作者';
+                const post = {
+                  ...postInfo,
+                  author: nickname // 添加作者昵称
+                };
+                resolve(post);
+              },
+              fail: (err) => {
+                console.error(`Request failed for user info of post ${postId}`, err);
+                resolve(null);
+              }
+            });
           } else {
-            console.error(`Error fetching post ${postId}`, res);
-            resolve(null); // 解析为 null，而不是拒绝 Promise
+            console.error(`Error fetching post ${postId}`, postRes);
+            resolve(null);
           }
         },
         fail: (err) => {
           console.error(`Request failed for post ${postId}`, err);
-          resolve(null); // 同样解析为 null
+          resolve(null);
         }
       });
     })
   );
 
-  Promise.all(postPromises)
-    .then(fetchedPosts => {
-      const validPosts = fetchedPosts.filter(post => post != null);
-      this.setData({ posts: validPosts });
-    });
+  Promise.all(postPromises).then(fetchedPosts => {
+    // 更新页面数据
+    this.setData({ posts: fetchedPosts });
+  });
+},
+*/
+
+fetchPosts() {
+  const postIds = ['7', '6', '5', '4', '3', '2', '1']; // 示例ID列表
+
+  const postPromises = postIds.map(postId => 
+    new Promise((resolve, reject) => {
+      wx.request({
+        url: 'http://43.143.205.76:8000/post/get_post_by_postid',
+        method: 'GET',
+        data: { post_id: postId },
+        success: (postRes) => {
+          if (postRes.statusCode === 200 && postRes.data && postRes.data.msg === 'get_post_by_postid ok') {
+            const postInfo = postRes.data.post_info;
+            // 获取作者昵称
+            wx.request({
+              url: 'http://43.143.205.76:8000/user/get_info',
+              data: { user_id: postInfo.user_id },
+              success: (userInfoRes) => {
+                const nickname = userInfoRes.data && userInfoRes.data.nickname ? userInfoRes.data.nickname : '未知作者';
+                const post = {
+                  ...postInfo,
+                  author: nickname // 添加作者昵称
+                };
+                resolve(post);
+              },
+              fail: (err) => {
+                console.error(`Request failed for user info of post ${postId}`, err);
+                resolve(null);
+              }
+            });
+          } else {
+            console.error(`Error fetching post ${postId}`, postRes);
+            resolve(null);
+          }
+        },
+        fail: (err) => {
+          console.error(`Request failed for post ${postId}`, err);
+          resolve(null);
+        }
+      });
+    })
+  );
+  Promise.all(postPromises).then(fetchedPosts => {
+    const validPosts = fetchedPosts.filter(post => post != null);
+    this.setData({ posts: validPosts });
+  });
 },
 
-
-
-
-
-  /**
-   * 点击帖子卡片时触发的函数
-   * 导航到帖子详情页面
-  */
+  // 点击帖子卡片时触发的函数，导航到帖子详情页面
   navigateToPostDetail(event) {
     const postId = event.currentTarget.dataset.id;
-    
     wx.navigateTo({
       url: `/pages/forum/post-detail/post-detail?id=${postId}`
     });
@@ -75,10 +150,10 @@ Page({
 
   // 添加点击事件
   navigateToCreatePost() {
-  wx.navigateTo({
-    url: '/pages/forum/create-post/create-post' 
-  })
-}
+    wx.navigateTo({
+      url: '/pages/forum/create-post/create-post' 
+    });
+  }
 
   // 其他生命周期函数根据需要添加
 })
