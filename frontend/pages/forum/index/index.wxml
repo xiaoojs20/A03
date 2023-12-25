@@ -7,7 +7,7 @@
 
 
   <!-- 帖子列表 -->
-  <scroll-view class="post-list" scroll-y="true">
+  <scroll-view class="post-list" scroll-y="true" style="height:{{scrollViewHeight}}px;">
     <block wx:for="{{ posts }}" wx:key="id">
       <view class="post-card" bindtap="navigateToPostDetail" data-id="{{item.post_id}}">
         <van-card title="{{ item.title }}" thumb="{{ item.avatar }}" lazy-load>
@@ -23,7 +23,5 @@
     </block>
   </scroll-view>
 
-  <!-- 底部按钮 -->
-  <van-button class="create-post-fab" bind:click="navigateToCreatePost" icon="edit" round type="info"></van-button>
-  <van-button class="navigate-personal-info" bind:click="navigateToPersonalInfo" icon="user-o" round type="primary">个人信息</van-button>
+  <van-button class="create-post-button" bind:click="navigateToCreatePost" icon="edit" round type="info"></van-button>
 </view>
