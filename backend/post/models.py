@@ -17,7 +17,7 @@ def normalize_time(time):
 		return str(time)[:-7]
 	
 class Post(models.Model):
-    post_id = models.IntegerField(primary_key=True, verbose_name='帖子id')
+    post_id = models.AutoField(primary_key=True, verbose_name='帖子id')
     user = models.ForeignKey("user.User", on_delete=models.CASCADE, verbose_name="发帖用户")
     # user_id = models.CharField(max_length=50, null=True, verbose_name='发帖用户id')
     publish_date = models.DateTimeField(auto_now_add=True,verbose_name='发布时间')
@@ -81,9 +81,35 @@ class Post(models.Model):
             }
         
     class Meta:
-        verbose_name = '话题'
+        verbose_name = '帖子'
         verbose_name_plural = verbose_name
 		    
+
+class Comment(models.Model):
+    comment_id = models.AutoField(primary_key=True, verbose_name='评论id')
+    post_id = models.IntegerField(verbose_name='帖子id')
+    user = models.ForeignKey("user.User", on_delete=models.CASCADE, verbose_name="评论用户")
+    detail = models.CharField(max_length=5000, null=True, verbose_name="评论文字内容")
+    comment_date = models.DateTimeField(auto_now_add=True,verbose_name='评论发布时间')
+
+    def __str__(self):
+        """将模型类以字符串的方式输出"""
+        """user.admin里面重定义了"""
+        return f"{self.comment_id} {'-'*2} {self.post_id} {'-'*2} {self.user} {'-'*2} {self.detail}"
+
+    	# 得到字典数据
+    def get_dict(self):
+        return {
+            'comment_id': self.comment_id,
+            'post_id': self.post_id,
+            'user_id': self.user.user_id,
+            'detail': self.detail,
+            'comment_date': self.comment_date,
+            }
+    
+    class Meta:
+        verbose_name = '评论'
+        verbose_name_plural = verbose_name
 
 # class Topic(models.Model):
 # 	in_session = models.ForeignKey('Session',on_delete=models.CASCADE, verbose_name='所在版块')
