@@ -9,7 +9,8 @@ Page({
     showSetReminder: false,
     showChangeReminder: false,
     currentTime: new Date().getTime(),
-    new_reminder_value: ""
+    new_reminder_value: "",
+    temp_id:"",
   },
 
   /**
@@ -71,7 +72,8 @@ Page({
   },
   onInputSetReminder(event){
     const selectedTime = event.detail;
-    const formattedTime = new Date(selectedTime).toISOString().slice(0, 19);
+    const timezoneOffset = new Date().getTimezoneOffset() * 60 * 1000;
+    const formattedTime = new Date(selectedTime - timezoneOffset).toISOString().slice(0, 19);
     console.log(formattedTime);
     wx.request({
       url: 'http://43.143.205.76:8000/reminder/set_reminder',
@@ -84,6 +86,11 @@ Page({
       success: (res) => {
         // 请求成功时的回调
         console.log(res); // 输出返回的数据
+        wx.showToast({
+          title: '添加提醒成功',
+          icon: 'success',
+          duration: 2000
+        })
         this.handleGetReminders();
         this.setData({
           showSetReminder: false,
@@ -111,6 +118,11 @@ Page({
         // 请求成功时的回调
         console.log(res); // 输出返回的数据
         this.handleGetReminders();
+        wx.showToast({
+          title: '删除提醒成功',
+          icon: 'success',
+          duration: 2000
+        })
       },
       fail: (err) => {
         // 请求失败时的回调
@@ -125,12 +137,14 @@ Page({
     this.setData({
       showChangeReminder: true,
       new_reminder_value: item.message,
+      temp_id: item.id,
     });
   },
   cancelChangeReminder(){
     this.setData({
       showChangeReminder: false,
       new_reminder_value: "",
+      temp_id: "",
     });
   },
   onChangeChangeReminder(event){
@@ -140,12 +154,13 @@ Page({
   },
   onInputChangeReminder(event){
     const selectedTime = event.detail;
-    const formattedTime = new Date(selectedTime).toISOString().slice(0, 19);
-    console.log(formattedTime);
+    const timezoneOffset = new Date().getTimezoneOffset() * 60 * 1000;
+    const formattedTime = new Date(selectedTime -timezoneOffset).toISOString().slice(0, 19);
     wx.request({
       url: 'http://43.143.205.76:8000/reminder/modify',
       method: 'POST',
       data: {
+        id: this.data.temp_id,
         user_id: getApp().globalData.userid,
         reminder_time: formattedTime,
         message: this.data.new_reminder_value,
@@ -153,10 +168,16 @@ Page({
       success: (res) => {
         // 请求成功时的回调
         console.log(res); // 输出返回的数据
+        wx.showToast({
+          title: '修改提醒成功',
+          icon: 'success',
+          duration: 2000
+        })
         this.handleGetReminders();
         this.setData({
-          showSetReminder: false,
+          showChangeReminder: false,
           new_reminder_value: "",
+          temp_id: "",
         });
       },
       fail: (err) => {
