@@ -96,6 +96,47 @@ Page({
 
   createPost(title, content, imageList) {
     wx.request({
+      url: 'http://43.143.205.76:8000/post/create_post/',
+      method: 'POST',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded'
+      },
+      data: {
+        user_id: "o-Hbd6bbDxfCqNpz5xsTgMLKDR3Q", // getApp().globalData.userid,
+        title: title,
+        content: content,
+        imageList: imageList 
+      },
+      success: (res) => {
+        if (res.statusCode === 200 && res.data && res.data.msg === 'create_post ok') {
+          console.log('帖子创建成功:', res.data);
+          wx.showToast({
+            title: '帖子发布成功',
+            icon: 'success'
+          });
+          wx.navigateTo({
+            url: '/pages/forum/index/index',
+          });
+        } else {
+          console.error('帖子创建失败:', res.data);
+          wx.showToast({
+            title: '帖子发布失败',
+            icon: 'none'
+          });
+        }
+      },
+      fail: function(err) {
+        console.error('网络请求失败:', err);
+        wx.showToast({
+          title: '网络请求失败',
+          icon: 'none'
+        });
+      }
+    });
+  },
+  /*
+  createPost(title, content, imageList) {
+    wx.request({
     url: 'http://43.143.205.76:8000/post/create_post/',
     method: 'GET',
     data: {
@@ -124,17 +165,7 @@ Page({
         });
       }
     },
-    fail: function(err) {
-      // 请求失败的处理
-      console.error('网络请求失败:', err);
-      wx.showToast({
-        title: '网络请求失败',
-        icon: 'none'
-      });
-    }
-  });
-},
-  
+    */ 
 
   chooseImage() {
     

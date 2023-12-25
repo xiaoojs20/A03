@@ -7,10 +7,11 @@
     <text>{{post.content}}</text>
   </view>
 
-  <!-- 点赞和分享按钮 -->
+  <!-- 关注和分享按钮 -->
   <view class="interaction-bar">
-    <button bindtap="toggleLike" class="like-button">点赞</button>
-    <button bindtap="onShareAppMessage" class="share-button">分享</button>
+    <button bindtap="navigateToPersonalInfo" class="home-button">主页</button>
+    
+    <button open-type="share" class="share-button">分享</button> <!-- 添加分享按钮 -->
   </view>
 
   <!-- 评论区 -->
@@ -23,9 +24,9 @@
     </block>
   </view>
 
-  <!-- 评论输入区域 -->
-  <view class="comment-input-area">
-    <input class="comment-input" placeholder="写评论..." />
-    <button bindtap="submitComment">发送</button>
-  </view>
+<view class="comment-input-area">
+  <input class="comment-input" placeholder="写评论..." value="{{commentInput}}" bindinput="bindCommentInput" />
+  <button bindtap="submitComment">发送</button>
+</view>
+
 </view>
