@@ -13,9 +13,10 @@
 }
 
 .post-image {
-  width: 100%;
-  margin-bottom: 10px;
+  width: 100%; /* 根据需要调整宽度 */
+  margin: 10px 0; /* 提供上下边距 */
 }
+
 
 .post-content {
   font-size: 14px;

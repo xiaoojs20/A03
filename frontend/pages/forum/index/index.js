@@ -59,9 +59,9 @@ fetchPostIds(n = 10) {  // 默认获取10个帖子
   });
 },
 
-
-// 修改后的 fetchPosts 函数，接受一个帖子ID列表作为参数
+// Existing function for fetching posts
 fetchPosts(postIds) {
+  const that = this;
   const postPromises = postIds.map(postId => 
     new Promise((resolve, reject) => {
       wx.request({
@@ -69,23 +69,24 @@ fetchPosts(postIds) {
         method: 'GET',
         data: { post_id: postId },
         success: (postRes) => {
+          console.log('API Response:', postRes); // 打印整个响应对象
           if (postRes.statusCode === 200 && postRes.data && postRes.data.msg === 'get_post_by_postid ok') {
             const postInfo = postRes.data.post_info;
-            // 获取作者昵称
             wx.request({
               url: 'http://43.143.205.76:8000/user/get_info',
               data: { user_id: postInfo.user_id },
               success: (userInfoRes) => {
-                const nickname = userInfoRes.data && userInfoRes.data.nickname ? userInfoRes.data.nickname : '未知作者';
-                const post = {
-                  ...postInfo,
-                  author: nickname // 添加作者昵称
-                };
-                resolve(post);
+                if (userInfoRes.statusCode === 200 && userInfoRes.data) {
+                  const nickname = userInfoRes.data.nickname || '未知作者';
+                  resolve({ ...postInfo, author: nickname });
+                } else {
+                  console.error(`Request failed for user info of post ${postId}`);
+                  resolve({ ...postInfo, author: '未知作者' });
+                }
               },
               fail: (err) => {
                 console.error(`Request failed for user info of post ${postId}`, err);
-                resolve(null);
+                resolve({ ...postInfo, author: '未知作者' });
               }
             });
           } else {
@@ -102,10 +103,12 @@ fetchPosts(postIds) {
   );
 
   Promise.all(postPromises).then(fetchedPosts => {
-    const validPosts = fetchedPosts.filter(post => post != null);
-    this.setData({ posts: validPosts });
+    const validPosts = fetchedPosts.filter(post => post !== null);
+    that.setData({ posts: validPosts });
   });
 },
+
+
 
 
   // 点击帖子卡片时触发的函数，导航到帖子详情页面

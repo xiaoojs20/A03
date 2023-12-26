@@ -2,7 +2,14 @@
   <view class="post-header">
     <text class="post-title">{{post.title}}</text>
   </view>
-  <image class="post-image" src="{{post.image}}" mode="aspectFit"></image>
+
+  <!-- 帖子图片展示区 -->
+  <view class="post-images">
+    <block wx:for="{{postImages}}" wx:key="index">
+      <image class="post-image" src="{{item}}" mode="aspectFit"></image>
+    </block>
+  </view>
+
   <view class="post-content">
     <text>{{post.content}}</text>
   </view>
@@ -10,27 +17,23 @@
   <!-- 关注和分享按钮 -->
   <view class="interaction-bar">
     <button bindtap="navigateToPersonalInfo" class="home-button">主页</button>
-    
     <button open-type="share" class="share-button">分享</button> <!-- 添加分享按钮 -->
   </view>
 
   <!-- 评论区 -->
-  <!-- 评论区 -->
-<view class="comments-section">
-  <block wx:for="{{comments}}" wx:key="unique">
-    <view class="comment">
-      <!-- 根据后端数据结构调整字段 -->
-      <text class="comment-author">{{item.author}}：</text>
-      <text class="comment-content">{{item.detail}}</text>
-    </view>
-  </block>
+  <view class="comments-section">
+    <block wx:for="{{comments}}" wx:key="unique">
+      <view class="comment">
+        <!-- 根据后端数据结构调整字段 -->
+        <text class="comment-author">{{item.author}}：</text>
+        <text class="comment-content">{{item.detail}}</text>
+      </view>
+    </block>
+  </view>
+
+  <view class="comment-input-area">
+    <input class="comment-input" placeholder="写评论..." value="{{commentInput}}" bindinput="bindCommentInput" />
+    <button bindtap="submitComment">发送</button>
+  </view>
 </view>
 
-
-
-<view class="comment-input-area">
-  <input class="comment-input" placeholder="写评论..." value="{{commentInput}}" bindinput="bindCommentInput" />
-  <button bindtap="submitComment">发送</button>
-</view>
-
-</view>

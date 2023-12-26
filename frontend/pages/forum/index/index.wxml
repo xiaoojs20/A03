@@ -1,10 +1,9 @@
 <view class="page-container">
   <!-- 加载动画（当数据正在加载时显示） -->
   <view class="loading-animation" wx:if="{{isLoading}}">
-  <van-loading type="spinner" size="30px"></van-loading>
-  <text>加载中...</text>
-</view>
-
+    <van-loading type="spinner" size="30px"></van-loading>
+    <text>加载中...</text>
+  </view>
 
   <!-- 帖子列表 -->
   <scroll-view class="post-list" scroll-y="true" style="height:{{scrollViewHeight}}px;">
@@ -14,7 +13,7 @@
           <view slot="footer">
             <view class="post-info">
               <text class="post-author">作者: {{ item.author }}</text>
-              <text class="post-likes">点赞: {{ item.like_counts }}</text>
+              <!-- Removed like counts -->
               <text class="post-comments">评论: {{ item.comment_counts }}</text>
             </view>
           </view>
@@ -25,3 +24,4 @@
 
   <van-button class="create-post-button" bind:click="navigateToCreatePost" icon="edit" round type="info"></van-button>
 </view>
+
