@@ -30,7 +30,7 @@ Page({
         const fansInfo = res.data.fans;
         this.setData({
           fans: fansInfo,
-          fansnumber: 0,
+          fansnumber: res.data.fans.length,
         });
       },
       fail: (err) => {
