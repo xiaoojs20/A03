@@ -186,18 +186,18 @@ def generate_report(request):
         report_data = monthly_check_in_duration(user, start_date, end_date)
     report_data_hour = [duration.total_seconds()/3600 for duration in report_data]
     buffer = create_plot(report_data_hour, report_type)
-    boundary = uuid.uuid4().hex
-    response = HttpResponse(content_type=f'multipart/mixed; boundary="{boundary}"')
+    # boundary = uuid.uuid4().hex
+    # response = HttpResponse(content_type=f'multipart/mixed; boundary="{boundary}"')
     
-    # 添加JSON部分
-    json_part = json.dumps({'report_data': report_data_hour, 'mean': np.mean(report_data_hour)})
-    response.write(f'--{boundary}\r\nContent-Type: application/json\r\n\r\n{json_part}\r\n')
+    # # 添加JSON部分
+    # json_part = json.dumps({'report_data': report_data_hour, 'mean': np.mean(report_data_hour)})
+    # response.write(f'--{boundary}\r\nContent-Type: application/json\r\n\r\n{json_part}\r\n')
 
-    # 添加图像部分
-    response.write(f'--{boundary}\r\nContent-Type: image/png\r\n\r\n')
-    response.write(buffer.getvalue())
-    response.write(f'\r\n--{boundary}--\r\n')
-
+    # # 添加图像部分
+    # response.write(f'--{boundary}\r\nContent-Type: image/png\r\n\r\n')
+    # response.write(buffer.getvalue())
+    # response.write(f'\r\n--{boundary}--\r\n')
+    response = HttpResponse(buffer.getvalue(), content_type='image/png')
     return response
     # 返回 JSON 响应
     #return JsonResponse({'report_data': report_data_hour,'mean':np.mean(report_data_hour)})
