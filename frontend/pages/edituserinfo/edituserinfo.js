@@ -116,8 +116,8 @@ Page({
           // 请求成功时的回调
           console.log(res.data); // 输出返回的数据
           getApp().handleGetInfoGlobal();
-          wx.navigateBack({
-            delta: 1
+          wx.switchTab({
+            url: '/pages/info/info'
           });
         },
         fail: (err) => {
@@ -158,29 +158,28 @@ Page({
   handleAfterRead(event) {
     const { file } = event.detail;
     wx.uploadFile({
-          url: 'http://43.143.205.76:8000/user/upload_image/',
-          // header: {
-          //   'content-type': 'multipart/form-data'
-          // },
-          data: {
-            user_image: file.url,
-          },
-          filePath: file.url,
-          name: 'user_image',
-          formData: {
-            // user_id: getApp().globalData.userid,
-            // user_id: 'o-Hbd6RvDXxQl0_cZ3_HKHPwNyGo'
-            user_id: 'o-Hbd6bbDxfCqNpz5xsTgMLKDR3Q'
-          },
-          
-          success(res) {
-            console.log(file);
-            console.log(res);
-          },
-          fail: (err) => {
-            // 请求失败时的回调
-            console.error('请求失败', err);
-          },
+      url: 'http://43.143.205.76:8000/user/upload_image/',
+      // header: {
+      //   'content-type': 'multipart/form-data'
+      // },
+      data: {
+        user_image: file.url,
+      },
+      filePath: file.url,
+      name: 'user_image',
+      formData: {
+        // user_id: getApp().globalData.userid,
+        // user_id: 'o-Hbd6RvDXxQl0_cZ3_HKHPwNyGo'
+        user_id: 'o-Hbd6bbDxfCqNpz5xsTgMLKDR3Q'
+      },
+      success(res) {
+        console.log(file);
+        console.log(res);
+      },
+      fail: (err) => {
+        // 请求失败时的回调
+        console.error('请求失败', err);
+      },
     });
   },
 });
