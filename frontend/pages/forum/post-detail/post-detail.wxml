@@ -15,14 +15,18 @@
   </view>
 
   <!-- 评论区 -->
-  <view class="comments-section">
-    <block wx:for="{{comments}}" wx:key="id">
-      <view class="comment">
-        <text class="comment-author">{{item.author}}：</text>
-        <text class="comment-content">{{item.content}}</text>
-      </view>
-    </block>
-  </view>
+  <!-- 评论区 -->
+<view class="comments-section">
+  <block wx:for="{{comments}}" wx:key="unique">
+    <view class="comment">
+      <!-- 根据后端数据结构调整字段 -->
+      <text class="comment-author">{{item.author}}：</text>
+      <text class="comment-content">{{item.detail}}</text>
+    </view>
+  </block>
+</view>
+
+
 
 <view class="comment-input-area">
   <input class="comment-input" placeholder="写评论..." value="{{commentInput}}" bindinput="bindCommentInput" />
