@@ -238,7 +238,7 @@ def change_brace(request):
 			if _end_date is not None:
 				_user.end_date = datetime.strptime(_end_date, '%Y-%m-%d').date()
 
-				_user.save()
+			_user.save()
 			print('牙套数据更新成功')
 			return JsonResponse({'msg':'change_brace ok', 'user_info': _user.get_brace()})
 	except User.DoesNotExist:
