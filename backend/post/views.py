@@ -205,6 +205,7 @@ def create_comment(request):
                     )
 
             # 保存新帖子到数据库
+	    _post.save()
             new_comment.save()
 
             print('评论发布成功')
