@@ -116,8 +116,8 @@ Page({
           // 请求成功时的回调
           console.log(res.data); // 输出返回的数据
           getApp().handleGetInfoGlobal();
-          wx.navigateBack({
-            delta: 1
+          wx.switchTab({
+            url: '/pages/info/info'
           });
         },
         fail: (err) => {

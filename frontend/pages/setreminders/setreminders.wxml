@@ -5,15 +5,32 @@
     <van-cell-group>
       <van-cell 
         size="large"
-        title="{{item.index}}"
-        value="{{item.time}}"
+        title="{{item.time}}"
+        value="{{item.message}}"
       />
     </van-cell-group>
     <view slot="right" class="rightchoice" data-item="{{item}}" catchtap="handleDeleteReminder">删除</view>
   </van-swipe-cell>
-  <van-cell
-    size="large"
-    title="+"
-    value="新增提醒"
-  />
 </block>
+<van-cell
+  size="large"
+  title="+"
+  value="新增提醒"
+  bind:tap="handleSetReminder"
+/>
+<van-popup position="bottom" custom-style="height: 40%;" show="{{showSetReminder}}">
+  <van-field
+    value="{{ new_reminder_value }}"
+    placeholder="请输入提醒内容"
+    bindblur="onChangeSetReminder"
+  />
+  <van-datetime-picker type="datetime" value="{{ currentTime }}" min-date="{{ currentTime }}" bind:confirm="onInputSetReminder" bind:cancel="cancelSetReminder" />
+</van-popup>
+<van-popup position="bottom" custom-style="height: 40%;" show="{{showChangeReminder}}">
+  <van-field
+    value="{{ new_reminder_value }}"
+    placeholder="请输入提醒内容"
+    bindblur="onChangeChangeReminder"
+  />
+  <van-datetime-picker type="datetime" value="{{ currentTime }}" min-date="{{ currentTime }}" bind:confirm="onInputChangeReminder" bind:cancel="cancelChangeReminder"/>
+</van-popup>

@@ -19,4 +19,9 @@
       <view class="post-content">{{item.content}}</view>
     </view>
   </view>
+
+  <view class="follow-button-container">
+    <button wx:if="{{!isFollowing}}" bindtap="followUser" class="follow-button">关注</button>
+    <button wx:if="{{isFollowing}}" bindtap="unfollowUser" class="unfollow-button">取消关注</button>
+  </view>
 </view>
