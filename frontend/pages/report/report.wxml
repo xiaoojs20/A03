@@ -10,12 +10,16 @@
     color="#1B23FF">
     <van-tab title="周报">
       <image 
-        src="{{month_url}}"
-        class="background">
+        src="{{week_url}}"
+        class="report">
       </image>
     </van-tab>
 
     <van-tab title="月报">
+      <image 
+        src="{{month_url}}"
+        class="report">
+      </image>
     </van-tab>
   </van-tabs>
 </view>
