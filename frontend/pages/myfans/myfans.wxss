@@ -1,1 +1,5 @@
 /* pages/myfans/myfans.wxss */
+.cell {
+  padding: 10rpx;
+  font-size: 28rpx;
+}

@@ -9,6 +9,10 @@
     active="{{ active }}"
     color="#1B23FF">
     <van-tab title="周报">
+      <image 
+        src="{{month_url}}"
+        class="background">
+      </image>
     </van-tab>
 
     <van-tab title="月报">

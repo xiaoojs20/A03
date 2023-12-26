@@ -1,2 +1,13 @@
 <!--pages/myfans/myfans.wxml-->
-<text>pages/myfans/myfans.wxml</text>
+<view class="fansnumber">
+<text>粉丝数："{{}}"</text>
+</view>
+<van-cell-group>
+  <van-cell 
+    wx:for="{{fans}}" 
+    wx:key="index"
+    data-index="{{index}}"
+    size="large"
+    title="{{item}}"
+  />
+</van-cell-group>
