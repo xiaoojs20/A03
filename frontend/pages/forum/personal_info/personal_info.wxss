@@ -59,3 +59,27 @@
   font-size: 14px;
   color: #666;
 }
+
+/* pages/forum/personal_info/personal_info.wxss */
+.follow-button-container {
+  position: fixed;  /* 固定定位 */
+  top: 10px;        /* 距离顶部10像素 */
+  right: 10px;      /* 距离右侧10像素 */
+  z-index: 1000;    /* 确保按钮在其他内容之上 */
+}
+
+.follow-button, .unfollow-button {
+  padding: 5px 10px;      /* 按钮内边距 */
+  background-color: #007bff; /* 背景颜色 */
+  color: white;            /* 文字颜色 */
+  border-radius: 5px;      /* 边框圆角 */
+  font-size: 14px;         /* 字体大小 */
+  border: none;            /* 无边框 */
+  outline: none;           /* 去除轮廓 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* 阴影效果 */
+}
+
+.unfollow-button {
+  background-color: #dc3545; /* 取消关注按钮的背景颜色 */
+}
+
