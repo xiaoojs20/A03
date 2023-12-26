@@ -159,9 +159,9 @@ Page({
     const { file } = event.detail;
     wx.uploadFile({
           url: 'http://43.143.205.76:8000/user/upload_image/',
-          // header: {
-          //   'content-type': 'multipart/form-data'
-          // },
+          header: {
+            'content-type': 'multipart/form-data'
+          },
           data: {
             user_image: file.url,
           },

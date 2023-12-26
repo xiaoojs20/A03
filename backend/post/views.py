@@ -7,6 +7,8 @@ from .models import Post, Comment
 from user.models import User
 from django.db.models import Max
 from django.views.decorators.csrf import csrf_exempt
+from django.core.exceptions import ObjectDoesNotExist
+import mimetypes
 # Create your views here.
 
 
@@ -105,6 +107,77 @@ def get_post_by_userid(request):
         return JsonResponse({'msg': 'get_post_by_useri error', 'error': str(e)}, status=500)
     
 
+@csrf_exempt
+def set_top(request):
+    try:
+        print(request.method)
+        if request.method == 'POST':
+            _post_id = request.POST.get('post_id')
+            _post = Post.objects.get(post_id=_post_id)
+            _is_top = request.POST.get('is_top')
+            if _is_top is not None:
+                _post.is_top = _is_top
+
+            _post.save()
+            return JsonResponse({'msg': 'set_top ok', 'is_top': _post.is_top})
+    
+    except Exception as e:
+        return JsonResponse({'msg': 'set_top error'+str(e)}, status=500)
+    
+
+@csrf_exempt
+def upload_image(request):
+	# 获取前端传入数据
+	try:
+		print(request.method)
+		if request.method == 'POST':
+			_post_id = request.POST.get('post_id')
+			print(_post_id)
+			_post = Post.objects.get(post_id=_post_id)
+			_post_image = request.FILES.get('post_image', None)
+			if _post_image is not None:
+				_post.picture_1.save(_post_image.name, _post_image)
+
+			_post.save()
+			print('图片上传成功')
+			return JsonResponse({'msg':'upload_image ok'}, status=200)
+	except ObjectDoesNotExist:
+		print('帖子不存在')
+		return JsonResponse({'msg': 'Post does not exist'}, status=404)
+	except Exception as e:
+		print('头像上传失败')
+		print(e)
+		return JsonResponse({'msg':'upload_image error'+str(e)}, status=500)
+	
+
+def get_image(request):
+    try:
+        _post_id = request.POST.get('post_id')
+        print(_post_id)
+        _post = Post.objects.get(post_id=_post_id)
+        print(_post)
+        image_path = _post.picture_1.path
+        print(image_path)
+        with open(image_path, "rb") as f:
+            # print(f.read())
+            # # return HttpResponse(f.read())
+            # return JsonResponse({'image':f.read()}, status=200)
+            content_type, encoding = mimetypes.guess_type(image_path)
+            response = HttpResponse(f.read(), content_type=content_type)
+            if encoding:
+                response['Content-Encoding'] = encoding
+
+            return response
+
+    except User.DoesNotExist:
+        # 处理用户不存在的情况
+        return JsonResponse({'msg': 'User does not exist'}, status=404)
+
+    except Exception as e:
+        # 处理其他异常
+        print(e)
+        return JsonResponse({'msg':'get_image error'}, status=500)
+     
 
 @csrf_exempt
 def create_comment(request):
@@ -160,3 +233,5 @@ def get_n_latest_comments(request):
     except Exception as e:
         print(e)
         return JsonResponse({'msg': 'get_n_latest_comments error', 'error': str(e)}, status=500)
+    
+
