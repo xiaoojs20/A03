@@ -30,7 +30,8 @@ Page({
       success(res) {
         if (res.statusCode === 200 && res.data) {
           that.setData({ userInfo: res.data });
-          console.log('用户信息:', res.data); // 展示返回的用户信息
+          // 获取图像
+          that.getImage();
         } else {
           console.error('获取用户信息失败:', res);
         }
@@ -133,32 +134,28 @@ Page({
     });
   },
 
-  unfollowUser: function() {
+  getImage: function() {
     const that = this;
-    const currentUserId = 'o-Hbd6bbDxfCqNpz5xsTgMLKDR3Q'; // 获取当前登录用户的ID
-    const unfollowNickname = this.data.userInfo.nickname; // 获取要取消关注的用户的昵称
-
     wx.request({
-      url: 'http://43.143.205.76:8000/user/remove_following',
-      method: 'GET', // 注意: 通常删除操作应该使用 POST 或 DELETE 方法
-      data: {
-        user_id: currentUserId,
-        unfollow_name: unfollowNickname
-      },
-      success: function(res) {
-        if (res.statusCode === 200) {
-          console.log('成功取消关注');
-          that.setData({ isFollowing: false }); // 更新关注状态
-          // 可以在这里添加其他成功取消关注后的操作
+      url: 'http://43.143.205.76:8000/user/get_image/',
+      data: { user_id: this.data.userId },
+      responseType: 'arraybuffer',  // 确保接收的是二进制数据
+      success(res) {
+        if (res.statusCode === 200 && res.data) {
+          // 将二进制数据转换为 Base64 编码的字符串
+          const base64 = wx.arrayBufferToBase64(res.data);
+          const imageUrl = 'data:image/jpeg;base64,' + base64;
+          that.setData({ 'userInfo.user_image': imageUrl });
         } else {
-          console.error('取消关注失败:', res);
+          console.error('获取图像失败:', res);
         }
       },
-      fail: function(err) {
-        console.error('请求取消关注接口失败:', err);
+      fail(err) {
+        console.error('请求图像失败', err);
       }
     });
   },
+  
 
   
 
