@@ -15,7 +15,8 @@
     "pages/showdoctors/showdoctors",
     "pages/doctorcertificate/doctorcertificate",
     "pages/myfans/myfans",
-    "pages/forum/personal_info/personal_info"
+    "pages/forum/personal_info/personal_info",
+    "pages/report/report"
   ],
   "window": {
     "backgroundTextStyle": "light",

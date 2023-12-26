@@ -1,0 +1,17 @@
+<!--pages/report/report.wxml-->
+<view class="container">
+  <image 
+    src="/images/mains/background_mains.jpeg"
+    class="background">
+  </image>
+  
+  <van-tabs class="tabs"
+    active="{{ active }}"
+    color="#1B23FF">
+    <van-tab title="周报">
+    </van-tab>
+
+    <van-tab title="月报">
+    </van-tab>
+  </van-tabs>
+</view>

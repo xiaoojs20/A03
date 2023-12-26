@@ -48,6 +48,18 @@
       </view>
     </navigator>
     <block wx:if="{{!getApp().globalData.is_doctor}}">
+      <navigator url="/pages/report/report">
+        <view class="my-item flex-wrp">
+          <view class="myitem-icon flex-item" >
+            <image src="/images/info/file.png"></image>
+          </view>
+          <view class="myitem-name flex-item">
+            <text>正畸报告</text>
+          </view>
+        </view>
+      </navigator>
+    </block>
+    <block wx:if="{{!getApp().globalData.is_doctor}}">
       <navigator url="/pages/doctorcertificate/doctorcertificate">
         <view class="my-item flex-wrp">
           <view class="myitem-icon flex-item" >
