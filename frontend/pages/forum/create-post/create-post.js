@@ -37,8 +37,7 @@ Page({
   submitPost() {
     const { title, content, imageList } = this.data;
     console.log("提交帖子");
-
-    // 检查标题和内容是否为空
+  
     if (!title || !content) {
       wx.showToast({
         title: '标题和内容不能为空',
@@ -46,21 +45,23 @@ Page({
       });
       return;
     }
-
-    // 创建帖子
+  
     this.createTextPost(title, content, (postId) => {
       console.log("帖子ID: ", postId);
-
-      // 如果帖子创建成功，并且有图片需要上传
-      if (postId && imageList.length > 0) {
-        console.log("上传帖子图片");
-        // 上传每张图片
-        imageList.forEach((imagePath) => {
-          this.uploadPostImage(postId, imagePath);
-        });
+  
+      if (postId) {
+        if (imageList.length > 0) {
+          console.log("上传帖子图片");
+          imageList.forEach((imagePath) => {
+            this.uploadPostImage(postId, imagePath);
+          });
+        }
+        // 跳转到论坛首页
+        this.navigateToIndex();  // 帖子创建成功后跳转
       }
     });
   },
+  
 
   createTextPost(title, content, callback) {
     console.log("创建帖子内容");
@@ -109,9 +110,6 @@ Page({
       }
     });
   },
-  
-  
-  
   uploadPostImage(postId, imagePath) {
     console.log(`上传图片 postId: ${postId}, imagePath: ${imagePath}`);
     wx.uploadFile({
@@ -148,7 +146,14 @@ Page({
     });
   },
 
-  // 生命周期函数
+  navigateToIndex() {
+    console.log("Navigating to forum index");
+    wx.redirectTo({
+      url: '/pages/forum/index/index'
+    });
+  },
+  
+
   onLoad() {},
   onReady() {},
   onShow() {},

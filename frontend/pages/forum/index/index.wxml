@@ -7,13 +7,13 @@
 
   <!-- 置顶帖子的轮播 -->
   <swiper autoplay interval="3000" indicator-dots indicator-color="rgba(255, 255, 255, 0.8)" indicator-active-color="#ffffff">
-    <block wx:for="{{topPosts}}" wx:key="post_id">
-      <swiper-item>
-        <image class="post-cover" src="{{item.imageUrl}}" mode="aspectFill"></image>
-        <text class="post-title">{{item.title}}</text>
-      </swiper-item>
-    </block>
-  </swiper>
+  <block wx:for="{{topPosts}}" wx:key="post_id">
+    <swiper-item bindtap="navigateToPostDetail" data-id="{{item.post_id}}">
+      <image class="post-cover" src="{{item.imageUrl}}" mode="aspectFill"></image>
+    </swiper-item>
+  </block>
+</swiper>
+
 
   <!-- 帖子列表 -->
   <scroll-view class="post-list" scroll-y="true" style="height:{{scrollViewHeight}}px;">
