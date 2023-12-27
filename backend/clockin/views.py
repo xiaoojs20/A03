@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from user.models import User
 import json
 from matplotlib import dates as mdates
+from matplotlib.ticker import FuncFormatter
 from matplotlib import pyplot as plt
 import numpy as np
 import uuid
@@ -113,10 +114,7 @@ def monthly_check_in_duration(user, start_date, end_date):
         start_date = start_date+timedelta(days=7)
 
     return duration_list
-@csrf_exempt
-def custom_week_formatter(x, pos=None):
-    week_num = (x - dates[0]).days // 7 + 1
-    return f"Week {week_num}"
+
 @csrf_exempt
 def create_plot(data, report_type):
     plt.figure(figsize=(10, 6))
@@ -142,7 +140,7 @@ def create_plot(data, report_type):
             week_num = (mdates.num2date(x) - start_date).days // 7 + 1
             return f"Week {week_num}"
 
-        plt.gca().xaxis.set_major_formatter(mdates.FuncFormatter(custom_week_formatter))
+        plt.gca().xaxis.set_major_formatter(FuncFormatter(custom_week_formatter))
 
     plt.plot(dates, data, marker='o')
 
