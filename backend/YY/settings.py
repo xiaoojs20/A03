@@ -161,3 +161,4 @@ CELERY_BEAT_SCHEDULE = {
         'schedule': 60.0,  # runs every 60 seconds
     },
 }
+WECHAT_APPID = "2XZ1zgk0z54RJzorx0G-12uAtOAT8xKq4XaWLLUidsc"
