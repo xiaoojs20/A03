@@ -116,9 +116,18 @@ Page({
           // 请求成功时的回调
           console.log(res.data); // 输出返回的数据
           getApp().handleGetInfoGlobal();
-          wx.switchTab({
-            url: '/pages/info/info'
+          wx.showToast({
+            title: '修改成功！',
+            icon: 'success',
+            duration: 1000,
+            mask: true
           });
+          setTimeout(() => {
+            wx.switchTab({
+              url: '/pages/info/info'
+            });
+          }, 1000);
+          
         },
         fail: (err) => {
           // 请求失败时的回调
