@@ -3,3 +3,11 @@
   padding: 10rpx;
   font-size: 28rpx;
 }
+
+.textcontainer {
+  width:100vw;
+  display:flex;
+  justify-content: center;
+  height: 30px;
+  margin-top:10px;
+}
