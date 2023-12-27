@@ -3,14 +3,14 @@
   <block wx:for="{{Msg}}" wx:for-item="item" wx:key="index">
     <view class="chat-item flex-wrp">
       <view class="avatar flex-item">
-        <image src="/images/message/icon9.jpeg"></image>
+        <image src="/images/message/tooth.png" class="icon"></image>
       </view>
       <view class="chat-content flex-item">
         <view class="chat-source">
-          <text class="chatmate">Alex</text>
-          <text class="lasttime">1 个月前</text>
+          <text class="chatmate">系统消息</text>
+          <text class="lasttime">{{item.created_at}}</text>
         </view>
-        <text class="chat-txt">你好~ 你好~ 你好~</text>
+        <text class="chat-txt">{{item.message}}</text>
       </view>
     </view>
   </block>
