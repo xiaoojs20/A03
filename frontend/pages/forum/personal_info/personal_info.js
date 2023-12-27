@@ -84,7 +84,7 @@ Page({
 
   followUser: function() {
     const that = this;
-    const currentUserId = 'o-Hbd6bbDxfCqNpz5xsTgMLKDR3Q';
+    const currentUserId = getApp().globalData.userid;
     const followNickname = this.data.userInfo.nickname;
   
     wx.request({
@@ -93,8 +93,10 @@ Page({
         user_id: currentUserId,
         follow_name: followNickname
       },
+      method: "GET",
       success: function(res) {
         if (res.statusCode === 200) {
+          console.log(currentUserId);
           console.log('成功添加关注:', res.data); // 展示返回的数据
           that.checkIfFollowing(); // 重新检查关注状态
         } else {
