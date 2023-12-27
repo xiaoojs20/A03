@@ -114,23 +114,35 @@ def monthly_check_in_duration(user, start_date, end_date):
 
     return duration_list
 @csrf_exempt
+def custom_week_formatter(x, pos=None):
+    week_num = (x - dates[0]).days // 7 + 1
+    return f"Week {week_num}"
+@csrf_exempt
 def create_plot(data, report_type):
     plt.figure(figsize=(10, 6))
     #import pdb;pdb.set_trace()
-    data=list(reversed(data))
+    #data=list(reversed(data))
     end_date = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)  # 当天日期没有时间部分
     # 计算起始日期
     if report_type == 'weekly':
         start_date = end_date - timedelta(days=7) 
         dates = [start_date + timedelta(days=i) for i in range(7)]
-        print(dates)
+        #print(dates)
         plt.gca().xaxis.set_major_locator(mdates.DayLocator())
         date_format = '%Y-%m-%d'
     elif report_type == 'monthly':
         start_date = end_date - timedelta(days=28)  
         dates = [start_date + timedelta(days=i*7) for i in range(4)]
-        plt.gca().xaxis.set_major_locator(mdates.WeekdayLocator(byweekday=mdates.MO))
-        date_format = 'Week %W'
+        #plt.gca().xaxis.set_major_locator(mdates.WeekdayLocator())
+        #date_format = 'Week %W'
+        plt.gca().xaxis.set_major_locator(mdates.DayLocator(interval=7))  # 每7天显示一个主刻度
+
+        # 使用自定义的格式化函数显示 Week 1 到 Week 4
+        def custom_week_formatter(x, pos=None):
+            week_num = (mdates.num2date(x) - start_date).days // 7 + 1
+            return f"Week {week_num}"
+
+        plt.gca().xaxis.set_major_formatter(mdates.FuncFormatter(custom_week_formatter))
 
     plt.plot(dates, data, marker='o')
 
