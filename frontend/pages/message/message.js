@@ -48,17 +48,14 @@ Page({
     });
   },
 
-  formatTime(originalTime){
-    // 创建一个 Date 对象
-    var date = new Date(originalTime);
-    // 获取年、月、日、小时和分钟
-    var year = date.getFullYear();
-    var month = date.getMonth() + 1; // 月份是从 0 开始计数的，所以要加 1
-    var day = date.getDate();
-    var hour = date.getHours();
-    var minute = date.getMinutes();
-    // 格式化成需要的形式
-    var formattedTime = year + '-' + (month < 10 ? '0' : '') + month + '-' + (day < 10 ? '0' : '') + day + ' ' + (hour < 10 ? '0' : '') + hour + ':' + (minute < 10 ? '0' : '') + minute;
-    return {formattedTime};
-  },
+  // 显示消息详情
+  showDetailMsg(event){
+    var index = event.currentTarget.dataset.index;
+    var content = this.data.Msg[index].message;
+    wx.showModal({
+      title: '系统信息',
+      content: content,
+      showCancel: false
+    })
+  }
 })

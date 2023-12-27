@@ -47,7 +47,6 @@ Page({
 
   onLoad: function () {
     //调用应用实例的方法获取全局数据
-    this.getImage();
     this.setData({
       nickname: getApp().globalData.nickname,
     });

@@ -1,7 +1,7 @@
 <!--pages/message/message.wxml-->
 <view class="container chat">
   <block wx:for="{{Msg}}" wx:for-item="item" wx:key="index">
-    <view class="chat-item flex-wrp">
+    <view class="chat-item flex-wrp" data-index="{{index}}" bindtap="showDetailMsg">
       <view class="avatar flex-item">
         <image src="/images/message/tooth.png" class="icon"></image>
       </view>
