@@ -170,7 +170,7 @@ Page({
       formData: {
         // user_id: getApp().globalData.userid,
         // user_id: 'o-Hbd6RvDXxQl0_cZ3_HKHPwNyGo'
-        user_id: 'o-Hbd6bbDxfCqNpz5xsTgMLKDR3Q'
+        user_id: getApp().globalData.userid
       },
       success(res) {
         console.log(file);

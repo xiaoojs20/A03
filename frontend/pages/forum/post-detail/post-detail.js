@@ -74,7 +74,7 @@ Page({
 
   submitComment: function() {
     const that = this;
-    const currentUserId = 'o-Hbd6bbDxfCqNpz5xsTgMLKDR3Q'; 
+    const currentUserId = getApp().globalData.userid; 
     const postId = this.data.post.post_id; // 从帖子信息中获取 post_id
     const commentDetail = this.data.commentInput; // 从页面数据中获取评论内容
 

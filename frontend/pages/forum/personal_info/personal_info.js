@@ -62,7 +62,7 @@ Page({
     
   checkIfFollowing: function() {
     const that = this;
-    const currentUserId = 'o-Hbd6bbDxfCqNpz5xsTgMLKDR3Q';
+    const currentUserId = getApp().globalData.userid;
     wx.request({
       url: 'http://43.143.205.76:8000/user/get_following/',
       data: { user_id: currentUserId },
@@ -109,7 +109,7 @@ Page({
 
   unfollowUser: function() {
     const that = this;
-    const currentUserId = 'o-Hbd6bbDxfCqNpz5xsTgMLKDR3Q'; // 获取当前登录用户的ID
+    const currentUserId = getApp().globalData.userid; // 获取当前登录用户的ID
     const unfollowNickname = this.data.userInfo.nickname; // 获取要取消关注的用户的昵称
 
     wx.request({

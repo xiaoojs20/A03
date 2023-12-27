@@ -72,7 +72,7 @@ Page({
         'content-type': 'application/x-www-form-urlencoded'
       },
       data: {
-        user_id: "o-Hbd6bbDxfCqNpz5xsTgMLKDR3Q",
+        user_id: getApp().globalData.userid,
         title: title,
         content: content
       },
