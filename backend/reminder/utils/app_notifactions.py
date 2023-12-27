@@ -14,7 +14,7 @@ def send_app_notification(user_id, message):
     SystemNotification.objects.create(user_id=user_id, message=message)
 
     # 发送通知到小程序（假设有这样的接口）
-    url = f"{settings.APP_NOTIFICATION_URL}"  # 小程序的系统通知接口 URL
+    url = f'http://localhost:8000/notifications/create_notification/'  # 小程序的系统通知接口 URL  # 小程序的系统通知接口 URL
     payload = {
         "user_id": user_id,
         "message": message
