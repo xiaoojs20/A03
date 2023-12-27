@@ -1,9 +1,14 @@
-<view class="container">
-  <van-cell-group>
-    <block wx:for="{{following}}" wx:key="{{index}}">
-      <van-cell title="{{item}}" thumb="/images/froum_data/home.png">
-        <van-button slot="right-icon" type="danger" size="small" bindtap="unfollowUser" data-nickname="{{item}}">取消关注</van-button>
-      </van-cell>
-    </block>
-  </van-cell-group>
+<view class="textcontainer">
+<text>关注数：{{followingnumber}}</text>
 </view>
+<block wx:for="{{following}}" wx:key="index">
+  <van-swipe-cell  right-width="{{50}}">
+    <van-cell-group>
+      <van-cell 
+        size="large"
+        title="{{item}}"
+      />
+    </van-cell-group>
+    <view slot="right" class="rightchoice" data-item="{{item}}" catchtap="unfollowUser">删除</view>
+  </van-swipe-cell>
+</block>

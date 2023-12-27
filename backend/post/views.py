@@ -194,6 +194,7 @@ def create_comment(request):
             # 帖子评论数+1
             _post = Post.objects.get(post_id=_post_id)
             _post.comment_counts = _post.comment_counts + 1
+
             print(f"当前评论总数: {_post.comment_counts}")
             
             new_comment = Comment(
@@ -205,7 +206,7 @@ def create_comment(request):
                     )
 
             # 保存新帖子到数据库
-	    _post.save()
+            _post.save()
             new_comment.save()
 
             print('评论发布成功')

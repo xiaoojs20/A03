@@ -3,6 +3,7 @@ Page({
 
   data: {
     following: [], // 用于存储关注列表
+    followingnumber:-1,
   },
 
   /**
@@ -64,14 +65,15 @@ Page({
   // 获取关注用户列表
   fetchFollowingList: function() {
     const that = this;
-    const currentUserId = 'o-Hbd6bbDxfCqNpz5xsTgMLKDR3Q'; // 请替换为实际获取当前用户ID的方法
-
     wx.request({
       url: 'http://43.143.205.76:8000/user/get_following/',
-      data: { user_id: currentUserId },
+      data: { user_id: getApp().globalData.userid },
       success: function(res) {
         if (res.statusCode === 200 && res.data.following) {
-          that.setData({ following: res.data.following });
+          that.setData({
+            following: res.data.following,
+            followingnumber: res.data.following.length,
+          });
           console.log('关注列表:', res.data.following);
         } else {
           console.error('获取关注列表失败:', res);
@@ -85,19 +87,23 @@ Page({
 
   unfollowUser: function(event) {
     const that = this;
-    const currentUserId = 'o-Hbd6bbDxfCqNpz5xsTgMLKDR3Q'; // 获取当前登录用户的ID
-    const unfollowNickname = event.currentTarget.dataset.nickname; // 从事件中获取要取消关注的用户的昵称
+    const unfollowNickname = event.currentTarget.dataset.item; // 从事件中获取要取消关注的用户的昵称
 
     wx.request({
       url: 'http://43.143.205.76:8000/user/remove_following',
       method: 'GET', // 注意: 通常删除操作应该使用 POST 或 DELETE 方法
       data: {
-        user_id: currentUserId,
+        user_id: getApp().globalData.userid,
         unfollow_name: unfollowNickname
       },
       success: function(res) {
         if (res.statusCode === 200) {
           console.log('成功取消关注:', unfollowNickname);
+          wx.showToast({
+            title: '取消关注成功',
+            icon: 'success',
+            duration: 2000
+          })
           // 在这里更新页面上的关注列表
           that.updateFollowingList(unfollowNickname);
         } else {

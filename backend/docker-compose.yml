@@ -8,7 +8,7 @@ services:
     build: . 
     command: >
       bash -c
-      "python manage.py makemigrations && python manage.py migrate --settings=YY.settings &&
+      "python manage.py makemigrations && python manage.py migrate --settings=YY.settings --fake post&&
       DJANGO_SETTINGS_MODULE=YY.settings gunicorn -w4 -b 0.0.0.0:8000 --log-level=debug YY.wsgi"
     expose:
       - "8000"
@@ -31,6 +31,44 @@ services:
       - TZ=Asia/Shanghai
     command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
     networks:
+      - db_network
+  celery:
+    build: .
+    environment:
+      - DJANGO_SETTINGS_MODULE=YY.settings
+    command: celery -A YY worker -l info
+    volumes:
+      - .:/code
+    depends_on:
+      - app
+      - mysql
+    networks:
+      - web_network
+      - db_network
+
+  celerybeat:
+    build: .
+    environment:
+      - DJANGO_SETTINGS_MODULE=YY.settings
+    command: celery -A YY beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    volumes:
+      - .:/code
+    depends_on:
+      - app
+      - mysql
+      - redis
+    restart: always  
+    networks:
+      - web_network
+      - db_network
+
+
+  redis:
+    image: "redis:alpine"
+    ports:
+      - "6379:6379"
+    networks:
+      - web_network
       - db_network
   nginx:
     container_name: nginx

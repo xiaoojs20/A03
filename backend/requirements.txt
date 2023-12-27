@@ -15,3 +15,5 @@ celery
 numpy 
 matplotlib
 uuid
+redis
+django-celery-beat>=2.2.0
