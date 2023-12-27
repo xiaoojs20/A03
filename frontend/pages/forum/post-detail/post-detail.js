@@ -2,8 +2,9 @@
 Page({
   data: {
     post: {}, // 帖子数据
+    postImages: [], // 存储帖子的图片URLs
     isLiked: false, // 初始未点赞状态
-    comments: [], // 评论数据，可根据需要从后端获取
+    comments: [], // 评论数据
     commentInput: ''
   },
 
@@ -15,13 +16,20 @@ Page({
 
   loadPostDetail(postId) {
     const that = this;
+    console.log("加载帖子详情: ", postId);
+
     // 获取帖子详情
     wx.request({
       url: 'http://43.143.205.76:8000/post/get_post_by_postid/',
       data: { post_id: postId },
       success: (res) => {
+        console.log("帖子详情响应: ", res);
         if (res.statusCode === 200 && res.data && res.data.msg === 'get_post_by_postid ok') {
           that.setData({ post: res.data.post_info });
+
+          // 获取帖子的图片
+          that.loadPostImages(postId);
+
           // 获取帖子的评论
           that.loadComments(postId);
         } else {
@@ -147,6 +155,41 @@ Page({
       });
     });
   },
+  loadPostImages(postId) {
+    const that = this;
+    console.log("加载帖子图片: ", postId);
+  
+    wx.request({
+      url: 'http://43.143.205.76:8000/post/get_image/',
+      method: 'POST',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded'
+      },
+      data: {
+        post_id: postId  // 以 POST 方式发送 postId
+      },
+      responseType: 'arraybuffer',  // 确保接收的是二进制数据
+      success: (res) => {
+        console.log("帖子图片响应: ", res);
+        if (res.statusCode === 200 && res.data) {
+          const base64Image = wx.arrayBufferToBase64(res.data);
+          const imageUrl = 'data:image/jpeg;base64,' + base64Image;
+          that.setData({ postImages: [imageUrl] });  // 假设每个帖子只有一张图片
+        } else {
+          console.error('获取帖子图片失败:', res);
+          that.setData({ postImages: [] }); // 如果获取失败，设置为空数组
+        }
+      },
+      fail: (err) => {
+        console.error('请求帖子图片失败', err);
+        that.setData({ postImages: [] }); // 请求失败也设置为空数组
+      }
+    });
+  }
+  
+  
+
+  
   
 });
 

@@ -1,6 +1,6 @@
 <!--pages/myfans/myfans.wxml-->
-<view class="fansnumber">
-<text>粉丝数："{{}}"</text>
+<view class="textcontainer">
+<text>粉丝数：{{fansnumber}}</text>
 </view>
 <van-cell-group>
   <van-cell 

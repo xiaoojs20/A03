@@ -1,21 +1,29 @@
 <view class="page-container">
-  <!-- 加载动画（当数据正在加载时显示） -->
+  <!-- 加载动画 -->
   <view class="loading-animation" wx:if="{{isLoading}}">
-  <van-loading type="spinner" size="30px"></van-loading>
-  <text>加载中...</text>
-</view>
+    <van-loading type="spinner" size="30px"></van-loading>
+    <text>加载中...</text>
+  </view>
 
+  <!-- 置顶帖子的轮播 -->
+  <swiper autoplay interval="3000" indicator-dots indicator-color="rgba(255, 255, 255, 0.8)" indicator-active-color="#ffffff">
+    <block wx:for="{{topPosts}}" wx:key="post_id">
+      <swiper-item>
+        <image class="post-cover" src="{{item.imageUrl}}" mode="aspectFill"></image>
+        <text class="post-title">{{item.title}}</text>
+      </swiper-item>
+    </block>
+  </swiper>
 
   <!-- 帖子列表 -->
   <scroll-view class="post-list" scroll-y="true" style="height:{{scrollViewHeight}}px;">
-    <block wx:for="{{ posts }}" wx:key="id">
+    <block wx:for="{{posts}}" wx:key="id">
       <view class="post-card" bindtap="navigateToPostDetail" data-id="{{item.post_id}}">
-        <van-card title="{{ item.title }}" thumb="{{ item.avatar }}" lazy-load>
+        <van-card title="{{item.title}}" thumb="{{item.avatar}}" lazy-load>
           <view slot="footer">
             <view class="post-info">
-              <text class="post-author">作者: {{ item.author }}</text>
-              <text class="post-likes">点赞: {{ item.like_counts }}</text>
-              <text class="post-comments">评论: {{ item.comment_counts }}</text>
+              <text class="post-author">作者: {{item.author}}</text>
+              <text class="post-comments">评论: {{item.comment_counts}}</text>
             </view>
           </view>
         </van-card>
@@ -23,5 +31,6 @@
     </block>
   </scroll-view>
 
+  <!-- 创建帖子按钮 -->
   <van-button class="create-post-button" bind:click="navigateToCreatePost" icon="edit" round type="info"></van-button>
 </view>

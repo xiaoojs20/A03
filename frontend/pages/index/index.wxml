@@ -14,12 +14,3 @@
     </van-button>
   </view>
 </view>
-
-<navigator url="/pages/setreminders/setreminders">
-  <van-button 
-      type="default" 
-      round type="info" 
-      color="linear-gradient(to right, #4bb0ff, #6149f6)">
-      设置提醒
-    </van-button>
-  </navigator>

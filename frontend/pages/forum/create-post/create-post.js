@@ -19,21 +19,26 @@ Page({
 
   chooseImage() {
     let that = this;
+    console.log("选择图片");
     wx.chooseImage({
       count: 3,  // 允许选择的图片数量
-      sizeType: ['compressed'],  // 可以指定是原图还是压缩图，默认二者都有
-      sourceType: ['album', 'camera'],  // 可以指定来源是相册还是相机，默认二者都有
+      sizeType: ['compressed'],  // 可以指定是原图还是压缩图
+      sourceType: ['album', 'camera'],  // 可以指定来源是相册还是相机
       success(res) {
         const images = res.tempFilePaths;
         that.setData({
           imageList: that.data.imageList.concat(images)
         });
+        console.log("已选图片: ", images);
       }
     });
   },
 
   submitPost() {
     const { title, content, imageList } = this.data;
+    console.log("提交帖子");
+
+    // 检查标题和内容是否为空
     if (!title || !content) {
       wx.showToast({
         title: '标题和内容不能为空',
@@ -41,17 +46,24 @@ Page({
       });
       return;
     }
-  
-    if (imageList.length > 0) {
-      // 如果有图片，上传图片
-      this.uploadImages(imageList, title, content);
-    } else {
-      // 如果没有图片，直接发布帖子
-      this.createTextPost(title, content);
-    }
+
+    // 创建帖子
+    this.createTextPost(title, content, (postId) => {
+      console.log("帖子ID: ", postId);
+
+      // 如果帖子创建成功，并且有图片需要上传
+      if (postId && imageList.length > 0) {
+        console.log("上传帖子图片");
+        // 上传每张图片
+        imageList.forEach((imagePath) => {
+          this.uploadPostImage(postId, imagePath);
+        });
+      }
+    });
   },
 
-  createTextPost(title, content) {
+  createTextPost(title, content, callback) {
+    console.log("创建帖子内容");
     wx.request({
       url: 'http://43.143.205.76:8000/post/create_post/',
       method: 'POST',
@@ -59,20 +71,28 @@ Page({
         'content-type': 'application/x-www-form-urlencoded'
       },
       data: {
-        user_id: "o-Hbd6bbDxfCqNpz5xsTgMLKDR3Q",  // 你的用户ID
+        user_id: "o-Hbd6bbDxfCqNpz5xsTgMLKDR3Q",
         title: title,
         content: content
       },
       success(res) {
-        if (res.statusCode === 200) {
+        console.log("创建帖子响应: ", res);
+  
+        if (res.statusCode === 200 && res.data && res.data.msg === 'create_post ok') {
           wx.showToast({
             title: '帖子发布成功',
             icon: 'success'
           });
-          wx.navigateTo({
-            url: '/pages/forum/index/index' 
-          });
-          // 你可能还需要执行一些操作，比如导航到帖子列表页面
+  
+          // 获取帖子ID
+          const postId = res.data.post_info.post_id;  // 从post_info中获取postId
+          console.log("postId: ", postId);
+  
+          if (callback && postId) {
+            callback(postId);  // 调用回调函数
+          } else {
+            console.log("回调函数未执行，postId 为空或不存在");
+          }
         } else {
           wx.showToast({
             title: '帖子发布失败',
@@ -80,7 +100,8 @@ Page({
           });
         }
       },
-      fail() {
+      fail(err) {
+        console.error("创建帖子请求失败: ", err);
         wx.showToast({
           title: '网络请求失败',
           icon: 'none'
@@ -90,41 +111,41 @@ Page({
   },
   
   
-
-  uploadImages(imageList, title, content) {
-    for (let i = 0; i < imageList.length; i++) {
-      wx.uploadFile({
-        url: 'http://43.143.205.76:8000/post/create_post/',
-        filePath: imageList[i],
-        name: `picture_${i + 1}`,
-        header: {
-          'content-type': 'application/x-www-form-urlencoded'
-        },
-        formData: {
-          user_id: "o-Hbd6bbDxfCqNpz5xsTgMLKDR3Q",
-          title: title,
-          content: content
-        },
-        success: (res) => {
-          if (res.statusCode === 200) {
-            wx.showToast({
-              title: '帖子发布成功',
-              icon: 'success'
-            });
-            // 你可能还需要执行一些操作，比如导航到帖子列表页面
-          } else {
-            wx.showToast({
-              title: '帖子发布失败',
-              icon: 'none'
-            });
-          }
-        },
-        fail: (err) => {
-          console.error('图片上传失败', err);
-          // 上传失败的逻辑处理
+  
+  uploadPostImage(postId, imagePath) {
+    console.log(`上传图片 postId: ${postId}, imagePath: ${imagePath}`);
+    wx.uploadFile({
+      url: 'http://43.143.205.76:8000/post/upload_image/',
+      filePath: imagePath,
+      name: 'post_image',
+      header: {
+        'content-type': 'multipart/form-data'
+      },
+      formData: {
+        post_id: postId
+      },
+      success(res) {
+        console.log("图片上传成功响应: ", res);
+        if (res.statusCode === 200) {
+          wx.showToast({
+            title: '图片上传成功',
+            icon: 'success'
+          });
+        } else {
+          wx.showToast({
+            title: '图片上传失败',
+            icon: 'none'
+          });
         }
-      });
-    }
+      },
+      fail(err) {
+        console.error("图片上传失败: ", err);
+        wx.showToast({
+          title: '网络请求失败',
+          icon: 'none'
+        });
+      }
+    });
   },
 
   // 生命周期函数

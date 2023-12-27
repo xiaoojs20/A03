@@ -11,7 +11,6 @@
 
   <view class="upload-wrap">
     <van-uploader 
-      file-list="{{ fileList }}" 
       bind:after-read="handleUpload"
       deletable="{{ true }}">
       <van-button type="info" class="upload-btn">上传文件</van-button>

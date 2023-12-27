@@ -86,6 +86,7 @@
       <van-field
         label="头像"
         center
+        placeholder="支持png格式"
         use-button-slot>
         <van-button 
           size="small"
