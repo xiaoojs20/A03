@@ -132,7 +132,7 @@ def create_plot(data, report_type):
         start_date = end_date - timedelta(days=28)  
         dates = [start_date + timedelta(days=i*7) for i in range(4)]
         #plt.gca().xaxis.set_major_locator(mdates.WeekdayLocator())
-        #date_format = 'Week %W'
+        date_format = 'Week %W'
         plt.gca().xaxis.set_major_locator(mdates.DayLocator(interval=7))  # 每7天显示一个主刻度
 
         # 使用自定义的格式化函数显示 Week 1 到 Week 4
