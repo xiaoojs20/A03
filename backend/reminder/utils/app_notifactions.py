@@ -11,7 +11,7 @@ def send_app_notification(user_id, message):
     :param message: 要发送的消息内容
     """
     # 将通知保存到数据库
-    SystemNotification.objects.create(user_id=user_id, message=message)
+    #SystemNotification.objects.create(user_id=user_id, message=message)
 
     # 发送通知到小程序（假设有这样的接口）
     url = f'http://localhost:8000/notifications/create_notification/'  # 小程序的系统通知接口 URL  # 小程序的系统通知接口 URL
