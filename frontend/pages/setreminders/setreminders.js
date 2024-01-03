@@ -75,6 +75,14 @@ Page({
     const timezoneOffset = new Date().getTimezoneOffset() * 60 * 1000;
     const formattedTime = new Date(selectedTime - timezoneOffset).toISOString().slice(0, 19);
     console.log(formattedTime);
+    if (selectedTime < new Date().getTime()){
+      wx.showToast({
+        title: '时间错误',
+        icon: 'none',
+        duration: 2000
+      });
+      return;
+    };
     wx.request({
       url: 'http://43.143.205.76:8000/reminder/set_reminder',
       method: 'POST',
@@ -156,6 +164,14 @@ Page({
     const selectedTime = event.detail;
     const timezoneOffset = new Date().getTimezoneOffset() * 60 * 1000;
     const formattedTime = new Date(selectedTime -timezoneOffset).toISOString().slice(0, 19);
+    if (selectedTime < new Date().getTime()){
+      wx.showToast({
+        title: '时间错误',
+        icon: 'none',
+        duration: 2000
+      });
+      return;
+    };
     wx.request({
       url: 'http://43.143.205.76:8000/reminder/modify',
       method: 'POST',
